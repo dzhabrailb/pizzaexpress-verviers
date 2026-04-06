@@ -431,17 +431,77 @@
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
+      /* Nav */
       .nav-links { display: none; }
       .hamburger { display: flex; }
-      .order-wrapper { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 14px; height: 58px; }
+      .nav-logo { font-size: 1.1rem; }
+      .nav-logo img { height: 36px; width: 36px; }
+      #lang-toggle { margin-left: 10px; }
+      .lang-btn { padding: 3px 8px; font-size: 0.72rem; }
+      .mobile-menu { top: 58px; }
+
+      /* Sections */
+      section { padding: 52px 14px; }
+
+      /* Hero */
+      #hero { padding: 80px 16px 50px; min-height: 92vh; }
+      .hero-content { max-width: 100%; }
+      .hero-badge { font-size: 0.72rem; padding: 5px 14px; letter-spacing: 2px; margin-bottom: 18px; }
+      .hero-subtitle { font-size: 0.95rem; margin-bottom: 10px; }
+      .hero-info {
+        font-size: 0.8rem; gap: 10px; margin-bottom: 28px;
+        flex-direction: column; align-items: center; gap: 8px;
+      }
+      .hero-btns { flex-direction: column; align-items: center; gap: 12px; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 320px; text-align: center; padding: 14px 20px; font-size: 0.95rem; }
+
+      /* About */
+      .features-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .feature-card { padding: 22px 16px; }
+      .feature-icon { font-size: 2rem; margin-bottom: 10px; }
+      .feature-card h3 { font-size: 1rem; }
+      .feature-card p { font-size: 0.82rem; }
+
+      /* Menu tabs */
+      .menu-tabs { gap: 7px; margin-bottom: 28px; }
+      .tab-btn { padding: 7px 14px; font-size: 0.78rem; }
+      .menu-panel.active { grid-template-columns: 1fr; gap: 16px; }
+      .menu-card-img { height: 150px; }
+      .menu-card-body { padding: 14px 16px; }
+      .menu-card-body h3 { font-size: 1rem; }
+      .menu-add-btn { padding: 7px 14px; font-size: 0.8rem; }
+
+      /* Order */
+      .order-wrapper { grid-template-columns: 1fr; gap: 28px; }
+      .order-form { padding: 22px 16px; border-radius: 16px; }
+      .order-form h3 { font-size: 1.2rem; margin-bottom: 18px; }
       .form-row { grid-template-columns: 1fr; }
-      section { padding: 60px 16px; }
-      nav { padding: 0 16px; }
+      .submit-btn { padding: 15px; font-size: 1rem; border-radius: 14px; }
+      .order-option { padding: 14px 16px; gap: 12px; }
+      .order-option-icon { font-size: 1.5rem; }
+
+      /* Reviews */
+      .reviews-grid { grid-template-columns: 1fr; gap: 16px; }
+      .review-card { padding: 20px; }
+
+      /* Contact */
+      .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+      .map-container { height: 260px; }
+      .contact-item { padding: 16px; gap: 12px; }
+
+      /* Footer */
+      footer { padding: 32px 16px 20px; }
+      .footer-logo { font-size: 1.5rem; }
+      .footer-links { gap: 14px; }
     }
-    @media (max-width: 480px) {
-      .hero-btns { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-secondary { width: 100%; max-width: 300px; text-align: center; }
+
+    @media (max-width: 400px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .menu-tabs { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 6px; }
+      .tab-btn { flex-shrink: 0; }
+      .hero-info a { font-size: 0.78rem; }
+      .nav-logo span { display: none; }
     }
 
     /* ===== LANGUAGE HIDDEN ===== */
