@@ -987,8 +987,12 @@
     }
     updateCart();
   }
-  // Afficher la zone dès le chargement (livraison est sélectionné par défaut)
-  window.addEventListener('DOMContentLoaded', () => toggleAddress());
+  // Afficher la zone dès le chargement et pré-sélectionner zone A par défaut
+  window.addEventListener('DOMContentLoaded', () => {
+    toggleAddress();
+    // Pré-sélectionner Verviers/Dison par défaut
+    selectZone(3.99, document.getElementById('zone-a'));
+  });
 
   function selectZone(fee, el) {
     document.getElementById('delivery-zone').value = fee;
