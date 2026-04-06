@@ -31,8 +31,7 @@
 
     /* ===== LANGUAGE TOGGLE ===== */
     #lang-toggle {
-      position: fixed; top: 14px; right: 16px; z-index: 1000;
-      display: flex; gap: 4px;
+      display: flex; gap: 4px; margin-left: 16px; flex-shrink: 0;
     }
     .lang-btn {
       background: rgba(255,255,255,0.92); border: 2px solid var(--brown-light);
@@ -406,12 +405,6 @@
 </head>
 <body>
 
-<!-- Language Toggle -->
-<div id="lang-toggle">
-  <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
-  <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
-</div>
-
 <!-- Navbar -->
 <nav>
   <div class="nav-logo">
@@ -426,6 +419,10 @@
     <li><a href="#contact" data-lang="fr">Contact</a><a href="#contact" data-lang="en">Contact</a></li>
     <li><a href="#order" class="nav-order-btn" data-lang="fr">🛵 Commander</a><a href="#order" class="nav-order-btn" data-lang="en">🛵 Order Now</a></li>
   </ul>
+  <div id="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+  </div>
   <div class="hamburger" onclick="toggleMobile()">
     <span></span><span></span><span></span>
   </div>
