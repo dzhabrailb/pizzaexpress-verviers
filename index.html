@@ -725,13 +725,21 @@
             <label data-lang="en">Delivery address</label>
             <input type="text" id="order-address" placeholder="ex: Rue de la Paix 12, Verviers" />
           </div>
-          <div class="form-group" id="zone-group" style="display:none;">
-            <label>🗺️ <span data-lang="fr">Zone de livraison</span><span data-lang="en">Delivery zone</span></label>
-            <select id="delivery-zone" onchange="updateCart()">
-              <option value="">-- Choisissez votre ville / Choose your city --</option>
-              <option value="3.99">📍 Verviers / Dison / Petite-Rechain — 3,99€</option>
-              <option value="4.99">📍 Pepinster / Herve / Battice — 4,99€</option>
-            </select>
+          <div id="zone-group" style="display:none;margin-bottom:16px;">
+            <label style="display:block;font-size:0.82rem;font-weight:700;color:var(--brown-mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">🗺️ Zone de livraison / Delivery zone</label>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <label id="zone-a" onclick="selectZone(3.99, this)" style="flex:1;min-width:140px;cursor:pointer;border:2px solid #d4b896;border-radius:12px;padding:12px 14px;text-align:center;transition:all .2s;background:#fff;">
+                <div style="font-size:1.1rem;">📍</div>
+                <div style="font-weight:700;font-size:0.85rem;color:var(--brown-dark);margin:4px 0;">Verviers / Dison<br>Petite-Rechain</div>
+                <div style="font-size:1.1rem;font-weight:700;color:var(--terracotta);">3,99€</div>
+              </label>
+              <label id="zone-b" onclick="selectZone(4.99, this)" style="flex:1;min-width:140px;cursor:pointer;border:2px solid #d4b896;border-radius:12px;padding:12px 14px;text-align:center;transition:all .2s;background:#fff;">
+                <div style="font-size:1.1rem;">📍</div>
+                <div style="font-weight:700;font-size:0.85rem;color:var(--brown-dark);margin:4px 0;">Pepinster / Herve<br>Battice</div>
+                <div style="font-size:1.1rem;font-weight:700;color:var(--terracotta);">4,99€</div>
+              </label>
+            </div>
+            <input type="hidden" id="delivery-zone" value="0" />
           </div>
           <!-- Panier dynamique -->
           <div id="cart-list" style="display:none;background:#fdf6ee;border-radius:10px;padding:12px 16px;margin-bottom:4px;border:1px solid #e0cdb8;"></div>
@@ -969,7 +977,21 @@
     const isDelivery = (type === 'livraison' || type === 'delivery');
     document.getElementById('address-group').style.display = isDelivery ? 'block' : 'none';
     document.getElementById('zone-group').style.display = isDelivery ? 'block' : 'none';
-    if (!isDelivery) document.getElementById('delivery-zone').value = '';
+    if (!isDelivery) {
+      document.getElementById('delivery-zone').value = '0';
+      ['zone-a','zone-b'].forEach(id => document.getElementById(id).style.border = '2px solid #d4b896');
+    }
+    updateCart();
+  }
+
+  function selectZone(fee, el) {
+    document.getElementById('delivery-zone').value = fee;
+    ['zone-a','zone-b'].forEach(id => {
+      document.getElementById(id).style.border = '2px solid #d4b896';
+      document.getElementById(id).style.background = '#fff';
+    });
+    el.style.border = '2px solid var(--terracotta)';
+    el.style.background = '#fff5f0';
     updateCart();
   }
 
@@ -996,6 +1018,9 @@
 
     // Delivery fee
     const fee = zoneSelect ? parseFloat(zoneSelect.value) || 0 : 0;
+    // Also check if delivery is selected
+    const orderType = document.getElementById('order-type').value;
+    const isDelivery = (orderType === 'livraison' || orderType === 'delivery');
 
     if (cart.length === 0) {
       textarea.value = '';
@@ -1021,7 +1046,7 @@
     textarea.value = cart.map(item => `${item.name} — ${item.price.toFixed(2)}€`).join('\n');
 
     // Show delivery fee if applicable
-    if (fee > 0) {
+    if (isDelivery && fee > 0) {
       feeRow.style.display = 'flex';
       feeAmount.textContent = fee.toFixed(2) + ' €';
     } else {
