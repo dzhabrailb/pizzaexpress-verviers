@@ -226,11 +226,14 @@
     .menu-price { font-weight: 700; font-size: 1.1rem; color: var(--terracotta); }
     .menu-add-btn {
       background: var(--green); color: #fff;
-      border: none; padding: 7px 16px; border-radius: 20px;
-      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      border: none; padding: 6px 12px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 700; cursor: pointer;
       transition: background .2s; font-family: 'Lato', sans-serif;
     }
     .menu-add-btn:hover { background: #2a3d1f; }
+    .menu-add-btn.btn-l { background: var(--brown-mid); }
+    .menu-add-btn.btn-l:hover { background: #4a2a10; }
+    .menu-btns { display: flex; gap: 6px; flex-wrap: wrap; }
 
     /* ===== ORDER ===== */
     #order { background: var(--cream); }
@@ -722,10 +725,20 @@
             <label data-lang="en">Delivery address</label>
             <input type="text" id="order-address" placeholder="ex: Rue de la Paix 12, Verviers" />
           </div>
-          <div class="form-group">
-            <label data-lang="fr">Votre commande</label>
-            <label data-lang="en">Your order</label>
-            <textarea id="order-items" placeholder="ex: 1x Margherita, 1x Diavola, 2x Coca-Cola…" required></textarea>
+          <!-- Panier dynamique -->
+          <div id="cart-list" style="display:none;background:#fdf6ee;border-radius:10px;padding:12px 16px;margin-bottom:4px;border:1px solid #e0cdb8;"></div>
+          <!-- Total -->
+          <div id="order-total-row" style="display:none;justify-content:space-between;align-items:center;background:var(--brown-dark);color:#fff;padding:12px 16px;border-radius:10px;margin-bottom:14px;font-weight:700;">
+            <span data-lang="fr">🧾 Total commande</span>
+            <span data-lang="en">🧾 Order total</span>
+            <span id="order-total" style="font-size:1.2rem;color:var(--gold);">0,00 €</span>
+          </div>
+          <!-- Champ caché pour WhatsApp -->
+          <textarea id="order-items" style="display:none"></textarea>
+          <div class="form-group" id="note-group">
+            <label data-lang="fr">Note / remarque (optionnel)</label>
+            <label data-lang="en">Note / remark (optional)</label>
+            <textarea id="order-note" placeholder="ex: sans oignon, bien cuit…" style="height:60px;"></textarea>
           </div>
           <button type="submit" class="submit-btn" data-lang="fr">✅ Envoyer ma commande</button>
           <button type="submit" class="submit-btn" data-lang="en">✅ Send my order</button>
@@ -935,18 +948,58 @@
   }
 
   // ===== ORDER FORM =====
+  let cart = [];
+
   function toggleAddress() {
     const type = document.getElementById('order-type').value;
     const addrGroup = document.getElementById('address-group');
     addrGroup.style.display = (type === 'livraison' || type === 'delivery') ? 'block' : 'none';
   }
 
-  function orderItem(item) {
-    const textarea = document.getElementById('order-items');
-    const current = textarea.value.trim();
-    textarea.value = current ? current + '\n' + item : item;
+  function orderItem(name, price) {
+    cart.push({ name, price: parseFloat(price) || 0 });
+    updateCart();
     document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
     showToast(document.body.classList.contains('en') ? '✅ Added to your order!' : '✅ Ajouté à votre commande !');
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    updateCart();
+  }
+
+  function updateCart() {
+    const textarea = document.getElementById('order-items');
+    const totalRow = document.getElementById('order-total-row');
+    const totalEl = document.getElementById('order-total');
+    const cartList = document.getElementById('cart-list');
+
+    if (cart.length === 0) {
+      textarea.value = '';
+      totalRow.style.display = 'none';
+      cartList.style.display = 'none';
+      return;
+    }
+
+    // Build cart list UI
+    cartList.style.display = 'block';
+    cartList.innerHTML = cart.map((item, i) => `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0e0cc;">
+        <span style="font-size:0.88rem;color:#2c1a0e;">${item.name}</span>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <span style="font-weight:700;color:var(--terracotta);font-size:0.9rem;">${item.price.toFixed(2)}€</span>
+          <button onclick="removeItem(${i})" style="background:none;border:none;color:#c0522a;cursor:pointer;font-size:1rem;padding:0;line-height:1;">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    // Update hidden textarea for WhatsApp
+    textarea.value = cart.map(item => `${item.name} — ${item.price.toFixed(2)}€`).join('\n');
+
+    // Update total
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    totalEl.textContent = total.toFixed(2) + ' €';
+    totalRow.style.display = 'flex';
   }
 
   function submitOrder(e) {
@@ -954,12 +1007,17 @@
     const name = document.getElementById('order-name').value;
     const phone = document.getElementById('order-phone').value;
     const type = document.getElementById('order-type').value;
-    const items = document.getElementById('order-items').value;
+    const addr = document.getElementById('order-address').value;
     const isEn = document.body.classList.contains('en');
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
 
+    const itemLines = cart.map(item => `• ${item.name} — ${item.price.toFixed(2)}€`).join('\n');
     const msg = isEn
-      ? `Hello! I would like to order:\n\n${items}\n\nName: ${name}\nPhone: ${phone}\nType: ${type}`
-      : `Bonjour ! Je souhaite commander :\n\n${items}\n\nNom : ${name}\nTél : ${phone}\nType : ${type}`;
+      ? `Hello! I would like to order:\n\n${itemLines}\n\nTOTAL: ${total.toFixed(2)}€\n\nName: ${name}\nPhone: ${phone}\nType: ${type}${addr ? '\nAddress: ' + addr : ''}`
+      : `Bonjour ! Je souhaite commander :\n\n${itemLines}\n\nTOTAL : ${total.toFixed(2)}€\n\nNom : ${name}\nTél : ${phone}\nType : ${type}${addr ? '\nAdresse : ' + addr : ''}`;
+
+    const note = document.getElementById('order-note').value;
+    if (note) msg += isEn ? `\nNote: ${note}` : `\nNote : ${note}`;
 
     const waUrl = `https://wa.me/32470740855?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
@@ -973,6 +1031,37 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+
+  // ===== AUTO M/L BUTTONS =====
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.menu-card').forEach(card => {
+      const priceEl = card.querySelector('.menu-price');
+      const oldBtn = card.querySelector('.menu-add-btn');
+      if (!priceEl || !oldBtn) return;
+
+      const priceText = priceEl.textContent.trim(); // e.g. "M 11,50€ / L 17,50€" or "12,00€"
+      const name = card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : '';
+
+      const mlMatch = priceText.match(/M\s*([\d,\.]+).*?L\s*([\d,\.]+)/);
+      const singleMatch = priceText.match(/^([\d,\.]+)/);
+
+      const btnWrapper = document.createElement('div');
+      btnWrapper.className = 'menu-btns';
+
+      if (mlMatch) {
+        const priceM = parseFloat(mlMatch[1].replace(',', '.'));
+        const priceL = parseFloat(mlMatch[2].replace(',', '.'));
+        btnWrapper.innerHTML = `
+          <button class="menu-add-btn" onclick="orderItem('${name} (M)', ${priceM})">+ M ${mlMatch[1]}€</button>
+          <button class="menu-add-btn btn-l" onclick="orderItem('${name} (L)', ${priceL})">+ L ${mlMatch[2]}€</button>`;
+      } else if (singleMatch) {
+        const price = parseFloat(singleMatch[1].replace(',', '.'));
+        btnWrapper.innerHTML = `<button class="menu-add-btn" onclick="orderItem('${name}', ${price})">+ Ajouter ${singleMatch[1]}€</button>`;
+      }
+
+      oldBtn.replaceWith(btnWrapper);
+    });
+  });
 
   // ===== SCROLL REVEAL =====
   const observer = new IntersectionObserver((entries) => {
