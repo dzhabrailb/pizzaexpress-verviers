@@ -725,8 +725,26 @@
             <label data-lang="en">Delivery address</label>
             <input type="text" id="order-address" placeholder="ex: Rue de la Paix 12, Verviers" />
           </div>
+          <div class="form-group" id="zone-group" style="display:none;">
+            <label data-lang="fr">🗺️ Zone de livraison</label>
+            <label data-lang="en">🗺️ Delivery zone</label>
+            <select id="delivery-zone" onchange="updateCart()">
+              <option value="" data-lang="fr">-- Choisissez votre ville --</option>
+              <option value="3.99" data-lang="fr">📍 Verviers / Dison / Petite-Rechain — 3,99€</option>
+              <option value="4.99" data-lang="fr">📍 Pepinster / Herve / Battice — 4,99€</option>
+              <option value="" data-lang="en">-- Choose your city --</option>
+              <option value="3.99" data-lang="en">📍 Verviers / Dison / Petite-Rechain — €3.99</option>
+              <option value="4.99" data-lang="en">📍 Pepinster / Herve / Battice — €4.99</option>
+            </select>
+          </div>
           <!-- Panier dynamique -->
           <div id="cart-list" style="display:none;background:#fdf6ee;border-radius:10px;padding:12px 16px;margin-bottom:4px;border:1px solid #e0cdb8;"></div>
+          <!-- Frais de livraison -->
+          <div id="delivery-fee-row" style="display:none;justify-content:space-between;align-items:center;background:#f5ece0;padding:10px 16px;border-radius:10px;margin-bottom:4px;font-size:0.9rem;">
+            <span style="color:var(--brown-mid);font-weight:700;" data-lang="fr">🛵 Frais de livraison</span>
+            <span style="color:var(--brown-mid);font-weight:700;" data-lang="en">🛵 Delivery fee</span>
+            <span id="delivery-fee-amount" style="font-weight:700;color:var(--brown-mid);">0,00 €</span>
+          </div>
           <!-- Total -->
           <div id="order-total-row" style="display:none;justify-content:space-between;align-items:center;background:var(--brown-dark);color:#fff;padding:12px 16px;border-radius:10px;margin-bottom:14px;font-weight:700;">
             <span data-lang="fr">🧾 Total commande</span>
@@ -952,8 +970,11 @@
 
   function toggleAddress() {
     const type = document.getElementById('order-type').value;
-    const addrGroup = document.getElementById('address-group');
-    addrGroup.style.display = (type === 'livraison' || type === 'delivery') ? 'block' : 'none';
+    const isDelivery = (type === 'livraison' || type === 'delivery');
+    document.getElementById('address-group').style.display = isDelivery ? 'block' : 'none';
+    document.getElementById('zone-group').style.display = isDelivery ? 'block' : 'none';
+    if (!isDelivery) document.getElementById('delivery-zone').value = '';
+    updateCart();
   }
 
   function orderItem(name, price) {
@@ -973,11 +994,18 @@
     const totalRow = document.getElementById('order-total-row');
     const totalEl = document.getElementById('order-total');
     const cartList = document.getElementById('cart-list');
+    const feeRow = document.getElementById('delivery-fee-row');
+    const feeAmount = document.getElementById('delivery-fee-amount');
+    const zoneSelect = document.getElementById('delivery-zone');
+
+    // Delivery fee
+    const fee = zoneSelect ? parseFloat(zoneSelect.value) || 0 : 0;
 
     if (cart.length === 0) {
       textarea.value = '';
       totalRow.style.display = 'none';
       cartList.style.display = 'none';
+      feeRow.style.display = 'none';
       return;
     }
 
@@ -996,8 +1024,17 @@
     // Update hidden textarea for WhatsApp
     textarea.value = cart.map(item => `${item.name} — ${item.price.toFixed(2)}€`).join('\n');
 
-    // Update total
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    // Show delivery fee if applicable
+    if (fee > 0) {
+      feeRow.style.display = 'flex';
+      feeAmount.textContent = fee.toFixed(2) + ' €';
+    } else {
+      feeRow.style.display = 'none';
+    }
+
+    // Update total (articles + livraison)
+    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    const total = subtotal + fee;
     totalEl.textContent = total.toFixed(2) + ' €';
     totalRow.style.display = 'flex';
   }
@@ -1011,10 +1048,15 @@
     const isEn = document.body.classList.contains('en');
     const total = cart.reduce((sum, item) => sum + item.price, 0);
 
+    const fee = parseFloat(document.getElementById('delivery-zone').value) || 0;
+    const zoneLabel = fee > 0 ? document.getElementById('delivery-zone').options[document.getElementById('delivery-zone').selectedIndex].text : '';
+    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     const itemLines = cart.map(item => `• ${item.name} — ${item.price.toFixed(2)}€`).join('\n');
+    const feeLineFr = fee > 0 ? `\n🛵 Frais de livraison (${zoneLabel}) : ${fee.toFixed(2)}€` : '';
+    const feeLineEn = fee > 0 ? `\n🛵 Delivery fee (${zoneLabel}): ${fee.toFixed(2)}€` : '';
     const msg = isEn
-      ? `Hello! I would like to order:\n\n${itemLines}\n\nTOTAL: ${total.toFixed(2)}€\n\nName: ${name}\nPhone: ${phone}\nType: ${type}${addr ? '\nAddress: ' + addr : ''}`
-      : `Bonjour ! Je souhaite commander :\n\n${itemLines}\n\nTOTAL : ${total.toFixed(2)}€\n\nNom : ${name}\nTél : ${phone}\nType : ${type}${addr ? '\nAdresse : ' + addr : ''}`;
+      ? `Hello! I would like to order:\n\n${itemLines}${feeLineEn}\n\n✅ TOTAL: ${total.toFixed(2)}€\n\nName: ${name}\nPhone: ${phone}\nType: ${type}${addr ? '\nAddress: ' + addr : ''}`
+      : `Bonjour ! Je souhaite commander :\n\n${itemLines}${feeLineFr}\n\n✅ TOTAL : ${total.toFixed(2)}€\n\nNom : ${name}\nTél : ${phone}\nType : ${type}${addr ? '\nAdresse : ' + addr : ''}`;
 
     const note = document.getElementById('order-note').value;
     if (note) msg += isEn ? `\nNote: ${note}` : `\nNote : ${note}`;
