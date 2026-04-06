@@ -292,6 +292,7 @@
     .order-info p { color: #6b5a4a; font-size: 0.95rem; line-height: 1.7; margin-bottom: 20px; }
     .order-options { display: flex; flex-direction: column; gap: 12px; }
     .order-option {
+      cursor: pointer; text-decoration: none;
       display: flex; align-items: center; gap: 14px;
       background: #fff; padding: 16px 20px; border-radius: 12px;
       box-shadow: 0 2px 12px var(--shadow); transition: transform .2s;
@@ -703,40 +704,39 @@
         <p data-lang="fr">Plusieurs façons de passer commande — choisissez celle qui vous convient le mieux !</p>
         <p data-lang="en">Multiple ways to order — pick the one that suits you best!</p>
         <div class="order-options">
-          <div class="order-option">
+          <a href="#order-form-section" class="order-option" style="text-decoration:none;">
             <div class="order-option-icon">📋</div>
             <div class="order-option-text">
               <strong data-lang="fr">Formulaire en ligne</strong>
               <strong data-lang="en">Online form</strong>
-              <span data-lang="fr">Remplissez le formulaire ci-contre</span>
-              <span data-lang="en">Fill in the form opposite</span>
+              <span data-lang="fr">Remplissez le formulaire ci-contre →</span>
+              <span data-lang="en">Fill in the form opposite →</span>
             </div>
-          </div>
-          <div class="order-option">
+          </a>
+          <a href="tel:0470740855" class="order-option" style="text-decoration:none;">
             <div class="order-option-icon">📞</div>
             <div class="order-option-text">
               <strong data-lang="fr">Par téléphone</strong>
               <strong data-lang="en">By phone</strong>
-              <span><a href="tel:0470740855">0470 74 08 55</a></span>
+              <span>0470 74 08 55</span>
             </div>
-          </div>
-          <div class="order-option">
+          </a>
+          <a href="https://wa.me/32470740855" target="_blank" class="order-option" style="text-decoration:none;">
             <div class="order-option-icon">💬</div>
             <div class="order-option-text">
               <strong>WhatsApp</strong>
-              <span data-lang="fr">Envoyez votre commande par message</span>
-              <span data-lang="en">Send your order by message</span>
+              <span data-lang="fr">Envoyez votre commande par message →</span>
+              <span data-lang="en">Send your order by message →</span>
             </div>
-          </div>
-          <div class="order-option">
-            <div class="order-option-icon">🛵</div>
+          </a>
+          <a href="sms:0470740855" class="order-option" style="text-decoration:none;">
+            <div class="order-option-icon">📱</div>
             <div class="order-option-text">
-              <strong data-lang="fr">Livraison à domicile</strong>
-              <strong data-lang="en">Home delivery</strong>
-              <span data-lang="fr">Lun–Sam · rayon 7km · 17h–22h30</span>
-              <span data-lang="en">Mon–Sat · 7km radius · 5pm–10:30pm</span>
+              <strong>SMS</strong>
+              <span data-lang="fr">Envoyez votre commande par SMS →</span>
+              <span data-lang="en">Send your order by SMS →</span>
             </div>
-          </div>
+          </a>
         </div>
       </div>
       <div class="order-form reveal">
@@ -1136,25 +1136,26 @@
     const phone = document.getElementById('order-phone').value;
     const type = document.getElementById('order-type').value;
     const addr = document.getElementById('order-address').value;
+    const note = document.getElementById('order-note').value;
     const isEn = document.body.classList.contains('en');
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
 
     const fee = parseFloat(document.getElementById('delivery-zone').value) || 0;
-    const zoneLabel = fee > 0 ? document.getElementById('delivery-zone').options[document.getElementById('delivery-zone').selectedIndex].text : '';
     const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    const total = subtotal + fee;
     const itemLines = cart.map(item => `• ${item.name} — ${item.price.toFixed(2)}€`).join('\n');
-    const feeLineFr = fee > 0 ? `\n🛵 Frais de livraison (${zoneLabel}) : ${fee.toFixed(2)}€` : '';
-    const feeLineEn = fee > 0 ? `\n🛵 Delivery fee (${zoneLabel}): ${fee.toFixed(2)}€` : '';
-    const msg = isEn
-      ? `Hello! I would like to order:\n\n${itemLines}${feeLineEn}\n\n✅ TOTAL: ${total.toFixed(2)}€\n\nName: ${name}\nPhone: ${phone}\nType: ${type}${addr ? '\nAddress: ' + addr : ''}`
-      : `Bonjour ! Je souhaite commander :\n\n${itemLines}${feeLineFr}\n\n✅ TOTAL : ${total.toFixed(2)}€\n\nNom : ${name}\nTél : ${phone}\nType : ${type}${addr ? '\nAdresse : ' + addr : ''}`;
+    const feeLine = fee > 0 ? `\n🛵 Frais livraison : ${fee.toFixed(2)}€` : '';
 
-    const note = document.getElementById('order-note').value;
-    if (note) msg += isEn ? `\nNote: ${note}` : `\nNote : ${note}`;
+    const msg = `🍕 PizzaExpress Verviers\n\n${itemLines}${feeLine}\n\n✅ TOTAL : ${total.toFixed(2)}€\n\nNom : ${name}\nTél : ${phone}\nType : ${type === 'livraison' ? 'Livraison' : 'À emporter'}${addr ? '\nAdresse : ' + addr : ''}${note ? '\nNote : ' + note : ''}`;
 
+    // Envoyer via WhatsApp
     const waUrl = `https://wa.me/32470740855?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
-    showToast(isEn ? '🎉 Redirecting to WhatsApp!' : '🎉 Redirection vers WhatsApp !');
+
+    // Envoyer aussi via SMS sur le GSM
+    const smsUrl = `sms:+32470740855?body=${encodeURIComponent(msg)}`;
+    setTimeout(() => { window.location.href = smsUrl; }, 800);
+
+    showToast(isEn ? '🎉 Order sent via WhatsApp & SMS!' : '🎉 Commande envoyée via WhatsApp & SMS !');
   }
 
   // ===== TOAST =====
