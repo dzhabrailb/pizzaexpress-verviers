@@ -721,9 +721,11 @@
             </select>
           </div>
           <div class="form-group" id="address-group">
-            <label data-lang="fr">Adresse de livraison</label>
-            <label data-lang="en">Delivery address</label>
-            <input type="text" id="order-address" placeholder="ex: Rue de la Paix 12, Verviers" />
+            <label>
+              <span data-lang="fr">Adresse de livraison</span>
+              <span data-lang="en">Delivery address</span>
+            </label>
+            <input type="text" id="order-address" placeholder="ex: Rue de la Paix 12, Verviers" oninput="detectZone(this.value)" />
           </div>
           <div id="zone-group" style="display:none;margin-bottom:16px;">
             <label style="display:block;font-size:0.82rem;font-weight:700;color:var(--brown-mid);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">🗺️ Zone de livraison / Delivery zone</label>
@@ -996,6 +998,35 @@
     });
     el.style.border = '2px solid var(--terracotta)';
     el.style.background = '#fff5f0';
+    updateCart();
+  }
+
+  function detectZone(address) {
+    const addr = address.toLowerCase();
+    const zone1 = ['verviers','dison','petite-rechain','rechain'];
+    const zone2 = ['pepinster','herve','battice'];
+    let fee = 0;
+    let zoneEl = null;
+
+    if (zone1.some(c => addr.includes(c))) {
+      fee = 3.99; zoneEl = document.getElementById('zone-a');
+    } else if (zone2.some(c => addr.includes(c))) {
+      fee = 4.99; zoneEl = document.getElementById('zone-b');
+    }
+
+    // Reset both
+    ['zone-a','zone-b'].forEach(id => {
+      document.getElementById(id).style.border = '2px solid #d4b896';
+      document.getElementById(id).style.background = '#fff';
+    });
+
+    if (zoneEl) {
+      document.getElementById('delivery-zone').value = fee;
+      zoneEl.style.border = '2px solid var(--terracotta)';
+      zoneEl.style.background = '#fff5f0';
+    } else {
+      document.getElementById('delivery-zone').value = '0';
+    }
     updateCart();
   }
 
