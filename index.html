@@ -520,283 +520,120 @@
     <h2 class="section-title" data-lang="en">Our Menu</h2>
     <div class="section-divider"></div>
     <div class="menu-tabs">
-      <button class="tab-btn active" onclick="showTab('classiques')">
-        <span data-lang="fr">🍕 Classiques</span>
-        <span data-lang="en">🍕 Classics</span>
-      </button>
-      <button class="tab-btn" onclick="showTab('speciales')">
-        <span data-lang="fr">⭐ Spéciales</span>
-        <span data-lang="en">⭐ Specials</span>
-      </button>
-      <button class="tab-btn" onclick="showTab('extras')">
-        <span data-lang="fr">🥗 Extras</span>
-        <span data-lang="en">🥗 Extras</span>
-      </button>
-      <button class="tab-btn" onclick="showTab('boissons')">
-        <span data-lang="fr">🥤 Boissons</span>
-        <span data-lang="en">🥤 Drinks</span>
-      </button>
+      <button class="tab-btn active" onclick="showTab('charcuteries')">🥩 Charcuteries</button>
+      <button class="tab-btn" onclick="showTab('oceanes')">🦐 Océanes</button>
+      <button class="tab-btn" onclick="showTab('creme')">🧀 Crème Fraîche</button>
+      <button class="tab-btn" onclick="showTab('fromageres')">🧀 Fromagères</button>
+      <button class="tab-btn" onclick="showTab('legumes')">🥦 Légumes</button>
+      <button class="tab-btn" onclick="showTab('pates')">🍝 Pâtes</button>
+      <button class="tab-btn" onclick="showTab('desserts')">🍰 Desserts</button>
+      <button class="tab-btn" onclick="showTab('boissons')">🥤 Boissons</button>
     </div>
 
-    <!-- Classiques -->
-    <div class="menu-panel active" id="tab-classiques">
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍕</div>
-        <div class="menu-card-body">
-          <h3>Margherita</h3>
-          <p data-lang="fr">Sauce tomate maison, mozzarella fior di latte, basilic frais</p>
-          <p data-lang="en">Homemade tomato sauce, fior di latte mozzarella, fresh basil</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€9,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Margherita – €9,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍕</div>
-        <div class="menu-card-body">
-          <h3>Napolitaine</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, anchois, câpres, origan</p>
-          <p data-lang="en">Tomato sauce, mozzarella, anchovies, capers, oregano</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€11,00</span>
-            <button class="menu-add-btn" onclick="orderItem('Napolitaine – €11,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍕</div>
-        <div class="menu-card-body">
-          <h3>Quatre Saisons</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, jambon, champignons, artichaut, olives</p>
-          <p data-lang="en">Tomato sauce, mozzarella, ham, mushrooms, artichoke, olives</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€12,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Quatre Saisons – €12,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍕</div>
-        <div class="menu-card-body">
-          <h3>Regina</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, jambon cuit, champignons frais</p>
-          <p data-lang="en">Tomato sauce, mozzarella, cooked ham, fresh mushrooms</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€11,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Regina – €11,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍕</div>
-        <div class="menu-card-body">
-          <h3>Reine</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, jambon, poivrons, olives noires</p>
-          <p data-lang="en">Tomato sauce, mozzarella, ham, peppers, black olives</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€11,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Reine – €11,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍕</div>
-        <div class="menu-card-body">
-          <h3>Calzone</h3>
-          <p data-lang="fr">Pizza pliée : ricotta, jambon, mozzarella, sauce tomate</p>
-          <p data-lang="en">Folded pizza: ricotta, ham, mozzarella, tomato sauce</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€13,00</span>
-            <button class="menu-add-btn" onclick="orderItem('Calzone – €13,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
+    <!-- Charcuteries -->
+    <div class="menu-panel active" id="tab-charcuteries">
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Jambon (Dinde)</h3><p>Tomate, mozzarella, jambon, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,50€ / L 17,50€</span><button class="menu-add-btn" onclick="orderItem('Jambon Dinde')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Hawaii</h3><p>Tomate, mozzarella, jambon, ananas, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Hawaii')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>4 Saisons</h3><p>Tomate, mozzarella, champignons, jambon, olives, artichauts, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,50€ / L 18,50€</span><button class="menu-add-btn" onclick="orderItem('4 Saisons')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Regina</h3><p>Tomate, mozzarella, jambon, champignons frais, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Regina')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Bolognaise</h3><p>Tomate, mozzarella, boeuf épicé, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Bolognaise pizza')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Dolce Vita</h3><p>Tomate, mozzarella, merguez, poivrons, boeuf épicé, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,00€ / L 19,00€</span><button class="menu-add-btn" onclick="orderItem('Dolce Vita')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Fermière</h3><p>Tomate, mozzarella, lardon, oignons, oeuf, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,50€ / L 18,50€</span><button class="menu-add-btn" onclick="orderItem('Fermière')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Romano</h3><p>Tomate, mozzarella, poulet, pommes de terre, fromage de chèvre, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Romano')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Mexicain</h3><p>Tomate, mozzarella, poulet, viande hachée, poivrons, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,50€ / L 18,50€</span><button class="menu-add-btn" onclick="orderItem('Mexicain')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Salami</h3><p>Tomate, mozzarella, salami, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 17,00€</span><button class="menu-add-btn" onclick="orderItem('Salami')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Gourmande</h3><p>Tomate, mozzarella, jambon, merguez, poulet, origan</p><div class="menu-card-footer"><span class="menu-price">M 14,00€ / L 20,00€</span><button class="menu-add-btn" onclick="orderItem('Gourmande')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Pavarotti</h3><p>Tomate, mozzarella, jambon, salami, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,50€ / L 17,50€</span><button class="menu-add-btn" onclick="orderItem('Pavarotti')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Barbecue</h3><p>Tomate, mozzarella, poulet, oignons, sauce barbecue</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Barbecue')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Bella Vita</h3><p>Tomate, mozzarella, jambon, pomme de terre, fromage raclette, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Bella Vita')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Poulet</h3><p>Tomate, mozzarella, poulet, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 17,00€</span><button class="menu-add-btn" onclick="orderItem('Poulet')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">⭐</div><div class="menu-card-body"><h3>Du Chef</h3><p>Suggestion du client — max. 4 ingrédients au choix</p><div class="menu-card-footer"><span class="menu-price">M 15,00€ / L 21,00€</span><button class="menu-add-btn" onclick="orderItem('Du Chef (préciser ingrédients)')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Spéciales -->
-    <div class="menu-panel" id="tab-speciales">
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🌶️</div>
-        <div class="menu-card-body">
-          <h3>Diavola</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, salami piquant, piments rouges, huile d'olive</p>
-          <p data-lang="en">Tomato sauce, mozzarella, spicy salami, red chilli, olive oil</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€12,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Diavola – €12,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🥩</div>
-        <div class="menu-card-body">
-          <h3>Carnivora</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, viande hachée, merguez, lardons, poivrons</p>
-          <p data-lang="en">Tomato sauce, mozzarella, minced beef, merguez, bacon, peppers</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€14,00</span>
-            <button class="menu-add-btn" onclick="orderItem('Carnivora – €14,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🌿</div>
-        <div class="menu-card-body">
-          <h3>Végétarienne</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, légumes grillés, roquette, copeaux de parmesan</p>
-          <p data-lang="en">Tomato sauce, mozzarella, grilled veggies, rocket, parmesan shavings</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€12,00</span>
-            <button class="menu-add-btn" onclick="orderItem('Végétarienne – €12,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍗</div>
-        <div class="menu-card-body">
-          <h3>Pollo BBQ</h3>
-          <p data-lang="fr">Sauce BBQ, mozzarella, poulet grillé, oignons rouges, maïs</p>
-          <p data-lang="en">BBQ sauce, mozzarella, grilled chicken, red onions, sweetcorn</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€13,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Pollo BBQ – €13,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🦐</div>
-        <div class="menu-card-body">
-          <h3>Frutti di Mare</h3>
-          <p data-lang="fr">Sauce tomate, mozzarella, crevettes, calamars, moules, ail, persil</p>
-          <p data-lang="en">Tomato sauce, mozzarella, prawns, squid, mussels, garlic, parsley</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€15,00</span>
-            <button class="menu-add-btn" onclick="orderItem('Frutti di Mare – €15,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">⭐</div>
-        <div class="menu-card-body">
-          <h3>PizzaExpress Signature</h3>
-          <p data-lang="fr">Notre spécialité ! Crème fraîche, mozzarella, jambon fumé, champignons, œuf, truffe</p>
-          <p data-lang="en">Our specialty! Crème fraîche, mozzarella, smoked ham, mushrooms, egg, truffle</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€16,00</span>
-            <button class="menu-add-btn" onclick="orderItem('PizzaExpress Signature – €16,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
+    <!-- Océanes -->
+    <div class="menu-panel" id="tab-oceanes">
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🦐</div><div class="menu-card-body"><h3>Scampi</h3><p>Tomate, mozzarella, scampis, origan</p><div class="menu-card-footer"><span class="menu-price">M 14,00€ / L 20,00€</span><button class="menu-add-btn" onclick="orderItem('Scampi pizza')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🐟</div><div class="menu-card-body"><h3>Thono</h3><p>Tomate, mozzarella, thon, olives, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 16,00€</span><button class="menu-add-btn" onclick="orderItem('Thono')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🐟</div><div class="menu-card-body"><h3>Pacifico</h3><p>Tomate, mozzarella, saumon fumé, crème fraîche, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,00€ / L 19,00€</span><button class="menu-add-btn" onclick="orderItem('Pacifico')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Sicilienne</h3><p>Tomate, mozzarella, anchois, câpres, olives, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,50€ / L 17,50€</span><button class="menu-add-btn" onclick="orderItem('Sicilienne')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🦞</div><div class="menu-card-body"><h3>Fruits de Mer</h3><p>Tomate, mozzarella, cocktail fruits de mer, ail, origan</p><div class="menu-card-footer"><span class="menu-price">M 14,00€ / L 20,00€</span><button class="menu-add-btn" onclick="orderItem('Fruits de Mer pizza')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Extras -->
-    <div class="menu-panel" id="tab-extras">
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🥗</div>
-        <div class="menu-card-body">
-          <h3 data-lang="fr">Salade César</h3>
-          <h3 data-lang="en">Caesar Salad</h3>
-          <p data-lang="fr">Laitue romaine, parmesan, croûtons, sauce césar maison</p>
-          <p data-lang="en">Romaine lettuce, parmesan, croutons, homemade caesar dressing</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€7,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Salade César – €7,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🫓</div>
-        <div class="menu-card-body">
-          <h3>Bruschetta</h3>
-          <p data-lang="fr">Pain grillé, tomates fraîches, ail, basilic, huile d'olive (4 pièces)</p>
-          <p data-lang="en">Toasted bread, fresh tomatoes, garlic, basil, olive oil (4 pieces)</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€6,00</span>
-            <button class="menu-add-btn" onclick="orderItem('Bruschetta – €6,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍰</div>
-        <div class="menu-card-body">
-          <h3>Tiramisu</h3>
-          <p data-lang="fr">Dessert maison au mascarpone, café et cacao (portion individuelle)</p>
-          <p data-lang="en">Homemade mascarpone, coffee & cocoa dessert (individual portion)</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€5,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Tiramisu – €5,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍫</div>
-        <div class="menu-card-body">
-          <h3>Pizza Nutella</h3>
-          <p data-lang="fr">Pizza sucrée : pâte maison, Nutella, fraises fraîches, sucre glace</p>
-          <p data-lang="en">Sweet pizza: homemade dough, Nutella, fresh strawberries, icing sugar</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€8,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Pizza Nutella – €8,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
+    <!-- Crème Fraîche -->
+    <div class="menu-panel" id="tab-creme">
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Al Polo</h3><p>Crème fraîche, mozzarella, poulet, champignons frais, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,50€ / L 19,50€</span><button class="menu-add-btn" onclick="orderItem('Al Polo pizza')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🐟</div><div class="menu-card-body"><h3>Venezia</h3><p>Crème fraîche, mozzarella, saumon fumé, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,50€ / L 19,50€</span><button class="menu-add-btn" onclick="orderItem('Venezia')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Milano</h3><p>Crème fraîche, mozzarella, boeuf épicé, champignons frais, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,50€ / L 19,50€</span><button class="menu-add-btn" onclick="orderItem('Milano')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Calabria</h3><p>Crème fraîche, mozzarella, jambon, fromage de chèvre, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Calabria')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍯</div><div class="menu-card-body"><h3>Chèvre-Miel 🆕</h3><p>Crème fraîche, mozzarella, fromage de chèvre, origan, miel</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Chèvre-Miel')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>Tartiflette</h3><p>Crème fraîche, mozzarella, jambon, fromage raclette, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,50€ / L 19,50€</span><button class="menu-add-btn" onclick="orderItem('Tartiflette')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥓</div><div class="menu-card-body"><h3>Campagnarde</h3><p>Crème fraîche, mozzarella, lardons, pomme de terre, oignon, oeuf, origan</p><div class="menu-card-footer"><span class="menu-price">M 14,00€ / L 20,00€</span><button class="menu-add-btn" onclick="orderItem('Campagnarde')">+ Commander</button></div></div></div>
+    </div>
+
+    <!-- Fromagères -->
+    <div class="menu-panel" id="tab-fromageres">
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>Marguerita</h3><p>Tomate, mozzarella, origan</p><div class="menu-card-footer"><span class="menu-price">M 9,50€ / L 15,50€</span><button class="menu-add-btn" onclick="orderItem('Marguerita')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>4 Fromages</h3><p>Tomate, mozzarella, roquefort, fromage de chèvre, parmesan, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,50€ / L 17,50€</span><button class="menu-add-btn" onclick="orderItem('4 Fromages pizza')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>5 Fromages</h3><p>Tomate, mozzarella, roquefort, fromage de chèvre, parmesan, raclette, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('5 Fromages pizza')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>Raclette</h3><p>Tomate, mozzarella, raclette, origan</p><div class="menu-card-footer"><span class="menu-price">M 10,00€ / L 16,00€</span><button class="menu-add-btn" onclick="orderItem('Raclette pizza')">+ Commander</button></div></div></div>
+    </div>
+
+    <!-- Légumes -->
+    <div class="menu-panel" id="tab-legumes">
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥦</div><div class="menu-card-body"><h3>Végétarienne</h3><p>Tomate, mozzarella, champignons frais, poivrons, artichauts, olives, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 17,00€</span><button class="menu-add-btn" onclick="orderItem('Végétarienne pizza')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍆</div><div class="menu-card-body"><h3>Parmigiana</h3><p>Tomate, mozzarella, aubergines, parmesan, origan</p><div class="menu-card-footer"><span class="menu-price">M 10,50€ / L 16,50€</span><button class="menu-add-btn" onclick="orderItem('Parmigiana pizza')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍄</div><div class="menu-card-body"><h3>Funghi</h3><p>Tomate, mozzarella, champignons frais, origan</p><div class="menu-card-footer"><span class="menu-price">M 10,00€ / L 16,00€</span><button class="menu-add-btn" onclick="orderItem('Funghi')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥦</div><div class="menu-card-body"><h3>Légumes Mix</h3><p>Tomate, mozzarella, aubergines, courgette, poivrons rouge, poivrons jeunes</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 17,00€</span><button class="menu-add-btn" onclick="orderItem('Légumes Mix')">+ Commander</button></div></div></div>
+    </div>
+
+    <!-- Pâtes -->
+    <div class="menu-panel" id="tab-pates">
+      <div class="menu-nota" style="grid-column:1/-1;background:var(--terracotta);color:#fff;padding:12px 20px;border-radius:10px;text-align:center;font-weight:700;margin-bottom:8px;">🍝 Toutes nos pâtes à <strong>12,00€</strong></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍝</div><div class="menu-card-body"><h3>Bolognaise</h3><p>Sauce tomate, viande hachée, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Bolognaise')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍝</div><div class="menu-card-body"><h3>Jambon Fromage</h3><p>Sauce tomate, fromage, jambon</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Jambon Fromage')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍝</div><div class="menu-card-body"><h3>Di Napoli</h3><p>Sauce tomate pimentée, viande hachée, ail, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Di Napoli')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🐟</div><div class="menu-card-body"><h3>Turino</h3><p>Sauce tomate, thon, olives noires, ail, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Turino')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍝</div><div class="menu-card-body"><h3>Boscaiola</h3><p>Crème, jambon, champignons frais, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Boscaiola')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🦐</div><div class="menu-card-body"><h3>Scampis</h3><p>Sauce tomate, crème, scampis</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Scampis')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🐟</div><div class="menu-card-body"><h3>Al Salmon</h3><p>Crème, saumon fumé, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Al Salmon')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥓</div><div class="menu-card-body"><h3>Carbonara</h3><p>Crème, lardons, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Carbonara')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍝</div><div class="menu-card-body"><h3>Dello Chef</h3><p>Sauce tomate, jambon, viande hachée, champignons, crème, ail, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Dello Chef')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>4 Fromages</h3><p>Crème, mozzarella, roquefort, fromage de chèvre, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes 4 Fromages')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍆</div><div class="menu-card-body"><h3>Parmigiana</h3><p>Crème, jambon, aubergines</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Parmigiana')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍗</div><div class="menu-card-body"><h3>Al Polo</h3><p>Crème, champignons frais, poulet, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Al Polo')">+ Commander</button></div></div></div>
+    </div>
+
+    <!-- Desserts -->
+    <div class="menu-panel" id="tab-desserts">
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍫</div><div class="menu-card-body"><h3>Moelleux au chocolat</h3><p>Gâteau fondant au chocolat</p><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Moelleux au chocolat')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥧</div><div class="menu-card-body"><h3>Tarte aux pommes</h3><p>Tarte maison aux pommes</p><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Tarte aux pommes')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥧</div><div class="menu-card-body"><h3>Tarte sans gluten</h3><p>Option sans gluten</p><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Tarte sans gluten')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">☕</div><div class="menu-card-body"><h3>Tiramisu</h3><p>Mascarpone, café, cacao</p><div class="menu-card-footer"><span class="menu-price">4,00€</span><button class="menu-add-btn" onclick="orderItem('Tiramisu')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧁</div><div class="menu-card-body"><h3>Muffin</h3><p>Muffin maison</p><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Muffin')">+ Commander</button></div></div></div>
     </div>
 
     <!-- Boissons -->
     <div class="menu-panel" id="tab-boissons">
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🥤</div>
-        <div class="menu-card-body">
-          <h3 data-lang="fr">Coca-Cola / Fanta / Sprite</h3>
-          <h3 data-lang="en">Coca-Cola / Fanta / Sprite</h3>
-          <p data-lang="fr">Canette 33cl bien fraîche</p>
-          <p data-lang="en">330ml chilled can</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€2,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Boisson – €2,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥤</div><div class="menu-card-body"><h3>Coca Cola</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Coca Cola')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥤</div><div class="menu-card-body"><h3>Coca Cola Zero</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Coca Cola Zero')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🟢</div><div class="menu-card-body"><h3>Sprite</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Sprite')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🟡</div><div class="menu-card-body"><h3>Fanta</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Fanta')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧃</div><div class="menu-card-body"><h3>Tropico</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Tropico')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍵</div><div class="menu-card-body"><h3>Lipton Ice Tea</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Lipton Ice Tea')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🔴</div><div class="menu-card-body"><h3>Red Bull</h3><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Red Bull')">+ Commander</button></div></div></div>
+      <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥤</div><div class="menu-card-body"><h3>Maxi Cola</h3><p>Grande bouteille</p><div class="menu-card-footer"><span class="menu-price">4,00€</span><button class="menu-add-btn" onclick="orderItem('Maxi Cola')">+ Commander</button></div></div></div>
+    </div>
+
+    <!-- Suppléments -->
+    <div style="margin-top:32px;background:#fff;border-radius:14px;padding:20px 24px;box-shadow:0 2px 12px var(--shadow);">
+      <p style="font-weight:700;color:var(--brown-dark);margin-bottom:12px;font-family:'Playfair Display',serif;font-size:1.1rem;">Suppléments pizza</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;">
+        <span style="background:#f5ece0;padding:6px 14px;border-radius:20px;font-size:0.85rem;">🥦 Légumes : M 1,00€ / L 1,50€</span>
+        <span style="background:#f5ece0;padding:6px 14px;border-radius:20px;font-size:0.85rem;">🧀 Fromage : M 1,00€ / L 2,00€</span>
+        <span style="background:#f5ece0;padding:6px 14px;border-radius:20px;font-size:0.85rem;">🥩 Charcuteries : M 1,50€ / L 2,00€</span>
+        <span style="background:#f5ece0;padding:6px 14px;border-radius:20px;font-size:0.85rem;">🦐 Océanes : M 2,00€ / L 2,50€</span>
       </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">💧</div>
-        <div class="menu-card-body">
-          <h3 data-lang="fr">Eau minérale</h3>
-          <h3 data-lang="en">Mineral water</h3>
-          <p data-lang="fr">Eau plate ou pétillante 50cl</p>
-          <p data-lang="en">Still or sparkling 50cl</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€2,00</span>
-            <button class="menu-add-btn" onclick="orderItem('Eau minérale – €2,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍺</div>
-        <div class="menu-card-body">
-          <h3 data-lang="fr">Bière pression / bouteille</h3>
-          <h3 data-lang="en">Draft / bottled beer</h3>
-          <p data-lang="fr">Sélection de bières belges et italiennes</p>
-          <p data-lang="en">Selection of Belgian and Italian beers</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€3,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Bière – €3,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
-      <div class="menu-card reveal">
-        <div class="menu-card-img-placeholder">🍷</div>
-        <div class="menu-card-body">
-          <h3 data-lang="fr">Vin rouge / blanc / rosé</h3>
-          <h3 data-lang="en">Red / white / rosé wine</h3>
-          <p data-lang="fr">Verre 15cl — vins italiens sélectionnés</p>
-          <p data-lang="en">15cl glass — selected Italian wines</p>
-          <div class="menu-card-footer">
-            <span class="menu-price">€4,50</span>
-            <button class="menu-add-btn" onclick="orderItem('Vin – €4,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
-          </div>
-        </div>
-      </div>
+      <p style="margin-top:14px;font-size:0.85rem;color:var(--terracotta);font-style:italic;font-weight:700;">NOS PIZZAS sont artisanales et préparées journellement avec des produits de qualité</p>
     </div>
   </div>
 </section>
