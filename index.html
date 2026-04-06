@@ -711,13 +711,13 @@
             </div>
           </div>
           <div class="form-group">
-            <label data-lang="fr">Type de commande</label>
-            <label data-lang="en">Order type</label>
+            <label>
+              <span data-lang="fr">Type de commande</span>
+              <span data-lang="en">Order type</span>
+            </label>
             <select id="order-type" onchange="toggleAddress()">
-              <option value="livraison" data-lang="fr">🛵 Livraison à domicile</option>
-              <option value="delivery" data-lang="en">🛵 Home delivery</option>
-              <option value="emporter" data-lang="fr">🏠 À emporter</option>
-              <option value="takeaway" data-lang="en">🏠 Takeaway</option>
+              <option value="livraison">🛵 Livraison à domicile / Home delivery</option>
+              <option value="emporter">🏠 À emporter / Takeaway</option>
             </select>
           </div>
           <div class="form-group" id="address-group">
@@ -973,16 +973,20 @@
   let cart = [];
 
   function toggleAddress() {
-    const type = document.getElementById('order-type').value;
-    const isDelivery = (type === 'livraison' || type === 'delivery');
+    const isDelivery = document.getElementById('order-type').value === 'livraison';
     document.getElementById('address-group').style.display = isDelivery ? 'block' : 'none';
     document.getElementById('zone-group').style.display = isDelivery ? 'block' : 'none';
     if (!isDelivery) {
       document.getElementById('delivery-zone').value = '0';
-      ['zone-a','zone-b'].forEach(id => document.getElementById(id).style.border = '2px solid #d4b896');
+      ['zone-a','zone-b'].forEach(id => {
+        document.getElementById(id).style.border = '2px solid #d4b896';
+        document.getElementById(id).style.background = '#fff';
+      });
     }
     updateCart();
   }
+  // Afficher la zone dès le chargement (livraison est sélectionné par défaut)
+  window.addEventListener('DOMContentLoaded', () => toggleAddress());
 
   function selectZone(fee, el) {
     document.getElementById('delivery-zone').value = fee;
