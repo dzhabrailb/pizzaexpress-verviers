@@ -419,6 +419,30 @@
       padding-top: 20px; font-size: 0.8rem; color: #6b5a4a;
     }
 
+    /* ===== FLOATING CART ===== */
+    #floating-cart {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+      z-index: 1500; background: var(--terracotta); color: #fff;
+      padding: 14px 28px; border-radius: 50px;
+      font-weight: 700; font-size: 1rem; font-family: 'Lato', sans-serif;
+      box-shadow: 0 6px 28px rgba(192,82,42,0.5);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 10px;
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s;
+      opacity: 0; pointer-events: none; white-space: nowrap;
+    }
+    #floating-cart.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1; pointer-events: auto;
+    }
+    #floating-cart:hover { background: #a03d1a; }
+    #floating-cart .cart-count {
+      background: #fff; color: var(--terracotta);
+      border-radius: 50%; width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; font-weight: 900;
+    }
+
     /* ===== SUCCESS TOAST ===== */
     .toast {
       position: fixed; bottom: 24px; right: 24px; z-index: 2000;
@@ -1024,6 +1048,10 @@
 
 <!-- Toast notification -->
 <div class="toast" id="toast"></div>
+<button id="floating-cart" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">
+  🛒 <span id="floating-cart-label">Ma commande</span>
+  <span class="cart-count" id="floating-cart-count">0</span>
+</button>
 
 <script>
   // ===== LANGUAGE =====
@@ -1121,8 +1149,21 @@
   function orderItem(name, price) {
     cart.push({ name, price: parseFloat(price) || 0 });
     updateCart();
-    document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
-    showToast(document.body.classList.contains('en') ? '✅ Added to your order!' : '✅ Ajouté à votre commande !');
+    showToast(document.body.classList.contains('en') ? '✅ Added! Tap the cart when ready.' : '✅ Ajouté ! Appuyez sur le panier quand vous avez fini.');
+    updateFloatingCart();
+  }
+
+  function updateFloatingCart() {
+    const btn = document.getElementById('floating-cart');
+    const count = document.getElementById('floating-cart-count');
+    const label = document.getElementById('floating-cart-label');
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    count.textContent = cart.length;
+    const isEn = document.body.classList.contains('en');
+    label.textContent = cart.length > 0
+      ? (isEn ? `My order — ${total.toFixed(2).replace('.',',')}€` : `Ma commande — ${total.toFixed(2).replace('.',',')}€`)
+      : (isEn ? 'My order' : 'Ma commande');
+    btn.classList.toggle('visible', cart.length > 0);
   }
 
   function removeItem(index) {
