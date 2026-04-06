@@ -726,15 +726,11 @@
             <input type="text" id="order-address" placeholder="ex: Rue de la Paix 12, Verviers" />
           </div>
           <div class="form-group" id="zone-group" style="display:none;">
-            <label data-lang="fr">🗺️ Zone de livraison</label>
-            <label data-lang="en">🗺️ Delivery zone</label>
+            <label>🗺️ <span data-lang="fr">Zone de livraison</span><span data-lang="en">Delivery zone</span></label>
             <select id="delivery-zone" onchange="updateCart()">
-              <option value="" data-lang="fr">-- Choisissez votre ville --</option>
-              <option value="3.99" data-lang="fr">📍 Verviers / Dison / Petite-Rechain — 3,99€</option>
-              <option value="4.99" data-lang="fr">📍 Pepinster / Herve / Battice — 4,99€</option>
-              <option value="" data-lang="en">-- Choose your city --</option>
-              <option value="3.99" data-lang="en">📍 Verviers / Dison / Petite-Rechain — €3.99</option>
-              <option value="4.99" data-lang="en">📍 Pepinster / Herve / Battice — €4.99</option>
+              <option value="">-- Choisissez votre ville / Choose your city --</option>
+              <option value="3.99">📍 Verviers / Dison / Petite-Rechain — 3,99€</option>
+              <option value="4.99">📍 Pepinster / Herve / Battice — 4,99€</option>
             </select>
           </div>
           <!-- Panier dynamique -->
