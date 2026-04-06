@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PizzaExpress Verviers – Pizza Artisanale</title>
+  <meta name="description" content="PizzaExpress Verviers – Pizzas artisanales cuites au four à bois. Commande en ligne, livraison et sur place. Rue de Dison 176, Verviers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Lato', sans-serif; background: #fdf6ee; color: #2c1a0e; overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== COLORS ===== */
+    :root {
+      --cream:     #fdf6ee;
+      --brown-dark:#2c1a0e;
+      --brown-mid: #6b3d1e;
+      --brown-light:#a0622a;
+      --terracotta:#c0522a;
+      --green:     #3d5a2e;
+      --gold:      #d4a843;
+      --white:     #ffffff;
+      --shadow:    rgba(44,26,14,0.15);
+    }
+
+    /* ===== LANGUAGE TOGGLE ===== */
+    #lang-toggle {
+      position: fixed; top: 14px; right: 16px; z-index: 1000;
+      display: flex; gap: 4px;
+    }
+    .lang-btn {
+      background: rgba(255,255,255,0.92); border: 2px solid var(--brown-light);
+      color: var(--brown-dark); padding: 4px 10px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all .2s;
+      font-family: 'Lato', sans-serif;
+    }
+    .lang-btn.active, .lang-btn:hover { background: var(--terracotta); color: #fff; border-color: var(--terracotta); }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 900;
+      background: rgba(44,26,14,0.97); backdrop-filter: blur(8px);
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; color: var(--gold); letter-spacing: 1px;
+    }
+    .nav-logo img { height: 44px; width: 44px; object-fit: contain; filter: drop-shadow(0 0 4px rgba(212,168,67,0.4)); }
+    .nav-logo span { color: var(--terracotta); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: #e8d5b5; font-size: 0.88rem; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      transition: color .2s; padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-links a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+    .nav-order-btn {
+      background: var(--terracotta); color: #fff !important;
+      padding: 7px 18px; border-radius: 24px;
+      border-bottom: none !important;
+      transition: background .2s !important;
+    }
+    .nav-order-btn:hover { background: #a03d1a !important; }
+
+    /* Mobile nav toggle */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 26px; height: 2px; background: var(--gold); border-radius: 2px; transition: .3s; }
+    .mobile-menu {
+      display: none; position: fixed; top: 64px; left: 0; width: 100%;
+      background: rgba(44,26,14,0.98); padding: 20px 24px 28px;
+      z-index: 899; flex-direction: column; gap: 16px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: #e8d5b5; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(to bottom, rgba(30,15,5,0.72) 0%, rgba(30,15,5,0.45) 50%, rgba(30,15,5,0.75) 100%),
+        url('https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1600&q=80') center/cover no-repeat;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 80px 20px 40px;
+      position: relative; overflow: hidden;
+    }
+    .hero-content { max-width: 780px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(212,168,67,0.2); border: 1px solid var(--gold);
+      color: var(--gold); font-size: 0.8rem; letter-spacing: 3px;
+      text-transform: uppercase; padding: 6px 18px; border-radius: 30px;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      color: #fff; line-height: 1.15; margin-bottom: 18px;
+    }
+    .hero-title em { color: var(--gold); font-style: italic; }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: #e8d5b5; margin-bottom: 12px; font-weight: 300;
+    }
+    .hero-info {
+      color: var(--gold); font-size: 0.9rem; margin-bottom: 36px;
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+    }
+    .hero-info span { display: flex; align-items: center; gap: 6px; }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--terracotta); color: #fff;
+      padding: 14px 32px; border-radius: 30px;
+      font-weight: 700; font-size: 1rem; letter-spacing: 0.5px;
+      transition: all .25s; box-shadow: 0 4px 20px rgba(192,82,42,0.4);
+    }
+    .btn-primary:hover { background: #a03d1a; transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent; color: #fff;
+      border: 2px solid rgba(255,255,255,0.6);
+      padding: 14px 32px; border-radius: 30px;
+      font-weight: 700; font-size: 1rem;
+      transition: all .25s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.5); font-size: 0.75rem; letter-spacing: 2px;
+      text-transform: uppercase; animation: bounce 2s infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* ===== SECTION COMMON ===== */
+    section { padding: 80px 20px; }
+    .section-label {
+      text-align: center; color: var(--terracotta);
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      text-align: center; color: var(--brown-dark);
+      margin-bottom: 14px;
+    }
+    .section-divider {
+      width: 60px; height: 3px; background: var(--terracotta);
+      margin: 0 auto 48px; border-radius: 2px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ===== ABOUT / FEATURES ===== */
+    #about { background: var(--cream); }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 28px; margin-top: 12px;
+    }
+    .feature-card {
+      background: #fff; border-radius: 16px;
+      padding: 32px 24px; text-align: center;
+      box-shadow: 0 4px 24px var(--shadow);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 10px 36px var(--shadow); }
+    .feature-icon { font-size: 2.6rem; margin-bottom: 14px; }
+    .feature-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--brown-dark); margin-bottom: 8px;
+    }
+    .feature-card p { color: #6b5a4a; font-size: 0.92rem; line-height: 1.6; }
+
+    /* ===== MENU ===== */
+    #menu { background: #f5ece0; }
+    .menu-tabs {
+      display: flex; gap: 10px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 40px;
+    }
+    .tab-btn {
+      background: #fff; border: 2px solid #d4b896;
+      color: var(--brown-mid); padding: 9px 22px; border-radius: 24px;
+      font-weight: 700; font-size: 0.88rem; cursor: pointer;
+      transition: all .2s; font-family: 'Lato', sans-serif;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--terracotta); color: #fff; border-color: var(--terracotta);
+    }
+    .menu-panel { display: none; }
+    .menu-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .menu-card {
+      background: #fff; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 3px 16px var(--shadow);
+      display: flex; flex-direction: column;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px var(--shadow); }
+    .menu-card-img {
+      height: 170px; object-fit: cover; width: 100%;
+      background: linear-gradient(135deg, #d4b896, #a0622a);
+    }
+    .menu-card-img-placeholder {
+      height: 170px; display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, #f0e0cc, #d4b896);
+    }
+    .menu-card-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; }
+    .menu-card-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; color: var(--brown-dark); margin-bottom: 6px;
+    }
+    .menu-card-body p { color: #7a6355; font-size: 0.88rem; line-height: 1.55; flex: 1; }
+    .menu-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 14px; padding-top: 12px; border-top: 1px solid #f0e0cc;
+    }
+    .menu-price { font-weight: 700; font-size: 1.1rem; color: var(--terracotta); }
+    .menu-add-btn {
+      background: var(--green); color: #fff;
+      border: none; padding: 7px 16px; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      transition: background .2s; font-family: 'Lato', sans-serif;
+    }
+    .menu-add-btn:hover { background: #2a3d1f; }
+
+    /* ===== ORDER ===== */
+    #order { background: var(--cream); }
+    .order-wrapper {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start;
+    }
+    .order-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; color: var(--brown-dark); margin-bottom: 16px;
+    }
+    .order-info p { color: #6b5a4a; font-size: 0.95rem; line-height: 1.7; margin-bottom: 20px; }
+    .order-options { display: flex; flex-direction: column; gap: 12px; }
+    .order-option {
+      display: flex; align-items: center; gap: 14px;
+      background: #fff; padding: 16px 20px; border-radius: 12px;
+      box-shadow: 0 2px 12px var(--shadow); transition: transform .2s;
+    }
+    .order-option:hover { transform: translateX(4px); }
+    .order-option-icon { font-size: 1.8rem; }
+    .order-option-text strong { display: block; color: var(--brown-dark); font-size: 0.95rem; }
+    .order-option-text span { color: #9a7a6a; font-size: 0.82rem; }
+    .order-form {
+      background: #fff; padding: 36px; border-radius: 20px;
+      box-shadow: 0 6px 32px var(--shadow);
+    }
+    .order-form h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; color: var(--brown-dark); margin-bottom: 24px;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 0.82rem; font-weight: 700;
+      color: var(--brown-mid); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px; border: 2px solid #e0cdb8;
+      border-radius: 10px; font-size: 0.95rem; font-family: 'Lato', sans-serif;
+      background: var(--cream); color: var(--brown-dark);
+      transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--terracotta);
+    }
+    .form-group textarea { height: 90px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .submit-btn {
+      width: 100%; background: var(--terracotta); color: #fff;
+      border: none; padding: 14px; border-radius: 12px;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      font-family: 'Lato', sans-serif; letter-spacing: 0.5px;
+      transition: background .2s; margin-top: 8px;
+    }
+    .submit-btn:hover { background: #a03d1a; }
+    .whatsapp-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; background: #25D366; color: #fff;
+      border: none; padding: 14px; border-radius: 12px;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      font-family: 'Lato', sans-serif; text-decoration: none;
+      transition: background .2s; margin-top: 10px;
+    }
+    .whatsapp-btn:hover { background: #1da851; }
+
+    /* ===== REVIEWS ===== */
+    #reviews { background: var(--brown-dark); color: #fff; }
+    #reviews .section-title { color: #fff; }
+    #reviews .section-label { color: var(--gold); }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px;
+    }
+    .review-card {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px; padding: 26px; transition: background .25s;
+    }
+    .review-card:hover { background: rgba(255,255,255,0.12); }
+    .review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 12px; letter-spacing: 2px; }
+    .review-text { font-size: 0.92rem; color: #d4c4b0; line-height: 1.65; margin-bottom: 16px; font-style: italic; }
+    .review-author { display: flex; align-items: center; gap: 12px; }
+    .review-avatar {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      background: var(--brown-mid); display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem;
+      overflow: hidden;
+    }
+    .review-name { font-weight: 700; font-size: 0.88rem; color: #fff; }
+    .review-date { font-size: 0.78rem; color: #9a8a7a; }
+    .google-badge {
+      text-align: center; margin-top: 40px;
+      font-size: 0.88rem; color: #9a8a7a;
+    }
+    .google-badge a { color: var(--gold); font-weight: 700; }
+
+    /* ===== CONTACT ===== */
+    #contact { background: #f5ece0; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 20px; }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: #fff; padding: 20px; border-radius: 14px;
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    .contact-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .contact-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; color: var(--brown-dark); margin-bottom: 4px;
+    }
+    .contact-item p { color: #6b5a4a; font-size: 0.9rem; line-height: 1.6; }
+    .contact-item a { color: var(--terracotta); font-weight: 700; }
+    .map-container {
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 6px 28px var(--shadow); height: 360px;
+    }
+    .map-container iframe { width: 100%; height: 100%; border: 0; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--brown-dark); color: #d4c4b0;
+      padding: 40px 20px 24px; text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; color: var(--gold); margin-bottom: 12px;
+    }
+    .footer-logo span { color: var(--terracotta); }
+    .footer-text { font-size: 0.88rem; color: #9a8a7a; margin-bottom: 20px; line-height: 1.7; }
+    .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .footer-links a { color: #d4c4b0; font-size: 0.85rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 20px; font-size: 0.8rem; color: #6b5a4a;
+    }
+
+    /* ===== SUCCESS TOAST ===== */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 2000;
+      background: var(--green); color: #fff;
+      padding: 14px 24px; border-radius: 12px;
+      font-weight: 700; font-size: 0.9rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transform: translateY(80px); opacity: 0;
+      transition: all .35s ease;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ===== SCROLL REVEAL ===== */
+    .reveal { opacity: 0; transform: translateY(30px); transition: all .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .order-wrapper { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      section { padding: 60px 16px; }
+      nav { padding: 0 16px; }
+    }
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 300px; text-align: center; }
+    }
+
+    /* ===== LANGUAGE HIDDEN ===== */
+    [data-lang="en"] { display: none; }
+    body.en [data-lang="fr"] { display: none; }
+    body.en [data-lang="en"] { display: block; }
+    body.en span[data-lang="en"] { display: inline; }
+    body.en span[data-lang="fr"] { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div id="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+</div>
+
+<!-- Navbar -->
+<nav>
+  <div class="nav-logo">
+    <img src="logo.png" alt="PizzaExpress Verviers Logo" onerror="this.style.display='none'" />
+    Pizza<span>Express</span> Verviers
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about" data-lang="fr">Notre Histoire</a><a href="#about" data-lang="en">Our Story</a></li>
+    <li><a href="#menu" data-lang="fr">Menu</a><a href="#menu" data-lang="en">Menu</a></li>
+    <li><a href="#order" data-lang="fr">Commander</a><a href="#order" data-lang="en">Order</a></li>
+    <li><a href="#reviews" data-lang="fr">Avis</a><a href="#reviews" data-lang="en">Reviews</a></li>
+    <li><a href="#contact" data-lang="fr">Contact</a><a href="#contact" data-lang="en">Contact</a></li>
+    <li><a href="#order" class="nav-order-btn" data-lang="fr">🛵 Commander</a><a href="#order" class="nav-order-btn" data-lang="en">🛵 Order Now</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMobile()" data-lang="fr">Notre Histoire</a>
+  <a href="#about" onclick="toggleMobile()" data-lang="en">Our Story</a>
+  <a href="#menu" onclick="toggleMobile()">Menu</a>
+  <a href="#order" onclick="toggleMobile()" data-lang="fr">Commander</a>
+  <a href="#order" onclick="toggleMobile()" data-lang="en">Order Now</a>
+  <a href="#reviews" onclick="toggleMobile()" data-lang="fr">Avis Clients</a>
+  <a href="#reviews" onclick="toggleMobile()" data-lang="en">Customer Reviews</a>
+  <a href="#contact" onclick="toggleMobile()">Contact</a>
+</div>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge" data-lang="fr">🔥 Four à bois artisanal · Verviers</div>
+    <div class="hero-badge" data-lang="en">🔥 Artisan wood-fired oven · Verviers</div>
+    <h1 class="hero-title">
+      <span data-lang="fr">La vraie pizza<br><em>comme en Italie</em></span>
+      <span data-lang="en">Authentic pizza<br><em>just like Italy</em></span>
+    </h1>
+    <p class="hero-subtitle" data-lang="fr">Pâte maison, ingrédients frais, cuite au feu de bois — chaque pizza est une œuvre.</p>
+    <p class="hero-subtitle" data-lang="en">Homemade dough, fresh ingredients, wood-fired — every pizza is a masterpiece.</p>
+    <div class="hero-info">
+      <span>🕔 <span data-lang="fr">Tous les jours 17h–23h</span><span data-lang="en">Every day 5pm–11pm</span></span>
+      <span>📍 Verviers</span>
+      <span>🛵 <span data-lang="fr">Livraison 7km</span><span data-lang="en">Delivery 7km</span></span>
+    </div>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary" data-lang="fr">📋 Voir le Menu</a>
+      <a href="#menu" class="btn-primary" data-lang="en">📋 See the Menu</a>
+      <a href="#order" class="btn-secondary" data-lang="fr">🛵 Commander maintenant</a>
+      <a href="#order" class="btn-secondary" data-lang="en">🛵 Order now</a>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ scroll</div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="container">
+    <p class="section-label">
+      <span data-lang="fr">Qui sommes-nous</span>
+      <span data-lang="en">Who we are</span>
+    </p>
+    <h2 class="section-title" data-lang="fr">L'art de la pizza artisanale</h2>
+    <h2 class="section-title" data-lang="en">The art of artisan pizza</h2>
+    <div class="section-divider"></div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">🌾</div>
+        <h3 data-lang="fr">Pâte Maison</h3>
+        <h3 data-lang="en">Homemade Dough</h3>
+        <p data-lang="fr">Notre pâte est préparée chaque matin avec de la farine sélectionnée, pétrie à la main et laissée reposer 24h pour un goût authentique.</p>
+        <p data-lang="en">Our dough is prepared each morning with selected flour, hand-kneaded and rested for 24 hours for an authentic taste.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🍅</div>
+        <h3 data-lang="fr">Ingrédients Frais</h3>
+        <h3 data-lang="en">Fresh Ingredients</h3>
+        <p data-lang="fr">Légumes du marché, charcuteries italiennes authentiques, fromages affinés — nous ne faisons aucun compromis sur la qualité.</p>
+        <p data-lang="en">Market vegetables, authentic Italian charcuterie, aged cheeses — we make no compromise on quality.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔥</div>
+        <h3 data-lang="fr">Four à Bois</h3>
+        <h3 data-lang="en">Wood-Fired Oven</h3>
+        <p data-lang="fr">Cuite à 400°C dans notre four à bois traditionnel en 90 secondes chrono — une croûte croustillante, un cœur fondant.</p>
+        <p data-lang="en">Baked at 400°C in our traditional wood-fired oven in 90 seconds — crispy crust, soft centre.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🛵</div>
+        <h3 data-lang="fr">Livraison Rapide</h3>
+        <h3 data-lang="en">Fast Delivery</h3>
+        <p data-lang="fr">Livraison à domicile dans un rayon de 7km autour de Verviers — du lundi au samedi. Commandez aussi à emporter !</p>
+        <p data-lang="en">Home delivery within 7km around Verviers — Monday to Saturday. Takeaway also available!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu">
+  <div class="container">
+    <p class="section-label">
+      <span data-lang="fr">Ce que nous proposons</span>
+      <span data-lang="en">What we offer</span>
+    </p>
+    <h2 class="section-title" data-lang="fr">Notre Menu</h2>
+    <h2 class="section-title" data-lang="en">Our Menu</h2>
+    <div class="section-divider"></div>
+    <div class="menu-tabs">
+      <button class="tab-btn active" onclick="showTab('classiques')">
+        <span data-lang="fr">🍕 Classiques</span>
+        <span data-lang="en">🍕 Classics</span>
+      </button>
+      <button class="tab-btn" onclick="showTab('speciales')">
+        <span data-lang="fr">⭐ Spéciales</span>
+        <span data-lang="en">⭐ Specials</span>
+      </button>
+      <button class="tab-btn" onclick="showTab('extras')">
+        <span data-lang="fr">🥗 Extras</span>
+        <span data-lang="en">🥗 Extras</span>
+      </button>
+      <button class="tab-btn" onclick="showTab('boissons')">
+        <span data-lang="fr">🥤 Boissons</span>
+        <span data-lang="en">🥤 Drinks</span>
+      </button>
+    </div>
+
+    <!-- Classiques -->
+    <div class="menu-panel active" id="tab-classiques">
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍕</div>
+        <div class="menu-card-body">
+          <h3>Margherita</h3>
+          <p data-lang="fr">Sauce tomate maison, mozzarella fior di latte, basilic frais</p>
+          <p data-lang="en">Homemade tomato sauce, fior di latte mozzarella, fresh basil</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€9,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Margherita – €9,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍕</div>
+        <div class="menu-card-body">
+          <h3>Napolitaine</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, anchois, câpres, origan</p>
+          <p data-lang="en">Tomato sauce, mozzarella, anchovies, capers, oregano</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€11,00</span>
+            <button class="menu-add-btn" onclick="orderItem('Napolitaine – €11,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍕</div>
+        <div class="menu-card-body">
+          <h3>Quatre Saisons</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, jambon, champignons, artichaut, olives</p>
+          <p data-lang="en">Tomato sauce, mozzarella, ham, mushrooms, artichoke, olives</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€12,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Quatre Saisons – €12,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍕</div>
+        <div class="menu-card-body">
+          <h3>Regina</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, jambon cuit, champignons frais</p>
+          <p data-lang="en">Tomato sauce, mozzarella, cooked ham, fresh mushrooms</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€11,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Regina – €11,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍕</div>
+        <div class="menu-card-body">
+          <h3>Reine</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, jambon, poivrons, olives noires</p>
+          <p data-lang="en">Tomato sauce, mozzarella, ham, peppers, black olives</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€11,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Reine – €11,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍕</div>
+        <div class="menu-card-body">
+          <h3>Calzone</h3>
+          <p data-lang="fr">Pizza pliée : ricotta, jambon, mozzarella, sauce tomate</p>
+          <p data-lang="en">Folded pizza: ricotta, ham, mozzarella, tomato sauce</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€13,00</span>
+            <button class="menu-add-btn" onclick="orderItem('Calzone – €13,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spéciales -->
+    <div class="menu-panel" id="tab-speciales">
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🌶️</div>
+        <div class="menu-card-body">
+          <h3>Diavola</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, salami piquant, piments rouges, huile d'olive</p>
+          <p data-lang="en">Tomato sauce, mozzarella, spicy salami, red chilli, olive oil</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€12,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Diavola – €12,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🥩</div>
+        <div class="menu-card-body">
+          <h3>Carnivora</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, viande hachée, merguez, lardons, poivrons</p>
+          <p data-lang="en">Tomato sauce, mozzarella, minced beef, merguez, bacon, peppers</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€14,00</span>
+            <button class="menu-add-btn" onclick="orderItem('Carnivora – €14,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🌿</div>
+        <div class="menu-card-body">
+          <h3>Végétarienne</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, légumes grillés, roquette, copeaux de parmesan</p>
+          <p data-lang="en">Tomato sauce, mozzarella, grilled veggies, rocket, parmesan shavings</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€12,00</span>
+            <button class="menu-add-btn" onclick="orderItem('Végétarienne – €12,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍗</div>
+        <div class="menu-card-body">
+          <h3>Pollo BBQ</h3>
+          <p data-lang="fr">Sauce BBQ, mozzarella, poulet grillé, oignons rouges, maïs</p>
+          <p data-lang="en">BBQ sauce, mozzarella, grilled chicken, red onions, sweetcorn</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€13,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Pollo BBQ – €13,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🦐</div>
+        <div class="menu-card-body">
+          <h3>Frutti di Mare</h3>
+          <p data-lang="fr">Sauce tomate, mozzarella, crevettes, calamars, moules, ail, persil</p>
+          <p data-lang="en">Tomato sauce, mozzarella, prawns, squid, mussels, garlic, parsley</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€15,00</span>
+            <button class="menu-add-btn" onclick="orderItem('Frutti di Mare – €15,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">⭐</div>
+        <div class="menu-card-body">
+          <h3>PizzaExpress Signature</h3>
+          <p data-lang="fr">Notre spécialité ! Crème fraîche, mozzarella, jambon fumé, champignons, œuf, truffe</p>
+          <p data-lang="en">Our specialty! Crème fraîche, mozzarella, smoked ham, mushrooms, egg, truffle</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€16,00</span>
+            <button class="menu-add-btn" onclick="orderItem('PizzaExpress Signature – €16,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extras -->
+    <div class="menu-panel" id="tab-extras">
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🥗</div>
+        <div class="menu-card-body">
+          <h3 data-lang="fr">Salade César</h3>
+          <h3 data-lang="en">Caesar Salad</h3>
+          <p data-lang="fr">Laitue romaine, parmesan, croûtons, sauce césar maison</p>
+          <p data-lang="en">Romaine lettuce, parmesan, croutons, homemade caesar dressing</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€7,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Salade César – €7,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🫓</div>
+        <div class="menu-card-body">
+          <h3>Bruschetta</h3>
+          <p data-lang="fr">Pain grillé, tomates fraîches, ail, basilic, huile d'olive (4 pièces)</p>
+          <p data-lang="en">Toasted bread, fresh tomatoes, garlic, basil, olive oil (4 pieces)</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€6,00</span>
+            <button class="menu-add-btn" onclick="orderItem('Bruschetta – €6,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍰</div>
+        <div class="menu-card-body">
+          <h3>Tiramisu</h3>
+          <p data-lang="fr">Dessert maison au mascarpone, café et cacao (portion individuelle)</p>
+          <p data-lang="en">Homemade mascarpone, coffee & cocoa dessert (individual portion)</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€5,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Tiramisu – €5,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍫</div>
+        <div class="menu-card-body">
+          <h3>Pizza Nutella</h3>
+          <p data-lang="fr">Pizza sucrée : pâte maison, Nutella, fraises fraîches, sucre glace</p>
+          <p data-lang="en">Sweet pizza: homemade dough, Nutella, fresh strawberries, icing sugar</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€8,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Pizza Nutella – €8,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boissons -->
+    <div class="menu-panel" id="tab-boissons">
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🥤</div>
+        <div class="menu-card-body">
+          <h3 data-lang="fr">Coca-Cola / Fanta / Sprite</h3>
+          <h3 data-lang="en">Coca-Cola / Fanta / Sprite</h3>
+          <p data-lang="fr">Canette 33cl bien fraîche</p>
+          <p data-lang="en">330ml chilled can</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€2,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Boisson – €2,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">💧</div>
+        <div class="menu-card-body">
+          <h3 data-lang="fr">Eau minérale</h3>
+          <h3 data-lang="en">Mineral water</h3>
+          <p data-lang="fr">Eau plate ou pétillante 50cl</p>
+          <p data-lang="en">Still or sparkling 50cl</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€2,00</span>
+            <button class="menu-add-btn" onclick="orderItem('Eau minérale – €2,00')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍺</div>
+        <div class="menu-card-body">
+          <h3 data-lang="fr">Bière pression / bouteille</h3>
+          <h3 data-lang="en">Draft / bottled beer</h3>
+          <p data-lang="fr">Sélection de bières belges et italiennes</p>
+          <p data-lang="en">Selection of Belgian and Italian beers</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€3,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Bière – €3,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-card-img-placeholder">🍷</div>
+        <div class="menu-card-body">
+          <h3 data-lang="fr">Vin rouge / blanc / rosé</h3>
+          <h3 data-lang="en">Red / white / rosé wine</h3>
+          <p data-lang="fr">Verre 15cl — vins italiens sélectionnés</p>
+          <p data-lang="en">15cl glass — selected Italian wines</p>
+          <div class="menu-card-footer">
+            <span class="menu-price">€4,50</span>
+            <button class="menu-add-btn" onclick="orderItem('Vin – €4,50')">+ <span data-lang="fr">Commander</span><span data-lang="en">Order</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Order -->
+<section id="order">
+  <div class="container">
+    <p class="section-label">
+      <span data-lang="fr">Rapide & facile</span>
+      <span data-lang="en">Quick & easy</span>
+    </p>
+    <h2 class="section-title" data-lang="fr">Commandez maintenant</h2>
+    <h2 class="section-title" data-lang="en">Order now</h2>
+    <div class="section-divider"></div>
+    <div class="order-wrapper">
+      <div class="order-info reveal">
+        <h3 data-lang="fr">Comment commander ?</h3>
+        <h3 data-lang="en">How to order?</h3>
+        <p data-lang="fr">Plusieurs façons de passer commande — choisissez celle qui vous convient le mieux !</p>
+        <p data-lang="en">Multiple ways to order — pick the one that suits you best!</p>
+        <div class="order-options">
+          <div class="order-option">
+            <div class="order-option-icon">📋</div>
+            <div class="order-option-text">
+              <strong data-lang="fr">Formulaire en ligne</strong>
+              <strong data-lang="en">Online form</strong>
+              <span data-lang="fr">Remplissez le formulaire ci-contre</span>
+              <span data-lang="en">Fill in the form opposite</span>
+            </div>
+          </div>
+          <div class="order-option">
+            <div class="order-option-icon">📞</div>
+            <div class="order-option-text">
+              <strong data-lang="fr">Par téléphone</strong>
+              <strong data-lang="en">By phone</strong>
+              <span><a href="tel:0470740855">0470 74 08 55</a></span>
+            </div>
+          </div>
+          <div class="order-option">
+            <div class="order-option-icon">💬</div>
+            <div class="order-option-text">
+              <strong>WhatsApp</strong>
+              <span data-lang="fr">Envoyez votre commande par message</span>
+              <span data-lang="en">Send your order by message</span>
+            </div>
+          </div>
+          <div class="order-option">
+            <div class="order-option-icon">🛵</div>
+            <div class="order-option-text">
+              <strong data-lang="fr">Livraison à domicile</strong>
+              <strong data-lang="en">Home delivery</strong>
+              <span data-lang="fr">Lun–Sam · rayon 7km · 17h–22h30</span>
+              <span data-lang="en">Mon–Sat · 7km radius · 5pm–10:30pm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="order-form reveal">
+        <h3 data-lang="fr">🛒 Votre commande</h3>
+        <h3 data-lang="en">🛒 Your order</h3>
+        <form onsubmit="submitOrder(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label data-lang="fr">Prénom & Nom</label>
+              <label data-lang="en">First & Last Name</label>
+              <input type="text" id="order-name" placeholder="ex: Marie Dupont" required />
+            </div>
+            <div class="form-group">
+              <label data-lang="fr">Téléphone</label>
+              <label data-lang="en">Phone</label>
+              <input type="tel" id="order-phone" placeholder="ex: 0470 12 34 56" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-lang="fr">Type de commande</label>
+            <label data-lang="en">Order type</label>
+            <select id="order-type" onchange="toggleAddress()">
+              <option value="livraison" data-lang="fr">🛵 Livraison à domicile</option>
+              <option value="delivery" data-lang="en">🛵 Home delivery</option>
+              <option value="emporter" data-lang="fr">🏠 À emporter</option>
+              <option value="takeaway" data-lang="en">🏠 Takeaway</option>
+            </select>
+          </div>
+          <div class="form-group" id="address-group">
+            <label data-lang="fr">Adresse de livraison</label>
+            <label data-lang="en">Delivery address</label>
+            <input type="text" id="order-address" placeholder="ex: Rue de la Paix 12, Verviers" />
+          </div>
+          <div class="form-group">
+            <label data-lang="fr">Votre commande</label>
+            <label data-lang="en">Your order</label>
+            <textarea id="order-items" placeholder="ex: 1x Margherita, 1x Diavola, 2x Coca-Cola…" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn" data-lang="fr">✅ Envoyer ma commande</button>
+          <button type="submit" class="submit-btn" data-lang="en">✅ Send my order</button>
+          <a href="https://wa.me/32470740855" target="_blank" class="whatsapp-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span data-lang="fr">Commander via WhatsApp</span>
+            <span data-lang="en">Order via WhatsApp</span>
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews">
+  <div class="container">
+    <p class="section-label">
+      <span data-lang="fr">Ce que disent nos clients</span>
+      <span data-lang="en">What our customers say</span>
+    </p>
+    <h2 class="section-title" data-lang="fr">Avis Clients ⭐⭐⭐⭐⭐</h2>
+    <h2 class="section-title" data-lang="en">Customer Reviews ⭐⭐⭐⭐⭐</h2>
+    <div class="section-divider" style="background:var(--gold)"></div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text" data-lang="fr">"La meilleure pizza de Verviers sans hésiter ! La pâte est fine et croustillante, les ingrédients frais. Je commande chaque semaine !"</p>
+        <p class="review-text" data-lang="en">"The best pizza in Verviers without a doubt! The crust is thin and crispy, ingredients are fresh. I order every week!"</p>
+        <div class="review-author">
+          <div class="review-avatar">😊</div>
+          <div>
+            <div class="review-name">Sophie M.</div>
+            <div class="review-date" data-lang="fr">Client fidèle · Verviers</div>
+            <div class="review-date" data-lang="en">Regular customer · Verviers</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text" data-lang="fr">"Livraison super rapide, pizza encore bien chaude. La Diavola est à tomber ! Service impeccable."</p>
+        <p class="review-text" data-lang="en">"Super fast delivery, pizza still nice and hot. The Diavola is amazing! Impeccable service."</p>
+        <div class="review-author">
+          <div class="review-avatar">👨</div>
+          <div>
+            <div class="review-name">Thomas K.</div>
+            <div class="review-date" data-lang="fr">Google Maps · Verviers</div>
+            <div class="review-date" data-lang="en">Google Maps · Verviers</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text" data-lang="fr">"Un vrai four à bois, ça change tout ! La Signature PizzaExpress est incroyable. On revient bientôt en famille !"</p>
+        <p class="review-text" data-lang="en">"A real wood-fired oven makes all the difference! The PizzaExpress Signature is incredible. Coming back soon with the family!"</p>
+        <div class="review-author">
+          <div class="review-avatar">👩</div>
+          <div>
+            <div class="review-name">Laura & Antoine</div>
+            <div class="review-date" data-lang="fr">Google Maps · Dison</div>
+            <div class="review-date" data-lang="en">Google Maps · Dison</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text" data-lang="fr">"Parfait pour les soirées en famille. Prix raisonnables, portions généreuses, accueil chaleureux. Je recommande à 100% !"</p>
+        <p class="review-text" data-lang="en">"Perfect for family evenings. Reasonable prices, generous portions, warm welcome. I recommend 100%!"</p>
+        <div class="review-author">
+          <div class="review-avatar">🧔</div>
+          <div>
+            <div class="review-name">Karim B.</div>
+            <div class="review-date" data-lang="fr">Client régulier · Liège</div>
+            <div class="review-date" data-lang="en">Regular customer · Liège</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="google-badge reveal" data-lang="fr">
+      ⭐ 4.8/5 basé sur plus de 120 avis Google · <a href="https://g.page/r/review" target="_blank">Laisser un avis</a>
+    </div>
+    <div class="google-badge reveal" data-lang="en">
+      ⭐ 4.8/5 based on 120+ Google reviews · <a href="https://g.page/r/review" target="_blank">Leave a review</a>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label">
+      <span data-lang="fr">Où nous trouver</span>
+      <span data-lang="en">Where to find us</span>
+    </p>
+    <h2 class="section-title" data-lang="fr">Nous trouver</h2>
+    <h2 class="section-title" data-lang="en">Find us</h2>
+    <div class="section-divider"></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item reveal">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h4 data-lang="fr">Adresse</h4>
+            <h4 data-lang="en">Address</h4>
+            <p>Rue de Dison 176<br>4800 Verviers, Belgique</p>
+          </div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h4 data-lang="fr">Téléphone / WhatsApp</h4>
+            <h4 data-lang="en">Phone / WhatsApp</h4>
+            <p><a href="tel:0470740855">0470 74 08 55</a></p>
+          </div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-icon">🕔</div>
+          <div>
+            <h4 data-lang="fr">Horaires</h4>
+            <h4 data-lang="en">Opening hours</h4>
+            <p data-lang="fr">
+              <strong>Tous les jours :</strong> 17h00 – 23h00<br>
+              🛵 Livraison : Lun–Sam · 17h–22h30<br>
+              <em>(Dimanche : sur place & à emporter uniquement)</em>
+            </p>
+            <p data-lang="en">
+              <strong>Every day:</strong> 5:00pm – 11:00pm<br>
+              🛵 Delivery: Mon–Sat · 5pm–10:30pm<br>
+              <em>(Sunday: dine-in & takeaway only)</em>
+            </p>
+          </div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-icon">🛵</div>
+          <div>
+            <h4 data-lang="fr">Zone de livraison</h4>
+            <h4 data-lang="en">Delivery zone</h4>
+            <p data-lang="fr">Rayon de 7km autour de Verviers<br>Verviers · Dison · Herve · Theux · Pepinster…</p>
+            <p data-lang="en">7km radius around Verviers<br>Verviers · Dison · Herve · Theux · Pepinster…</p>
+          </div>
+        </div>
+      </div>
+      <div class="map-container reveal">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2524.5!2d5.8622!3d50.5897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sRue+de+Dison+176%2C+4800+Verviers!5e0!3m2!1sfr!2sbe!4v1"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">Pizza<span>Express</span> Verviers</div>
+  <p class="footer-text">
+    Rue de Dison 176 · 4800 Verviers · <a href="tel:0470740855" style="color:var(--gold)">0470 74 08 55</a><br>
+    <span data-lang="fr">Ouvert tous les jours · 17h00 – 23h00</span>
+    <span data-lang="en">Open every day · 5:00pm – 11:00pm</span>
+  </p>
+  <div class="footer-links">
+    <a href="#menu">Menu</a>
+    <a href="#order" data-lang="fr">Commander</a>
+    <a href="#order" data-lang="en">Order</a>
+    <a href="#reviews" data-lang="fr">Avis</a>
+    <a href="#reviews" data-lang="en">Reviews</a>
+    <a href="#contact">Contact</a>
+    <a href="https://wa.me/32470740855">WhatsApp</a>
+  </div>
+  <div class="footer-bottom">
+    © 2025 PizzaExpress Verviers · <span data-lang="fr">Tous droits réservés</span><span data-lang="en">All rights reserved</span>
+  </div>
+</footer>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===== LANGUAGE =====
+  function setLang(lang) {
+    document.body.classList.toggle('en', lang === 'en');
+    document.querySelectorAll('.lang-btn').forEach((b, i) => b.classList.toggle('active', (i === 0) === (lang === 'fr')));
+    localStorage.setItem('lang', lang);
+  }
+  (function() {
+    const saved = localStorage.getItem('lang');
+    if (saved === 'en') setLang('en');
+  })();
+
+  // ===== MOBILE MENU =====
+  function toggleMobile() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // ===== MENU TABS =====
+  function showTab(name) {
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    // Re-trigger reveal animations
+    document.querySelectorAll('#tab-' + name + ' .reveal').forEach(el => {
+      el.classList.remove('visible');
+      setTimeout(() => el.classList.add('visible'), 50);
+    });
+  }
+
+  // ===== ORDER FORM =====
+  function toggleAddress() {
+    const type = document.getElementById('order-type').value;
+    const addrGroup = document.getElementById('address-group');
+    addrGroup.style.display = (type === 'livraison' || type === 'delivery') ? 'block' : 'none';
+  }
+
+  function orderItem(item) {
+    const textarea = document.getElementById('order-items');
+    const current = textarea.value.trim();
+    textarea.value = current ? current + '\n' + item : item;
+    document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+    showToast(document.body.classList.contains('en') ? '✅ Added to your order!' : '✅ Ajouté à votre commande !');
+  }
+
+  function submitOrder(e) {
+    e.preventDefault();
+    const name = document.getElementById('order-name').value;
+    const phone = document.getElementById('order-phone').value;
+    const type = document.getElementById('order-type').value;
+    const items = document.getElementById('order-items').value;
+    const isEn = document.body.classList.contains('en');
+
+    const msg = isEn
+      ? `Hello! I would like to order:\n\n${items}\n\nName: ${name}\nPhone: ${phone}\nType: ${type}`
+      : `Bonjour ! Je souhaite commander :\n\n${items}\n\nNom : ${name}\nTél : ${phone}\nType : ${type}`;
+
+    const waUrl = `https://wa.me/32470740855?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
+    showToast(isEn ? '🎉 Redirecting to WhatsApp!' : '🎉 Redirection vers WhatsApp !');
+  }
+
+  // ===== TOAST =====
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ===== SCROLL REVEAL =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ===== ACTIVE NAV LINK =====
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let curr = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) curr = s.id; });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + curr ? 'var(--gold)' : '';
+    });
+  });
+</script>
+</body>
+</html>
