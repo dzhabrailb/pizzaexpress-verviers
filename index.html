@@ -270,15 +270,21 @@
     }
     .menu-price { font-weight: 700; font-size: 1.1rem; color: var(--terracotta); }
     .menu-add-btn {
-      background: var(--green); color: #fff;
-      border: none; padding: 6px 12px; border-radius: 20px;
-      font-size: 0.78rem; font-weight: 700; cursor: pointer;
-      transition: background .2s; font-family: 'Lato', sans-serif;
+      background: var(--terracotta); color: #fff;
+      border: none; padding: 10px 16px; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 700; cursor: pointer;
+      transition: background .2s, transform .15s; font-family: 'Lato', sans-serif;
+      min-height: 42px; display: flex; align-items: center; justify-content: center;
+      gap: 5px; flex: 1;
     }
-    .menu-add-btn:hover { background: #2a3d1f; }
+    .menu-add-btn:hover { background: #a03d1a; transform: scale(1.03); }
+    .menu-add-btn:active { transform: scale(0.97); }
     .menu-add-btn.btn-l { background: var(--brown-mid); }
     .menu-add-btn.btn-l:hover { background: #4a2a10; }
-    .menu-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .menu-btns { display: flex; gap: 8px; width: 100%; }
+    @media (max-width: 480px) {
+      .menu-add-btn { font-size: 0.92rem; min-height: 46px; }
+    }
 
     /* ===== ORDER ===== */
     #order { background: var(--cream); }
@@ -1329,11 +1335,11 @@
         const priceM = parseFloat(mlMatch[1].replace(',', '.'));
         const priceL = parseFloat(mlMatch[2].replace(',', '.'));
         btnWrapper.innerHTML = `
-          <button class="menu-add-btn" onclick="orderItem('${name} (M)', ${priceM})">+ M ${mlMatch[1]}€</button>
-          <button class="menu-add-btn btn-l" onclick="orderItem('${name} (L)', ${priceL})">+ L ${mlMatch[2]}€</button>`;
+          <button class="menu-add-btn" onclick="orderItem('${name} (M)', ${priceM})">🛒 M — ${mlMatch[1]}€</button>
+          <button class="menu-add-btn btn-l" onclick="orderItem('${name} (L)', ${priceL})">🛒 L — ${mlMatch[2]}€</button>`;
       } else if (singleMatch) {
         const price = parseFloat(singleMatch[1].replace(',', '.'));
-        btnWrapper.innerHTML = `<button class="menu-add-btn" onclick="orderItem('${name}', ${price})">+ Ajouter ${singleMatch[1]}€</button>`;
+        btnWrapper.innerHTML = `<button class="menu-add-btn" onclick="orderItem('${name}', ${price})">🛒 Commander — ${singleMatch[1]}€</button>`;
       }
 
       oldBtn.replaceWith(btnWrapper);
