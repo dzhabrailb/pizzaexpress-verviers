@@ -1264,52 +1264,48 @@
   }
 
   // ===== AUTO FOOD PHOTOS =====
-  const foodPhotos = {
-    // Pizzas charcuteries — vraies photos restaurant
-    'jambon':      'Photos/Jambon.jpeg',
-    'hawaii':      'Photos/Jambon.jpeg',
-    'saison':      'Photos/4 Saisons.jpeg',
-    'regina':      'Photos/Jambon.jpeg',
-    'bolognaise':  'Photos/Balognaise.jpeg',
-    'dolce':       'Photos/Balognaise.jpeg',
-    'fermière':    'Photos/Fermièr.jpeg',
-    'fermier':     'Photos/Fermièr.jpeg',
-    'romano':      'Photos/Belle Vita .jpeg',
-    'mexicain':    'Photos/Balognaise.jpeg',
-    'salami':      'Photos/Pavarotti.jpeg',
-    'gourmande':   'Photos/Gormande.jpeg',
-    'pavarotti':   'Photos/Pavarotti.jpeg',
-    'barbecue':    'Photos/Barbecue.jpeg',
-    'bella vita':  'Photos/Belle Vita .jpeg',
-    'poulet':      'Photos/Jambon.jpeg',
-    'chef':        'Photos/Gormande.jpeg',
-    // Pizzas océanes
-    'scampi':      'Photos/Scampi.jpeg',
-    'thono':       'Photos/Scampi.jpeg',
-    'pacifico':    'Photos/Scampi.jpeg',
-    'sicilienne':  'Photos/Scampi.jpeg',
-    'fruits de mer':'Photos/Fruit de Mer.jpeg',
-    'fruit de mer': 'Photos/Fruit de Mer.jpeg',
-    // Crème fraîche
-    'al polo':     'Photos/Belle Vita .jpeg',
-    'venezia':     'Photos/Fermièr.jpeg',
-    'milano':      'Photos/Balognaise.jpeg',
-    'calabria':    'Photos/Balognaise.jpeg',
-    'chèvre':      'Photos/Belle Vita .jpeg',
-    'tartiflette': 'Photos/Fermièr.jpeg',
-    'campagnarde': 'Photos/Fermièr.jpeg',
-    // Fromagères
-    'marguerita':  'Photos/4 Fromages.jpeg',
-    'fromage':     'Photos/4 Fromages.jpeg',
-    '4 fromages':  'Photos/4 Fromages.jpeg',
-    'raclette':    'Photos/Belle Vita .jpeg',
-    // Légumes
-    'végétarienne':'Photos/Legumes.jpeg',
-    'parmigiana':  'Photos/Legumes.jpeg',
-    'funghi':      'Photos/Funghi.jpeg',
-    'légumes mix': 'Photos/Legumes.jpeg',
-    'legumes':     'Photos/Legumes.jpeg',
-    // Pâtes
+  // Photos exactes par nom de pizza (correspondance exacte)
+  const exactPhotos = {
+    'jambon (dinde)':   'Photos/Jambon.jpeg',
+    '4 saisons':        'Photos/4 Saisons.jpeg',
+    'bolognaise':       'Photos/Balognaise.jpeg',
+    'fermière':         'Photos/Fermièr.jpeg',
+    'gourmande':        'Photos/Gormande.jpeg',
+    'pavarotti':        'Photos/Pavarotti.jpeg',
+    'barbecue':         'Photos/Barbecue.jpeg',
+    'bella vita':       'Photos/Belle Vita .jpeg',
+    'scampi':           'Photos/Scampi.jpeg',
+    'fruits de mer':    'Photos/Fruit de Mer.jpeg',
+    '4 fromages':       'Photos/4 Fromages.jpeg',
+    '5 fromages':       'Photos/4 Fromages.jpeg',
+    'végétarienne':     'Photos/Legumes.jpeg',
+    'légumes mix':      'Photos/Legumes.jpeg',
+    'funghi':           'Photos/Funghi.jpeg',
+  };
+
+  // Photos Unsplash pour les pizzas sans vraie photo
+  const fallbackPhotos = {
+    'hawaii':     'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80',
+    'regina':     'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80',
+    'dolce':      'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80',
+    'romano':     'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&q=80',
+    'mexicain':   'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80',
+    'salami':     'https://images.unsplash.com/photo-1548369937-47519962c11a?w=400&q=80',
+    'poulet':     'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=400&q=80',
+    'chef':       'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80',
+    'thono':      'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80',
+    'pacifico':   'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80',
+    'sicilienne': 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80',
+    'al polo':    'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=400&q=80',
+    'venezia':    'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80',
+    'milano':     'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80',
+    'calabria':   'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&q=80',
+    'chèvre':     'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&q=80',
+    'tartiflette':'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&q=80',
+    'campagnarde':'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=400&q=80',
+    'marguerita': 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80',
+    'raclette':   'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&q=80',
+    'parmigiana': 'https://images.unsplash.com/photo-1511689660979-10d2b1eccac3?w=400&q=80',
     'carbonara':  'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400&q=80',
     'salmon':     'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&q=80',
     'boscaiola':  'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400&q=80',
@@ -1318,14 +1314,10 @@
     'turino':     'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400&q=80',
     'jambon fromage': 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400&q=80',
     'dello chef': 'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400&q=80',
-    'pâtes':      'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400&q=80',
-    // Desserts
     'moelleux':   'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&q=80',
-    'tarte aux pommes': 'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?w=400&q=80',
-    'tarte sans gluten':'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?w=400&q=80',
+    'tarte':      'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?w=400&q=80',
     'tiramisu':   'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&q=80',
     'muffin':     'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=400&q=80',
-    // Boissons
     'coca':       'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80',
     'sprite':     'https://images.unsplash.com/photo-1624552184280-9e9631bbeee9?w=400&q=80',
     'fanta':      'https://images.unsplash.com/photo-1624552184280-9e9631bbeee9?w=400&q=80',
@@ -1336,11 +1328,17 @@
   };
 
   function getPhotoUrl(name) {
-    const n = name.toLowerCase();
-    for (const [key, url] of Object.entries(foodPhotos)) {
+    const n = name.toLowerCase().replace(/\s*🆕\s*/g, '').trim();
+    // 1. Correspondance exacte avec vraie photo
+    if (exactPhotos[n]) return exactPhotos[n];
+    // 2. Correspondance partielle avec vraie photo
+    for (const [key, url] of Object.entries(exactPhotos)) {
+      if (n.includes(key) || key.includes(n)) return url;
+    }
+    // 3. Fallback Unsplash par mot-clé
+    for (const [key, url] of Object.entries(fallbackPhotos)) {
       if (n.includes(key)) return url;
     }
-    // Default pizza photo
     return 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80';
   }
 
