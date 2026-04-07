@@ -1355,7 +1355,7 @@
       img.alt = title.textContent;
       img.className = 'menu-card-img';
       img.loading = 'lazy';
-      img.onerror = function() { this.parentNode.replaceWith(placeholder); };
+      img.onerror = function() { this.replaceWith(placeholder); };
       placeholder.replaceWith(img);
     });
   });
