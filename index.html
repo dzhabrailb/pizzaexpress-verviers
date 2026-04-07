@@ -1335,11 +1335,8 @@
     for (const [key, url] of Object.entries(exactPhotos)) {
       if (n.includes(key) || key.includes(n)) return url;
     }
-    // 3. Fallback Unsplash par mot-clé
-    for (const [key, url] of Object.entries(fallbackPhotos)) {
-      if (n.includes(key)) return url;
-    }
-    return 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80';
+    // Pas de fallback internet — on garde le placeholder emoji
+    return null;
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -1348,6 +1345,7 @@
       const title = card.querySelector('h3');
       if (!placeholder || !title) return;
       const photoUrl = getPhotoUrl(title.textContent);
+      if (!photoUrl) return; // Pas de photo → garde le placeholder emoji
       const img = document.createElement('img');
       img.src = photoUrl;
       img.alt = title.textContent;
