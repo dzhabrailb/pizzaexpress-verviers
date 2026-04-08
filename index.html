@@ -52,7 +52,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Pacifico&display=swap" rel="stylesheet" />
   <style>
     /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -96,11 +96,12 @@
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem; color: var(--gold); letter-spacing: 1px;
+      font-family: 'Pacifico', cursive;
+      font-size: 1.45rem; color: #ffffff; letter-spacing: 1px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
     }
     .nav-logo img { height: 44px; width: 44px; object-fit: contain; filter: drop-shadow(0 0 4px rgba(212,168,67,0.4)); }
-    .nav-logo span { color: var(--terracotta); }
+    .nav-logo span { color: #ff4500; text-shadow: 1px 1px 6px rgba(255,69,0,0.5); }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a {
       color: #e8d5b5; font-size: 0.88rem; font-weight: 700;
@@ -406,10 +407,11 @@
       padding: 40px 20px 24px; text-align: center;
     }
     .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem; color: var(--gold); margin-bottom: 12px;
+      font-family: 'Pacifico', cursive;
+      font-size: 1.8rem; color: #ffffff; margin-bottom: 12px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
     }
-    .footer-logo span { color: var(--terracotta); }
+    .footer-logo span { color: #ff4500; text-shadow: 1px 1px 6px rgba(255,69,0,0.5); }
     .footer-text { font-size: 0.88rem; color: #9a8a7a; margin-bottom: 20px; line-height: 1.7; }
     .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
     .footer-links a { color: #d4c4b0; font-size: 0.85rem; transition: color .2s; }
@@ -465,7 +467,7 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
       nav { padding: 0 14px; height: 58px; }
-      .nav-logo { font-size: 1.1rem; }
+      .nav-logo { font-size: 1.15rem; }
       .nav-logo img { height: 36px; width: 36px; }
       #lang-toggle { margin-left: 10px; }
       .lang-btn { padding: 3px 8px; font-size: 0.72rem; }
