@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍕 Pizza Finance Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* LOGIN SCREEN */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    background: #0f0e0c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 32px;
+  }
+
+  #login-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: #e8a020;
+    margin-bottom: 8px;
+  }
+
+  #login-screen p {
+    color: #7a7060;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  #pin-display {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .pin-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #2e2a22;
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  .pin-dot.filled {
+    background: #e8a020;
+    border-color: #e8a020;
+  }
+
+  .pin-dot.error {
+    background: #e05555;
+    border-color: #e05555;
+  }
+
+  #pin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 260px;
+    width: 100%;
+  }
+
+  .pin-btn {
+    background: #1a1814;
+    border: 1px solid #2e2a22;
+    border-radius: 14px;
+    color: #f0ead8;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .pin-btn:active {
+    background: #e8a020;
+    color: #0f0e0c;
+    transform: scale(0.95);
+  }
+
+  .pin-btn.del {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: #7a7060;
+  }
+
+  #login-error {
+    color: #e05555;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 16px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  :root {
+    --bg: #0f0e0c;
+    --surface: #1a1814;
+    --surface2: #242118;
+    --accent: #e8a020;
+    --accent2: #c45c1a;
+    --green: #4caf7d;
+    --red: #e05555;
+    --text: #f0ead8;
+    --muted: #7a7060;
+    --border: #2e2a22;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin-top: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* STATS ROW */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  @media(min-width: 600px) {
+    .stats { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .stat-card.green::before { background: var(--green); }
+  .stat-card.red::before { background: var(--red); }
+  .stat-card.neutral::before { background: var(--muted); }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-value.accent { color: var(--accent); }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 8px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    background: var(--accent);
+    color: #0f0e0c;
+    font-weight: 500;
+  }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* FORM */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .field {
+    margin-bottom: 14px;
+  }
+
+  label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+
+  select option { background: var(--surface2); }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #0f0e0c;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+
+  .btn:hover { background: #f0b030; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ENTRIES LIST */
+  .entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+
+  .entry:last-child { border-bottom: none; }
+
+  .entry-left { flex: 1; min-width: 0; }
+
+  .entry-cat {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .entry-desc {
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry-date {
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .entry-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .entry-amount.expense { color: var(--red); }
+  .entry-amount.revenue { color: var(--green); }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .delete-btn:hover { color: var(--red); }
+
+  /* CHART */
+  .chart-wrap {
+    position: relative;
+    height: 180px;
+    margin: 8px 0 4px;
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 100%;
+    padding-bottom: 24px;
+  }
+
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .bars {
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+    width: 100%;
+    flex: 1;
+  }
+
+  .bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    min-height: 2px;
+    transition: height 0.4s ease;
+  }
+
+  .bar.rev { background: var(--green); }
+  .bar.exp { background: var(--red); opacity: 0.8; }
+
+  .bar-label {
+    font-size: 8px;
+    color: var(--muted);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    justify-content: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 32px 0;
+  }
+
+  .month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .month-nav {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .month-nav:hover { border-color: var(--accent); }
+
+  .month-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--accent);
+  }
+
+  /* Fixed costs badge */
+  .fixed-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  .fixed-badge span:first-child { color: var(--muted); }
+  .fixed-badge span:last-child { color: var(--accent); font-weight: 500; }
+
+  .profit-bar {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .profit-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <h2>🍕</h2>
+  <p>Введите PIN-код</p>
+  <div id="pin-display">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+  </div>
+  <div id="pin-grid">
+    <button class="pin-btn" onclick="pinPress('1')">1</button>
+    <button class="pin-btn" onclick="pinPress('2')">2</button>
+    <button class="pin-btn" onclick="pinPress('3')">3</button>
+    <button class="pin-btn" onclick="pinPress('4')">4</button>
+    <button class="pin-btn" onclick="pinPress('5')">5</button>
+    <button class="pin-btn" onclick="pinPress('6')">6</button>
+    <button class="pin-btn" onclick="pinPress('7')">7</button>
+    <button class="pin-btn" onclick="pinPress('8')">8</button>
+    <button class="pin-btn" onclick="pinPress('9')">9</button>
+    <div></div>
+    <button class="pin-btn" onclick="pinPress('0')">0</button>
+    <button class="pin-btn del" onclick="pinDel()">⌫</button>
+  </div>
+  <div id="login-error">Неверный PIN-код</div>
+</div>
+
+<header>
+  <div class="subtitle">Финансовый трекер</div>
+  <h1>🍕 Pizza Finance</h1>
+</header>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-card accent">
+    <div class="stat-label">Выручка / мес</div>
+    <div class="stat-value accent" id="stat-revenue">0 €</div>
+  </div>
+  <div class="stat-card red">
+    <div class="stat-label">Расходы / мес</div>
+    <div class="stat-value red" id="stat-expenses">0 €</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-label">Прибыль / мес</div>
+    <div class="stat-value" id="stat-profit">0 €</div>
+  </div>
+  <div class="stat-card neutral">
+    <div class="stat-label">Цель 4 000 €</div>
+    <div class="stat-value" id="stat-goal">0%</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('add')">+ Добавить</button>
+  <button class="tab" onclick="switchTab('history')">История</button>
+  <button class="tab" onclick="switchTab('analytics')">Аналитика</button>
+</div>
+
+<!-- ADD PANEL -->
+<div class="panel active" id="panel-add">
+
+  <div class="card">
+    <div class="card-title">💰 Выручка за день</div>
+    <div class="field">
+      <label>Дата</label>
+      <input type="date" id="rev-date">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Сумма (€)</label>
+        <input type="number" id="rev-amount" placeholder="0.00" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label>Пицца M (малая)</label>
+        <input type="number" id="rev-pizzas-m" placeholder="0" min="0">
+      </div>
+      <div class="field">
+        <label>Пицца L (большая)</label>
+        <input type="number" id="rev-pizzas-l" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>Примечание</label>
+      <input type="text" id="rev-note" placeholder="Вечер пятницы, дождь...">
+    </div>
+    <button class="btn" onclick="addRevenue()">Записать выручку</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧾 Расход</div>
+
+    <div class="field">
+      <label>📸 Сканировать чек (фото)</label>
+      <div id="receipt-upload-area" onclick="document.getElementById('receipt-input').click()" style="border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;margin-top:6px;transition:border-color 0.2s;">
+        <div style="font-size:28px;margin-bottom:6px">📷</div>
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px">Фото или PDF чек</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:1px">JPG · PNG · PDF</div>
+      </div>
+      <input type="file" id="receipt-input" accept="image/*,application/pdf" style="display:none" onchange="scanReceipt(this)">
+    </div>
+
+    <div id="scan-status" style="display:none;text-align:center;padding:12px;background:var(--surface2);border-radius:8px;margin-bottom:14px;">
+      <div style="font-size:11px;color:var(--accent);letter-spacing:1px;">🤖 Читаю чек, подождите...</div>
+    </div>
+
+    <div id="receipt-preview" style="display:none;margin-bottom:14px;">
+      <img id="receipt-img" style="width:100%;border-radius:8px;max-height:180px;object-fit:cover;">
+      <button class="btn secondary" onclick="clearReceipt()" style="margin-top:8px;font-size:10px;padding:8px;">✕ Убрать фото</button>
+    </div>
+
+    <div class="field">
+      <label>Дата</label>
+      <input type="date" id="exp-date">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Категория</label>
+        <select id="exp-cat">
+          <option value="Продукты">🛒 Продукты</option>
+          <option value="Аренда">🏠 Аренда</option>
+          <option value="Газ/Электро">⚡ Газ/Электро</option>
+          <option value="Зарплата">👷 Зарплата</option>
+          <option value="Страховка">🛡 Страховка</option>
+          <option value="Социальные">📋 Социальные</option>
+          <option value="Вода">💧 Вода</option>
+          <option value="Бензин">⛽ Бензин</option>
+          <option value="Бухгалтер">📊 Бухгалтер</option>
+          <option value="Телефон/Инт">📱 Телефон/Инт</option>
+          <option value="Машина">🚗 Машина</option>
+          <option value="Другое">📦 Другое</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Сумма (€)</label>
+        <input type="number" id="exp-amount" placeholder="0.00" step="0.01" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>Описание</label>
+      <input type="text" id="exp-desc" placeholder="Моцарелла 2кг, томаты...">
+    </div>
+    <button class="btn" onclick="addExpense()">Записать расход</button>
+  </div>
+
+</div>
+
+<!-- HISTORY PANEL -->
+<div class="panel" id="panel-history">
+  <div class="month-selector">
+    <button class="month-nav" onclick="changeMonth(-1)">‹</button>
+    <div class="month-title" id="month-display"></div>
+    <button class="month-nav" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Все записи</div>
+    <div id="history-list"><div class="empty">Нет записей за этот месяц</div></div>
+  </div>
+</div>
+
+<!-- ANALYTICS PANEL -->
+<div class="panel" id="panel-analytics">
+  <div class="month-selector">
+    <button class="month-nav" onclick="changeMonth(-1)">‹</button>
+    <div class="month-title" id="month-display2"></div>
+    <button class="month-nav" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📈 Выручка vs Расходы (по дням)</div>
+    <div class="chart-wrap">
+      <div class="bar-chart" id="bar-chart"></div>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Выручка</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Расходы</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Прогресс к цели (4 000 €)</div>
+    <div id="goal-section">
+      <div class="fixed-badge">
+        <span>Постоянные расходы / мес</span>
+        <span>5 524 €</span>
+      </div>
+      <div class="fixed-badge">
+        <span>Переменные расходы (факт)</span>
+        <span id="var-expenses-label">0 €</span>
+      </div>
+      <div class="fixed-badge">
+        <span>Выручка (факт)</span>
+        <span id="rev-fact-label">0 €</span>
+      </div>
+      <div class="fixed-badge" style="border-color: var(--accent)">
+        <span>Прибыль (факт)</span>
+        <span id="profit-fact-label" style="color: var(--green)">0 €</span>
+      </div>
+      <div class="profit-bar">
+        <div class="profit-fill" id="profit-fill" style="width:0%; background: var(--green)"></div>
+      </div>
+      <div class="progress-label">
+        <span>0 €</span>
+        <span id="progress-pct">0%</span>
+        <span>4 000 €</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Расходы по категориям</div>
+    <div id="cat-breakdown"><div class="empty">Нет данных</div></div>
+  </div>
+</div>
+
+<script>
+  // PIN AUTH
+  const CORRECT_PIN = '2493';
+  let pinInput = '';
+
+  // Check if already authenticated in this session
+  if (sessionStorage.getItem('pizza_auth') === 'ok') {
+    document.getElementById('login-screen').style.display = 'none';
+  }
+
+  function pinPress(digit) {
+    if (pinInput.length >= 4) return;
+    pinInput += digit;
+    updateDots();
+    if (pinInput.length === 4) {
+      setTimeout(checkPin, 200);
+    }
+  }
+
+  function pinDel() {
+    pinInput = pinInput.slice(0, -1);
+    updateDots();
+  }
+
+  function updateDots() {
+    for (let i = 0; i < 4; i++) {
+      const dot = document.getElementById('d' + i);
+      dot.classList.toggle('filled', i < pinInput.length);
+      dot.classList.remove('error');
+    }
+  }
+
+  function checkPin() {
+    if (pinInput === CORRECT_PIN) {
+      sessionStorage.setItem('pizza_auth', 'ok');
+      document.getElementById('login-screen').style.display = 'none';
+    } else {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById('d' + i).classList.add('error');
+      }
+      const err = document.getElementById('login-error');
+      err.style.opacity = '1';
+      setTimeout(() => {
+        pinInput = '';
+        updateDots();
+        err.style.opacity = '0';
+      }, 1000);
+    }
+  }
+
+  const FIXED_MONTHLY = 5524;
+  const GOAL = 4000;
+
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
+
+  // Load or init data
+  let data = JSON.parse(localStorage.getItem('pizza_tracker') || '{"entries":[]}');
+
+  // Set today as default date
+  function todayStr() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  document.getElementById('rev-date').value = todayStr();
+  document.getElementById('exp-date').value = todayStr();
+
+  function save() {
+    localStorage.setItem('pizza_tracker', JSON.stringify(data));
+    refreshAll();
+  }
+
+  function addRevenue() {
+    const date = document.getElementById('rev-date').value;
+    const amount = parseFloat(document.getElementById('rev-amount').value);
+    const pizzasM = parseInt(document.getElementById('rev-pizzas-m').value) || 0;
+    const pizzasL = parseInt(document.getElementById('rev-pizzas-l').value) || 0;
+    const pizzas = pizzasM + pizzasL;
+    const note = document.getElementById('rev-note').value;
+
+    if (!date || isNaN(amount) || amount <= 0) return alert('Введите дату и сумму');
+
+    data.entries.push({ id: Date.now(), type: 'revenue', date, amount, pizzas, pizzasM, pizzasL, note });
+    document.getElementById('rev-amount').value = '';
+    document.getElementById('rev-pizzas-m').value = '';
+    document.getElementById('rev-pizzas-l').value = '';
+    document.getElementById('rev-note').value = '';
+    save();
+    alert('✅ Выручка записана!');
+  }
+
+  // RECEIPT SCAN via Claude AI (image + PDF)
+  async function scanReceipt(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const isPDF = file.type === 'application/pdf';
+
+    // Show preview for images only
+    if (!isPDF) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('receipt-img').src = e.target.result;
+        document.getElementById('receipt-preview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // For PDF show icon
+      document.getElementById('receipt-img').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1814"/><text y="55" x="50" text-anchor="middle" font-size="40">📄</text></svg>';
+      document.getElementById('receipt-preview').style.display = 'block';
+    }
+
+    document.getElementById('scan-status').style.display = 'block';
+    document.getElementById('scan-status').innerHTML = '<div style="font-size:11px;color:var(--accent);letter-spacing:1px;">🤖 Читаю чек, подождите...</div>';
+    document.getElementById('receipt-upload-area').style.borderColor = 'var(--accent)';
+
+    try {
+      const base64 = await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result.split(',')[1]);
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+
+      const prompt = 'Это чек из магазина или счёт. Извлеки информацию и ответь ТОЛЬКО в формате JSON без пояснений:\n{"total": <итоговая сумма числом>, "description": "<краткое описание товаров на русском, макс 60 символов>", "category": "<одна из: Продукты, Газ/Электро, Бензин, Другое>"}\nЕсли сумму найти не удалось, напиши total: 0.';
+
+      let messageContent;
+      if (isPDF) {
+        messageContent = [
+          {
+            type: 'document',
+            source: { type: 'base64', media_type: 'application/pdf', data: base64 }
+          },
+          { type: 'text', text: prompt }
+        ];
+      } else {
+        messageContent = [
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: file.type || 'image/jpeg', data: base64 }
+          },
+          { type: 'text', text: prompt }
+        ];
+      }
+
+      const response = await fetch('/api/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: messageContent }]
+        })
+      });
+
+      const data = await response.json();
+      const text = data.content.map(i => i.text || '').join('');
+      const clean = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      if (parsed.total && parsed.total > 0) document.getElementById('exp-amount').value = parsed.total;
+      if (parsed.description) document.getElementById('exp-desc').value = parsed.description;
+      if (parsed.category) {
+        const sel = document.getElementById('exp-cat');
+        for (let opt of sel.options) {
+          if (opt.value === parsed.category) { sel.value = parsed.category; break; }
+        }
+      }
+
+      document.getElementById('scan-status').innerHTML = '<div style="font-size:11px;color:var(--green);letter-spacing:1px;">✅ Чек распознан! Проверьте данные.</div>';
+      setTimeout(() => { document.getElementById('scan-status').style.display = 'none'; }, 3000);
+
+    } catch (err) {
+      document.getElementById('scan-status').innerHTML = '<div style="font-size:11px;color:var(--red);letter-spacing:1px;">❌ Не удалось распознать. Введите вручную.</div>';
+      setTimeout(() => { document.getElementById('scan-status').style.display = 'none'; }, 3000);
+    }
+
+    document.getElementById('receipt-upload-area').style.borderColor = 'var(--border)';
+  }
+
+    function clearReceipt() {
+    document.getElementById('receipt-preview').style.display = 'none';
+    document.getElementById('receipt-input').value = '';
+    document.getElementById('receipt-upload-area').style.borderColor = 'var(--border)';
+  }
+
+  function addExpense() {
+    const date = document.getElementById('exp-date').value;
+    const amount = parseFloat(document.getElementById('exp-amount').value);
+    const cat = document.getElementById('exp-cat').value;
+    const desc = document.getElementById('exp-desc').value;
+
+    if (!date || isNaN(amount) || amount <= 0) return alert('Введите дату и сумму');
+
+    data.entries.push({ id: Date.now(), type: 'expense', date, amount, cat, desc });
+    document.getElementById('exp-amount').value = '';
+    document.getElementById('exp-desc').value = '';
+    save();
+    alert('✅ Расход записан!');
+  }
+
+  function deleteEntry(id) {
+    if (!confirm('Удалить запись?')) return;
+    data.entries = data.entries.filter(e => e.id !== id);
+    save();
+  }
+
+  function getMonthEntries() {
+    return data.entries.filter(e => {
+      const d = new Date(e.date);
+      return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+  }
+
+  function fmt(n) {
+    return (Math.round(n * 100) / 100).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  }
+
+  function monthName() {
+    return new Date(currentYear, currentMonth, 1).toLocaleString('ru-RU', { month: 'long', year: 'numeric' });
+  }
+
+  function changeMonth(dir) {
+    currentMonth += dir;
+    if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    refreshAll();
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', ['add','history','analytics'][i] === tab);
+    });
+    document.querySelectorAll('.panel').forEach((p, i) => {
+      p.classList.toggle('active', ['panel-add','panel-history','panel-analytics'][i] === `panel-${tab}`);
+    });
+    refreshAll();
+  }
+
+  function refreshAll() {
+    const entries = getMonthEntries();
+    const revenue = entries.filter(e => e.type === 'revenue').reduce((s, e) => s + e.amount, 0);
+    const varExp = entries.filter(e => e.type === 'expense').reduce((s, e) => s + e.amount, 0);
+    const totalExp = varExp; // user logs actual expenses; fixed shown separately
+    const profit = revenue - varExp - FIXED_MONTHLY;
+
+    // Stats
+    document.getElementById('stat-revenue').textContent = fmt(revenue);
+    document.getElementById('stat-expenses').textContent = fmt(varExp + FIXED_MONTHLY);
+
+    const profitEl = document.getElementById('stat-profit');
+    profitEl.textContent = fmt(profit);
+    profitEl.className = 'stat-value ' + (profit >= 0 ? 'green' : 'red');
+
+    const pct = Math.max(0, Math.min(100, (profit / GOAL) * 100));
+    document.getElementById('stat-goal').textContent = Math.round(pct) + '%';
+
+    // Month display
+    const mn = monthName();
+    document.querySelectorAll('#month-display, #month-display2').forEach(el => el.textContent = mn);
+
+    // History
+    renderHistory(entries);
+
+    // Analytics
+    renderChart(entries);
+    renderGoal(revenue, varExp, profit, pct);
+    renderCats(entries);
+  }
+
+  function renderHistory(entries) {
+    const list = document.getElementById('history-list');
+    if (!entries.length) { list.innerHTML = '<div class="empty">Нет записей за этот месяц</div>'; return; }
+
+    const sorted = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
+    list.innerHTML = sorted.map(e => `
+      <div class="entry">
+        <div class="entry-left">
+          <div class="entry-cat">${e.type === 'revenue' ? '💰 Выручка' : '🧾 ' + e.cat}</div>
+          <div class="entry-desc">${e.type === 'revenue' ? (e.note || 'Выручка') + ((e.pizzasM || e.pizzasL) ? ' · M:' + (e.pizzasM||0) + ' L:' + (e.pizzasL||0) : '') : (e.desc || e.cat)}</div>
+          <div class="entry-date">${new Date(e.date).toLocaleDateString('ru-RU')}</div>
+        </div>
+        <div class="entry-amount ${e.type}">${e.type === 'revenue' ? '+' : '-'}${fmt(e.amount)}</div>
+        <button class="delete-btn" onclick="deleteEntry(${e.id})">×</button>
+      </div>
+    `).join('');
+  }
+
+  function renderChart(entries) {
+    const chart = document.getElementById('bar-chart');
+    
+    // Group by day
+    const days = {};
+    entries.forEach(e => {
+      const d = e.date;
+      if (!days[d]) days[d] = { rev: 0, exp: 0 };
+      if (e.type === 'revenue') days[d].rev += e.amount;
+      else days[d].exp += e.amount;
+    });
+
+    const keys = Object.keys(days).sort();
+    if (!keys.length) { chart.innerHTML = '<div class="empty" style="flex:1;display:flex;align-items:center;justify-content:center">Нет данных</div>'; return; }
+
+    const maxVal = Math.max(...keys.map(k => Math.max(days[k].rev, days[k].exp)), 1);
+
+    chart.innerHTML = keys.map(k => {
+      const revH = Math.round((days[k].rev / maxVal) * 130);
+      const expH = Math.round((days[k].exp / maxVal) * 130);
+      const label = new Date(k).getDate();
+      return `
+        <div class="bar-group">
+          <div class="bars">
+            <div class="bar rev" style="height:${revH}px" title="Выручка: ${fmt(days[k].rev)}"></div>
+            <div class="bar exp" style="height:${expH}px" title="Расходы: ${fmt(days[k].exp)}"></div>
+          </div>
+          <div class="bar-label">${label}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderGoal(revenue, varExp, profit, pct) {
+    document.getElementById('var-expenses-label').textContent = fmt(varExp);
+    document.getElementById('rev-fact-label').textContent = fmt(revenue);
+    const pl = document.getElementById('profit-fact-label');
+    pl.textContent = fmt(profit);
+    pl.style.color = profit >= 0 ? 'var(--green)' : 'var(--red)';
+
+    const fill = document.getElementById('profit-fill');
+    fill.style.width = pct + '%';
+    fill.style.background = profit >= GOAL ? 'var(--green)' : profit >= 0 ? 'var(--accent)' : 'var(--red)';
+    document.getElementById('progress-pct').textContent = Math.round(pct) + '%';
+  }
+
+  function renderCats(entries) {
+    const el = document.getElementById('cat-breakdown');
+    const expenses = entries.filter(e => e.type === 'expense');
+    if (!expenses.length) { el.innerHTML = '<div class="empty">Нет расходов за этот месяц</div>'; return; }
+
+    const cats = {};
+    expenses.forEach(e => { cats[e.cat] = (cats[e.cat] || 0) + e.amount; });
+    const total = Object.values(cats).reduce((s, v) => s + v, 0);
+    const sorted = Object.entries(cats).sort((a, b) => b[1] - a[1]);
+
+    el.innerHTML = sorted.map(([cat, amt]) => {
+      const pct = Math.round((amt / total) * 100);
+      return `
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+            <span>${cat}</span>
+            <span style="color:var(--accent)">${fmt(amt)} <span style="color:var(--muted)">${pct}%</span></span>
+          </div>
+          <div style="height:4px;background:var(--surface2);border-radius:2px">
+            <div style="height:100%;width:${pct}%;background:var(--accent2);border-radius:2px;transition:width 0.4s"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  refreshAll();
+</script>
+</body>
+</html>
