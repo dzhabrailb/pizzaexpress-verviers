@@ -745,6 +745,11 @@
     <div class="card-title">📊 Расходы по категориям</div>
     <div id="cat-breakdown"><div class="empty">Нет данных</div></div>
   </div>
+
+  <div class="card">
+    <div class="card-title">🛒 Детализация по продуктам</div>
+    <div id="product-breakdown"><div class="empty">Нет данных</div></div>
+  </div>
 </div>
 
 <script>
@@ -1126,6 +1131,42 @@
         </div>
       `;
     }).join('');
+
+    // Product breakdown by category
+    renderProductBreakdown(expenses);
+  }
+
+  function renderProductBreakdown(expenses) {
+    const el = document.getElementById('product-breakdown');
+    if (!expenses.length) { el.innerHTML = '<div class="empty">Нет данных</div>'; return; }
+
+    // Group by category, then list individual entries
+    const cats = {};
+    expenses.forEach(e => {
+      if (!cats[e.cat]) cats[e.cat] = { total: 0, items: [] };
+      cats[e.cat].total += e.amount;
+      if (e.desc) cats[e.cat].items.push({ desc: e.desc, amount: e.amount, date: e.date });
+    });
+
+    const sorted = Object.entries(cats).sort((a, b) => b[1].total - a[1].total);
+
+    el.innerHTML = sorted.map(([cat, data]) => `
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:6px">
+          <span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent)">${cat}</span>
+          <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--accent)">${fmt(data.total)}</span>
+        </div>
+        ${data.items.length ? data.items.sort((a,b) => b.amount - a.amount).map(item => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)22">
+            <div>
+              <div style="font-size:11px;color:var(--text)">${item.desc}</div>
+              <div style="font-size:9px;color:var(--muted)">${new Date(item.date).toLocaleDateString('ru-RU')}</div>
+            </div>
+            <span style="font-size:12px;color:var(--red);white-space:nowrap;margin-left:8px">-${fmt(item.amount)}</span>
+          </div>
+        `).join('') : `<div style="font-size:11px;color:var(--muted);padding:4px 0">${data.items.length} записей без описания</div>`}
+      </div>
+    `).join('');
   }
 
   refreshAll();
