@@ -864,11 +864,32 @@
     document.getElementById('receipt-upload-area').style.borderColor = 'var(--accent)';
 
     try {
+      // Compress image before sending
       const base64 = await new Promise((resolve, reject) => {
-        const r = new FileReader();
-        r.onload = () => resolve(r.result.split(',')[1]);
-        r.onerror = reject;
-        r.readAsDataURL(file);
+        if (isPDF) {
+          const r = new FileReader();
+          r.onload = () => resolve(r.result.split(',')[1]);
+          r.onerror = reject;
+          r.readAsDataURL(file);
+        } else {
+          const img = new Image();
+          const url = URL.createObjectURL(file);
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxSize = 1024;
+            let w = img.width, h = img.height;
+            if (w > maxSize || h > maxSize) {
+              if (w > h) { h = h * maxSize / w; w = maxSize; }
+              else { w = w * maxSize / h; h = maxSize; }
+            }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.7).split(',')[1]);
+            URL.revokeObjectURL(url);
+          };
+          img.onerror = reject;
+          img.src = url;
+        }
       });
 
       const prompt = 'Это чек из магазина или счёт. Извлеки информацию и ответь ТОЛЬКО в формате JSON без пояснений:\n{"total": <итоговая сумма числом>, "description": "<краткое описание товаров на русском, макс 60 символов>", "category": "<одна из: Продукты, Газ/Электро, Бензин, Другое>"}\nЕсли сумму найти не удалось, напиши total: 0.';
