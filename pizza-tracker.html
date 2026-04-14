@@ -924,6 +924,7 @@
       });
 
       const data = await response.json();
+      if (!data.content) throw new Error('API error: ' + JSON.stringify(data).slice(0, 100));
       const text = data.content.map(i => i.text || '').join('');
       const clean = text.replace(/```json|```/g, '').trim();
       const parsed = JSON.parse(clean);
