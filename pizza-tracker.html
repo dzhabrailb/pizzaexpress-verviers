@@ -941,8 +941,7 @@
       setTimeout(() => { document.getElementById('scan-status').style.display = 'none'; }, 3000);
 
     } catch (err) {
-      document.getElementById('scan-status').innerHTML = '<div style="font-size:11px;color:var(--red);letter-spacing:1px;">❌ Не удалось распознать. Введите вручную.</div>';
-      setTimeout(() => { document.getElementById('scan-status').style.display = 'none'; }, 3000);
+      document.getElementById('scan-status').innerHTML = '<div style="font-size:11px;color:var(--red);letter-spacing:1px;">❌ Ошибка: ' + (err.message || JSON.stringify(err)) + '</div>';
     }
 
     document.getElementById('receipt-upload-area').style.borderColor = 'var(--border)';
