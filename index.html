@@ -260,6 +260,10 @@
       font-size: 3.5rem;
       background: linear-gradient(135deg, #f0e0cc, #d4b896);
     }
+    .menu-card-img-logo {
+      height: 170px; width: 100%; object-fit: contain;
+      background: #1a1a2e; padding: 16px;
+    }
     .menu-card-body { padding: 18px 20px; flex: 1; display: flex; flex-direction: column; }
     .menu-card-body h3 {
       font-family: 'Playfair Display', serif;
@@ -1374,13 +1378,23 @@
       const title = card.querySelector('h3');
       if (!placeholder || !title) return;
       const photoUrl = getPhotoUrl(title.textContent);
-      if (!photoUrl) return; // Pas de photo → garde le placeholder emoji
+      const src = photoUrl || 'logo.jpeg'; // Logo si pas de photo
       const img = document.createElement('img');
-      img.src = photoUrl;
+      img.src = src;
       img.alt = title.textContent;
-      img.className = 'menu-card-img';
       img.loading = 'lazy';
-      img.onerror = function() { this.replaceWith(placeholder); };
+      if (photoUrl) {
+        img.className = 'menu-card-img';
+        img.onerror = function() {
+          const logoImg = document.createElement('img');
+          logoImg.src = 'logo.jpeg';
+          logoImg.alt = 'Pizza Express Verviers';
+          logoImg.className = 'menu-card-img-logo';
+          this.replaceWith(logoImg);
+        };
+      } else {
+        img.className = 'menu-card-img-logo';
+      }
       placeholder.replaceWith(img);
     });
   });
