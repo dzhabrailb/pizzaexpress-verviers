@@ -1,1 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍕 Pizza Finance Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* LOGIN SCREEN */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    background: #0f0e0c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 32px;
+  }
 
+  #login-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: #e8a020;
+    margin-bottom: 8px;
+  }
+
+  #login-screen p {
+    color: #7a7060;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  #pin-display {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .pin-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #2e2a22;
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  .pin-dot.filled {
+    background: #e8a020;
+    border-color: #e8a020;
+  }
+
+  .pin-dot.error {
+    background: #e05555;
+    border-color: #e05555;
+  }
+
+  #pin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 260px;
+    width: 100%;
+  }
+
+  .pin-btn {
+    background: #1a1814;
+    border: 1px solid #2e2a22;
+    border-radius: 14px;
+    color: #f0ead8;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .pin-btn:active {
+    background: #e8a020;
+    color: #0f0e0c;
+    transform: scale(0.95);
+  }
+
+  .pin-btn.del {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: #7a7060;
+  }
+
+  #login-error {
+    color: #e05555;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 16px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  :root {
+    --bg: #0f0e0c;
+    --surface: #1a1814;
+    --surface2: #242118;
+    --accent: #e8a020;
+    --accent2: #c45c1a;
+    --green: #4caf7d;
+    --red: #e05555;
+    --text: #f0ead8;
+    --muted: #7a7060;
+    --border: #2e2a22;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
