@@ -897,7 +897,7 @@
         }
       });
 
-      const prompt = 'Это чек из магазина или счёт. Извлеки информацию и ответь ТОЛЬКО в формате JSON без пояснений:\n{"total": <итоговая сумма числом>, "description": "<краткое описание товаров на русском, макс 60 символов>", "category": "<одна из: Продукты, Газ/Электро, Бензин, Другое>"}\nЕсли сумму найти не удалось, напиши total: 0.';
+      const prompt = 'Это чек из магазина. Извлеки ВСЕ товары и ответь ТОЛЬКО в формате JSON без пояснений:\n{"total": <итоговая сумма числом>, "category": "<одна из: Продукты, Газ/Электро, Бензин, Другое>", "description": "<краткое описание>", "items": [{"name": "<название товара на русском>", "qty": <количество числом>, "unit": "<шт/кг/л/уп>", "price": <цена за единицу>, "total": <итого за позицию>}]}\nЕсли количество неизвестно, пиши qty: 1, unit: шт. Если сумму найти не удалось, пиши total: 0. items должен содержать все товары из чека.';
 
       let messageContent;
       if (isPDF) {
@@ -942,6 +942,8 @@
           if (opt.value === parsed.category) { sel.value = parsed.category; break; }
         }
       }
+      // Save items for detailed breakdown
+      window._lastScannedItems = parsed.items || [];
 
       document.getElementById('scan-status').innerHTML = '<div style="font-size:11px;color:var(--green);letter-spacing:1px;">✅ Чек распознан! Проверьте данные.</div>';
       setTimeout(() => { document.getElementById('scan-status').style.display = 'none'; }, 3000);
@@ -967,7 +969,8 @@
 
     if (!date || isNaN(amount) || amount <= 0) return alert('Введите дату и сумму');
 
-    data.entries.push({ id: Date.now(), type: 'expense', date, amount, cat, desc });
+    data.entries.push({ id: Date.now(), type: 'expense', date, amount, cat, desc, items: window._lastScannedItems || [] });
+    window._lastScannedItems = [];
     document.getElementById('exp-amount').value = '';
     document.getElementById('exp-desc').value = '';
     save();
@@ -1140,33 +1143,48 @@
     const el = document.getElementById('product-breakdown');
     if (!expenses.length) { el.innerHTML = '<div class="empty">Нет данных</div>'; return; }
 
-    // Group by category, then list individual entries
+    // Collect all scanned items grouped by category
     const cats = {};
     expenses.forEach(e => {
-      if (!cats[e.cat]) cats[e.cat] = { total: 0, items: [] };
-      cats[e.cat].total += e.amount;
-      if (e.desc) cats[e.cat].items.push({ desc: e.desc, amount: e.amount, date: e.date });
+      const cat = e.cat || 'Другое';
+      if (!cats[cat]) cats[cat] = { total: 0, items: {} };
+      cats[cat].total += e.amount;
+      
+      if (e.items && e.items.length) {
+        e.items.forEach(item => {
+          const key = item.name;
+          if (!cats[cat].items[key]) cats[cat].items[key] = { name: item.name, qty: 0, unit: item.unit || 'шт', total: 0 };
+          cats[cat].items[key].qty += item.qty || 1;
+          cats[cat].items[key].total += item.total || item.price || 0;
+        });
+      }
     });
 
     const sorted = Object.entries(cats).sort((a, b) => b[1].total - a[1].total);
 
-    el.innerHTML = sorted.map(([cat, data]) => `
-      <div style="margin-bottom:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:6px">
-          <span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent)">${cat}</span>
-          <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--accent)">${fmt(data.total)}</span>
-        </div>
-        ${data.items.length ? data.items.sort((a,b) => b.amount - a.amount).map(item => `
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)22">
-            <div>
-              <div style="font-size:11px;color:var(--text)">${item.desc}</div>
-              <div style="font-size:9px;color:var(--muted)">${new Date(item.date).toLocaleDateString('ru-RU')}</div>
-            </div>
-            <span style="font-size:12px;color:var(--red);white-space:nowrap;margin-left:8px">-${fmt(item.amount)}</span>
+    el.innerHTML = sorted.map(([cat, data]) => {
+      const items = Object.values(data.items).sort((a, b) => b.total - a.total);
+      return `
+        <div style="margin-bottom:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:2px solid var(--accent);margin-bottom:8px">
+            <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent)">${cat}</span>
+            <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--accent)">${fmt(data.total)}</span>
           </div>
-        `).join('') : `<div style="font-size:11px;color:var(--muted);padding:4px 0">${data.items.length} записей без описания</div>`}
-      </div>
-    `).join('');
+          ${items.length ? `
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:4px 8px;font-size:10px;color:var(--muted);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase">
+              <span>Товар</span><span style="text-align:right">Кол-во</span><span style="text-align:right">Сумма</span>
+            </div>
+            ${items.map(item => `
+              <div style="display:grid;grid-template-columns:1fr auto auto;gap:3px 8px;padding:5px 0;border-bottom:1px solid var(--border);align-items:center">
+                <span style="font-size:11px;color:var(--text)">${item.name}</span>
+                <span style="font-size:11px;color:var(--muted);text-align:right;white-space:nowrap">${Math.round(item.qty * 100) / 100} ${item.unit}</span>
+                <span style="font-size:12px;color:var(--red);text-align:right;white-space:nowrap;font-weight:500">${fmt(item.total)}</span>
+              </div>
+            `).join('')}
+          ` : `<div style="font-size:11px;color:var(--muted);padding:4px 0">Нет детализации — добавьте чек с фото</div>`}
+        </div>
+      `;
+    }).join('');
   }
 
   refreshAll();
