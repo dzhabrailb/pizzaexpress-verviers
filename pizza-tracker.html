@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍕 Pizza Finance Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e0c;
+    --surface: #1a1814;
+    --surface2: #242118;
+    --accent: #e8a020;
+    --accent2: #c45c1a;
+    --green: #4caf7d;
+    --red: #e05555;
+    --text: #f0ead8;
+    --muted: #7a7060;
+    --border: #2e2a22;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin-top: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* STATS ROW */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  @media(min-width: 600px) {
+    .stats { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .stat-card.green::before { background: var(--green); }
+  .stat-card.red::before { background: var(--red); }
+  .stat-card.neutral::before { background: var(--muted); }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-value.accent { color: var(--accent); }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 8px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    background: var(--accent);
+    color: #0f0e0c;
+    font-weight: 500;
+  }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* FORM */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .field {
+    margin-bottom: 14px;
+  }
+
+  label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+
+  select option { background: var(--surface2); }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #0f0e0c;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+
+  .btn:hover { background: #f0b030; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ENTRIES LIST */
+  .entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+
+  .entry:last-child { border-bottom: none; }
+
+  .entry-left { flex: 1; min-width: 0; }
+
+  .entry-cat {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .entry-desc {
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry-date {
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .entry-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .entry-amount.expense { color: var(--red); }
+  .entry-amount.revenue { color: var(--green); }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .delete-btn:hover { color: var(--red); }
+
+  /* CHART */
+  .chart-wrap {
+    position: relative;
+    height: 180px;
+    margin: 8px 0 4px;
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 100%;
+    padding-bottom: 24px;
+  }
+
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .bars {
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+    width: 100%;
+    flex: 1;
+  }
+
+  .bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    min-height: 2px;
+    transition: height 0.4s ease;
+  }
+
+  .bar.rev { background: var(--green); }
+  .bar.exp { background: var(--red); opacity: 0.8; }
+
+  .bar-label {
+    font-size: 8px;
+    color: var(--muted);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    justify-content: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 32px 0;
+  }
+
+  .month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .month-nav {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .month-nav:hover { border-color: var(--accent); }
+
+  .month-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--accent);
+  }
+
+  /* Fixed costs badge */
+  .fixed-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  .fixed-badge span:first-child { color: var(--muted); }
+  .fixed-badge span:last-child { color: var(--accent); font-weight: 500; }
+
+  .profit-bar {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .profit-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">Финансовый трекер</div>
+  <h1>🍕 Pizza Finance</h1>
+</header>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-card accent">
+    <div class="stat-label">Выручка / мес</div>
+    <div class="stat-value accent" id="stat-revenue">0 €</div>
+  </div>
+  <div class="stat-card red">
+    <div class="stat-label">Расходы / мес</div>
+    <div class="stat-value red" id="stat-expenses">0 €</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-label">Прибыль / мес</div>
+    <div class="stat-value" id="stat-profit">0 €</div>
+  </div>
+  <div class="stat-card neutral">
+    <div class="stat-label">Цель 4 000 €</div>
+    <div class="stat-value" id="stat-goal">0%</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('add')">+ Добавить</button>
+  <button class="tab" onclick="switchTab('history')">История</button>
+  <button class="tab" onclick="switchTab('analytics')">Аналитика</button>
+</div>
+
+<!-- ADD PANEL -->
+<div class="panel active" id="panel-add">
+
+  <div class="card">
+    <div class="card-title">💰 Выручка за день</div>
+    <div class="field">
+      <label>Дата</label>
+      <input type="date" id="rev-date">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Сумма (€)</label>
+        <input type="number" id="rev-amount" placeholder="0.00" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label>Пицц продано</label>
+        <input type="number" id="rev-pizzas" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>Примечание</label>
+      <input type="text" id="rev-note" placeholder="Вечер пятницы, дождь...">
+    </div>
+    <button class="btn" onclick="addRevenue()">Записать выручку</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧾 Расход</div>
+    <div class="field">
+      <label>Дата</label>
+      <input type="date" id="exp-date">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Категория</label>
+        <select id="exp-cat">
+          <option value="Продукты">🛒 Продукты</option>
+          <option value="Аренда">🏠 Аренда</option>
+          <option value="Газ/Электро">⚡ Газ/Электро</option>
+          <option value="Зарплата">👷 Зарплата</option>
+          <option value="Страховка">🛡 Страховка</option>
+          <option value="Социальные">📋 Социальные</option>
+          <option value="Вода">💧 Вода</option>
+          <option value="Бензин">⛽ Бензин</option>
+          <option value="Бухгалтер">📊 Бухгалтер</option>
+          <option value="Телефон/Инт">📱 Телефон/Инт</option>
+          <option value="Машина">🚗 Машина</option>
+          <option value="Другое">📦 Другое</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Сумма (€)</label>
+        <input type="number" id="exp-amount" placeholder="0.00" step="0.01" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>Описание</label>
+      <input type="text" id="exp-desc" placeholder="Моцарелла 2кг, томаты...">
+    </div>
+    <button class="btn" onclick="addExpense()">Записать расход</button>
+  </div>
+
+</div>
+
+<!-- HISTORY PANEL -->
+<div class="panel" id="panel-history">
+  <div class="month-selector">
+    <button class="month-nav" onclick="changeMonth(-1)">‹</button>
+    <div class="month-title" id="month-display"></div>
+    <button class="month-nav" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Все записи</div>
+    <div id="history-list"><div class="empty">Нет записей за этот месяц</div></div>
+  </div>
+</div>
+
+<!-- ANALYTICS PANEL -->
+<div class="panel" id="panel-analytics">
+  <div class="month-selector">
+    <button class="month-nav" onclick="changeMonth(-1)">‹</button>
+    <div class="month-title" id="month-display2"></div>
+    <button class="month-nav" onclick="changeMonth(1)">›</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📈 Выручка vs Расходы (по дням)</div>
+    <div class="chart-wrap">
+      <div class="bar-chart" id="bar-chart"></div>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Выручка</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Расходы</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Прогресс к цели (4 000 €)</div>
+    <div id="goal-section">
+      <div class="fixed-badge">
+        <span>Постоянные расходы / мес</span>
+        <span>5 524 €</span>
+      </div>
+      <div class="fixed-badge">
+        <span>Переменные расходы (факт)</span>
+        <span id="var-expenses-label">0 €</span>
+      </div>
+      <div class="fixed-badge">
+        <span>Выручка (факт)</span>
+        <span id="rev-fact-label">0 €</span>
+      </div>
+      <div class="fixed-badge" style="border-color: var(--accent)">
+        <span>Прибыль (факт)</span>
+        <span id="profit-fact-label" style="color: var(--green)">0 €</span>
+      </div>
+      <div class="profit-bar">
+        <div class="profit-fill" id="profit-fill" style="width:0%; background: var(--green)"></div>
+      </div>
+      <div class="progress-label">
+        <span>0 €</span>
+        <span id="progress-pct">0%</span>
+        <span>4 000 €</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Расходы по категориям</div>
+    <div id="cat-breakdown"><div class="empty">Нет данных</div></div>
+  </div>
+</div>
+
+<script>
+  const FIXED_MONTHLY = 5524;
+  const GOAL = 4000;
+
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
+
+  // Load or init data
+  let data = JSON.parse(localStorage.getItem('pizza_tracker') || '{"entries":[]}');
+
+  // Set today as default date
+  function todayStr() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  document.getElementById('rev-date').value = todayStr();
+  document.getElementById('exp-date').value = todayStr();
+
+  function save() {
+    localStorage.setItem('pizza_tracker', JSON.stringify(data));
+    refreshAll();
+  }
+
+  function addRevenue() {
+    const date = document.getElementById('rev-date').value;
+    const amount = parseFloat(document.getElementById('rev-amount').value);
+    const pizzas = parseInt(document.getElementById('rev-pizzas').value) || 0;
+    const note = document.getElementById('rev-note').value;
+
+    if (!date || isNaN(amount) || amount <= 0) return alert('Введите дату и сумму');
+
+    data.entries.push({ id: Date.now(), type: 'revenue', date, amount, pizzas, note });
+    document.getElementById('rev-amount').value = '';
+    document.getElementById('rev-pizzas').value = '';
+    document.getElementById('rev-note').value = '';
+    save();
+    alert('✅ Выручка записана!');
+  }
+
+  function addExpense() {
+    const date = document.getElementById('exp-date').value;
+    const amount = parseFloat(document.getElementById('exp-amount').value);
+    const cat = document.getElementById('exp-cat').value;
+    const desc = document.getElementById('exp-desc').value;
+
+    if (!date || isNaN(amount) || amount <= 0) return alert('Введите дату и сумму');
+
+    data.entries.push({ id: Date.now(), type: 'expense', date, amount, cat, desc });
+    document.getElementById('exp-amount').value = '';
+    document.getElementById('exp-desc').value = '';
+    save();
+    alert('✅ Расход записан!');
+  }
+
+  function deleteEntry(id) {
+    if (!confirm('Удалить запись?')) return;
+    data.entries = data.entries.filter(e => e.id !== id);
+    save();
+  }
+
+  function getMonthEntries() {
+    return data.entries.filter(e => {
+      const d = new Date(e.date);
+      return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+  }
+
+  function fmt(n) {
+    return (Math.round(n * 100) / 100).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  }
+
+  function monthName() {
+    return new Date(currentYear, currentMonth, 1).toLocaleString('ru-RU', { month: 'long', year: 'numeric' });
+  }
+
+  function changeMonth(dir) {
+    currentMonth += dir;
+    if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    refreshAll();
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', ['add','history','analytics'][i] === tab);
+    });
+    document.querySelectorAll('.panel').forEach((p, i) => {
+      p.classList.toggle('active', ['panel-add','panel-history','panel-analytics'][i] === `panel-${tab}`);
+    });
+    refreshAll();
+  }
+
+  function refreshAll() {
+    const entries = getMonthEntries();
+    const revenue = entries.filter(e => e.type === 'revenue').reduce((s, e) => s + e.amount, 0);
+    const varExp = entries.filter(e => e.type === 'expense').reduce((s, e) => s + e.amount, 0);
+    const totalExp = varExp; // user logs actual expenses; fixed shown separately
+    const profit = revenue - varExp - FIXED_MONTHLY;
+
+    // Stats
+    document.getElementById('stat-revenue').textContent = fmt(revenue);
+    document.getElementById('stat-expenses').textContent = fmt(varExp + FIXED_MONTHLY);
+
+    const profitEl = document.getElementById('stat-profit');
+    profitEl.textContent = fmt(profit);
+    profitEl.className = 'stat-value ' + (profit >= 0 ? 'green' : 'red');
+
+    const pct = Math.max(0, Math.min(100, (profit / GOAL) * 100));
+    document.getElementById('stat-goal').textContent = Math.round(pct) + '%';
+
+    // Month display
+    const mn = monthName();
+    document.querySelectorAll('#month-display, #month-display2').forEach(el => el.textContent = mn);
+
+    // History
+    renderHistory(entries);
+
+    // Analytics
+    renderChart(entries);
+    renderGoal(revenue, varExp, profit, pct);
+    renderCats(entries);
+  }
+
+  function renderHistory(entries) {
+    const list = document.getElementById('history-list');
+    if (!entries.length) { list.innerHTML = '<div class="empty">Нет записей за этот месяц</div>'; return; }
+
+    const sorted = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
+    list.innerHTML = sorted.map(e => `
+      <div class="entry">
+        <div class="entry-left">
+          <div class="entry-cat">${e.type === 'revenue' ? '💰 Выручка' : '🧾 ' + e.cat}</div>
+          <div class="entry-desc">${e.type === 'revenue' ? (e.note || 'Выручка') + (e.pizzas ? ' · ' + e.pizzas + ' пицц' : '') : (e.desc || e.cat)}</div>
+          <div class="entry-date">${new Date(e.date).toLocaleDateString('ru-RU')}</div>
+        </div>
+        <div class="entry-amount ${e.type}">${e.type === 'revenue' ? '+' : '-'}${fmt(e.amount)}</div>
+        <button class="delete-btn" onclick="deleteEntry(${e.id})">×</button>
+      </div>
+    `).join('');
+  }
+
+  function renderChart(entries) {
+    const chart = document.getElementById('bar-chart');
+    
+    // Group by day
+    const days = {};
+    entries.forEach(e => {
+      const d = e.date;
+      if (!days[d]) days[d] = { rev: 0, exp: 0 };
+      if (e.type === 'revenue') days[d].rev += e.amount;
+      else days[d].exp += e.amount;
+    });
+
+    const keys = Object.keys(days).sort();
+    if (!keys.length) { chart.innerHTML = '<div class="empty" style="flex:1;display:flex;align-items:center;justify-content:center">Нет данных</div>'; return; }
+
+    const maxVal = Math.max(...keys.map(k => Math.max(days[k].rev, days[k].exp)), 1);
+
+    chart.innerHTML = keys.map(k => {
+      const revH = Math.round((days[k].rev / maxVal) * 130);
+      const expH = Math.round((days[k].exp / maxVal) * 130);
+      const label = new Date(k).getDate();
+      return `
+        <div class="bar-group">
+          <div class="bars">
+            <div class="bar rev" style="height:${revH}px" title="Выручка: ${fmt(days[k].rev)}"></div>
+            <div class="bar exp" style="height:${expH}px" title="Расходы: ${fmt(days[k].exp)}"></div>
+          </div>
+          <div class="bar-label">${label}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderGoal(revenue, varExp, profit, pct) {
+    document.getElementById('var-expenses-label').textContent = fmt(varExp);
+    document.getElementById('rev-fact-label').textContent = fmt(revenue);
+    const pl = document.getElementById('profit-fact-label');
+    pl.textContent = fmt(profit);
+    pl.style.color = profit >= 0 ? 'var(--green)' : 'var(--red)';
+
+    const fill = document.getElementById('profit-fill');
+    fill.style.width = pct + '%';
+    fill.style.background = profit >= GOAL ? 'var(--green)' : profit >= 0 ? 'var(--accent)' : 'var(--red)';
+    document.getElementById('progress-pct').textContent = Math.round(pct) + '%';
+  }
+
+  function renderCats(entries) {
+    const el = document.getElementById('cat-breakdown');
+    const expenses = entries.filter(e => e.type === 'expense');
+    if (!expenses.length) { el.innerHTML = '<div class="empty">Нет расходов за этот месяц</div>'; return; }
+
+    const cats = {};
+    expenses.forEach(e => { cats[e.cat] = (cats[e.cat] || 0) + e.amount; });
+    const total = Object.values(cats).reduce((s, v) => s + v, 0);
+    const sorted = Object.entries(cats).sort((a, b) => b[1] - a[1]);
+
+    el.innerHTML = sorted.map(([cat, amt]) => {
+      const pct = Math.round((amt / total) * 100);
+      return `
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+            <span>${cat}</span>
+            <span style="color:var(--accent)">${fmt(amt)} <span style="color:var(--muted)">${pct}%</span></span>
+          </div>
+          <div style="height:4px;background:var(--surface2);border-radius:2px">
+            <div style="height:100%;width:${pct}%;background:var(--accent2);border-radius:2px;transition:width 0.4s"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  refreshAll();
+</script>
+</body>
+</html>
