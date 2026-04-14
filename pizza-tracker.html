@@ -810,30 +810,17 @@
 
   // JSONBin cloud storage
   const JSONBIN_KEY = '$2a$10$WZAGg/5nos66BGb5xMp3DuE89lLK3a5gXv7w6dxbU0zjONilR2lPa';
+  const JSONBIN_BIN_ID = '69dec54a36566621a8b3ae7f';
   const JSONBIN_URL = 'https://api.jsonbin.io/v3/b';
-  let JSONBIN_BIN_ID = localStorage.getItem('pizza_bin_id') || '';
   let data = { entries: [] };
 
   async function cloudLoad() {
     try {
-      if (!JSONBIN_BIN_ID) {
-        // Create new bin
-        const r = await fetch(JSONBIN_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY, 'X-Bin-Name': 'pizza-tracker' },
-          body: JSON.stringify({ entries: [] })
-        });
-        const d = await r.json();
-        JSONBIN_BIN_ID = d.metadata.id;
-        localStorage.setItem('pizza_bin_id', JSONBIN_BIN_ID);
-        data = { entries: [] };
-      } else {
-        const r = await fetch(`${JSONBIN_URL}/${JSONBIN_BIN_ID}/latest`, {
-          headers: { 'X-Master-Key': JSONBIN_KEY }
-        });
-        const d = await r.json();
-        data = d.record || { entries: [] };
-      }
+      const r = await fetch(`${JSONBIN_URL}/${JSONBIN_BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': JSONBIN_KEY }
+      });
+      const d = await r.json();
+      data = d.record || { entries: [] };
     } catch(e) {
       data = JSON.parse(localStorage.getItem('pizza_tracker') || '{"entries":[]}');
     }
@@ -843,13 +830,11 @@
   async function cloudSave() {
     localStorage.setItem('pizza_tracker', JSON.stringify(data));
     try {
-      if (JSONBIN_BIN_ID) {
-        await fetch(`${JSONBIN_URL}/${JSONBIN_BIN_ID}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-          body: JSON.stringify(data)
-        });
-      }
+      await fetch(`${JSONBIN_URL}/${JSONBIN_BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+        body: JSON.stringify(data)
+      });
     } catch(e) { console.log('Cloud save error:', e); }
   }
 
