@@ -418,6 +418,7 @@
       text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
     }
     .footer-logo span { color: #ff4500; text-shadow: 1px 1px 6px rgba(255,69,0,0.5); }
+    .footer-logo img { height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(212,168,67,0.5)); }
     .footer-text { font-size: 0.88rem; color: #9a8a7a; margin-bottom: 20px; line-height: 1.7; }
     .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
     .footer-links a { color: #d4c4b0; font-size: 0.85rem; transition: color .2s; }
@@ -555,8 +556,7 @@
 <!-- Navbar -->
 <nav>
   <div class="nav-logo">
-    <img src="logo.jpeg" alt="PizzaExpress Verviers Logo" onerror="this.style.display='none'" />
-    Pizza<span>Express</span> Verviers
+    <img src="Photos/LOGO.png" alt="PizzaExpress Verviers Logo" />
   </div>
   <ul class="nav-links">
     <li><a href="#about" data-lang="fr">Notre Histoire</a><a href="#about" data-lang="en">Our Story</a></li>
@@ -1048,7 +1048,7 @@
 
 <!-- Footer -->
 <footer>
-  <div class="footer-logo">Pizza<span>Express</span> Verviers</div>
+  <div class="footer-logo"><img src="Photos/LOGO.png" alt="PizzaExpress Verviers Logo" /></div>
   <p class="footer-text">
     Rue de Dison 176 · 4800 Verviers · <a href="tel:0470740855" style="color:var(--gold)">0470 74 08 55</a><br>
     <span data-lang="fr">Ouvert tous les jours · 17h00 – 23h00</span>
@@ -1292,28 +1292,40 @@
   // ===== AUTO FOOD PHOTOS =====
   // Photos exactes par nom de pizza (correspondance exacte)
   const exactPhotos = {
-    'jambon (dinde)':   'Photo/Jambon.jpeg',
-    '4 saisons':        'Photo/4 Saison.jpeg',
-    'bolognaise':       'Photo/Bolognaise.jpeg',
-    'fermière':         'Photo/Fermier.jpeg',
-    'gourmande':        'Photo/Gormande.jpeg',
-    'pavarotti':        'Photo/Pavorotti.jpeg',
-    'barbecue':         'Photo/Barbecue.jpeg',
-    'bella vita':       'Photo/Bella Vita.jpeg',
-    'scampi':           'Photo/Scampis.jpeg',
-    'fruits de mer':    'Photo/Fruit de mer.jpeg',
-    '4 fromages':       'Photo/4 Fromages.jpeg',
-    '5 fromages':       'Photo/4 Fromages.jpeg',
-    'végétarienne':     'Photo/Végétarian.jpeg',
-    'légumes mix':      'Photo/Légumes.jpeg',
-    'funghi':           'Photo/Funghi.jpeg',
-    'regina':           'Photo/Regina.jpeg',
-    'sicilienne':       'Photo/Sicilienne.jpeg',
-    'thono':            'Photo/Thon.jpeg',
-    'mexicain':         'Photo/Mexicain.jpeg',
-    'poulet':           'Photo/Poulet.jpeg',
-    'calabria':         'Photo/Calabria.jpeg',
-    'milano':           'Photo/Milano.jpeg',
+    'jambon (dinde)':   'Photos/Jambon.jpeg',
+    'jambon':           'Photos/Jambon.jpeg',
+    'hawaii':           'Photos/Hawaii.jpeg',
+    '4 saisons':        'Photos/4 Saison.jpeg',
+    'regina':           'Photos/Regina.jpeg',
+    'bolognaise':       'Photos/Bolognaise.jpeg',
+    'dolce vita':       'Photos/Dolce Vita.jpeg',
+    'fermière':         'Photos/Fermier.jpeg',
+    'romano':           'Photos/Al Polo.jpeg',
+    'mexicain':         'Photos/Mexicain.jpeg',
+    'salami':           'Photos/Sicilienne.jpeg',
+    'gourmande':        'Photos/Gormande.jpeg',
+    'pavarotti':        'Photos/Pavorotti.jpeg',
+    'barbecue':         'Photos/Barbecue.jpeg',
+    'bella vita':       'Photos/Bella Vita.jpeg',
+    'poulet':           'Photos/Poulet.jpeg',
+    'scampi':           'Photos/Scampis.jpeg',
+    'thono':            'Photos/Thon.jpeg',
+    'pacifico':         'Photos/Pasifico.jpeg',
+    'sicilienne':       'Photos/Sicilienne.jpeg',
+    'fruits de mer':    'Photos/Fruit de mer.jpeg',
+    'al polo':          'Photos/Al Polo.jpeg',
+    'venezia':          'Photos/Venezia.jpg',
+    'milano':           'Photos/Milano.jpeg',
+    'calabria':         'Photos/Calabria.jpeg',
+    'tartiflette':      'Photos/Tartiflette.jpeg',
+    'campagnarde':      'Photos/Campagnarde.jpeg',
+    'marguerita':       'Photos/Margharitta.jpeg',
+    '4 fromages':       'Photos/4 Fromages.jpeg',
+    '5 fromages':       'Photos/4 Fromages.jpeg',
+    'raclette':         'Photos/4 Fromages.jpeg',
+    'végétarienne':     'Photos/Végétarian.jpeg',
+    'légumes mix':      'Photos/Légumes.jpeg',
+    'funghi':           'Photos/Funghi.jpeg',
   };
 
   // Photos Unsplash pour les pizzas sans vraie photo
@@ -1378,7 +1390,7 @@
       const title = card.querySelector('h3');
       if (!placeholder || !title) return;
       const photoUrl = getPhotoUrl(title.textContent);
-      const src = photoUrl || 'logo.jpeg'; // Logo si pas de photo
+      const src = photoUrl || 'Photos/LOGO.png'; // Logo si pas de photo
       const img = document.createElement('img');
       img.src = src;
       img.alt = title.textContent;
@@ -1387,7 +1399,7 @@
         img.className = 'menu-card-img';
         img.onerror = function() {
           const logoImg = document.createElement('img');
-          logoImg.src = 'logo.jpeg';
+          logoImg.src = 'Photos/LOGO.png';
           logoImg.alt = 'Pizza Express Verviers';
           logoImg.className = 'menu-card-img-logo';
           this.replaceWith(logoImg);
