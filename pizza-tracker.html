@@ -612,6 +612,10 @@
         <label>Пицца L (большая)</label>
         <input type="number" id="rev-pizzas-l" placeholder="0" min="0">
       </div>
+      <div class="field">
+        <label>🍝 Паста (шт)</label>
+        <input type="number" id="rev-pasta" placeholder="0" min="0">
+      </div>
     </div>
     <div class="field">
       <label>Примечание</label>
@@ -742,12 +746,17 @@
   </div>
 
   <div class="card">
+    <div class="card-title">🍕 Продажи за месяц</div>
+    <div id="sales-breakdown"><div class="empty">Нет данных</div></div>
+  </div>
+
+  <div class="card">
     <div class="card-title">📊 Расходы по категориям</div>
     <div id="cat-breakdown"><div class="empty">Нет данных</div></div>
   </div>
 
   <div class="card">
-    <div class="card-title">🛒 Детализация по продуктам</div>
+    <div class="card-title">🛒 Купленные продукты по категориям</div>
     <div id="product-breakdown"><div class="empty">Нет данных</div></div>
   </div>
 </div>
@@ -856,15 +865,17 @@
     const amount = parseFloat(document.getElementById('rev-amount').value);
     const pizzasM = parseInt(document.getElementById('rev-pizzas-m').value) || 0;
     const pizzasL = parseInt(document.getElementById('rev-pizzas-l').value) || 0;
+    const pasta = parseInt(document.getElementById('rev-pasta').value) || 0;
     const pizzas = pizzasM + pizzasL;
     const note = document.getElementById('rev-note').value;
 
     if (!date || isNaN(amount) || amount <= 0) return alert('Введите дату и сумму');
 
-    data.entries.push({ id: Date.now(), type: 'revenue', date, amount, pizzas, pizzasM, pizzasL, note });
+    data.entries.push({ id: Date.now(), type: 'revenue', date, amount, pizzas, pizzasM, pizzasL, pasta, note });
     document.getElementById('rev-amount').value = '';
     document.getElementById('rev-pizzas-m').value = '';
     document.getElementById('rev-pizzas-l').value = '';
+    document.getElementById('rev-pasta').value = '';
     document.getElementById('rev-note').value = '';
     save();
     alert('✅ Выручка записана!');
@@ -1070,6 +1081,7 @@
     // Analytics
     renderChart(entries);
     renderGoal(revenue, varExp, profit, pct);
+    renderSalesBreakdown(entries);
     renderCats(entries);
   }
 
@@ -1082,13 +1094,74 @@
       <div class="entry">
         <div class="entry-left">
           <div class="entry-cat">${e.type === 'revenue' ? '💰 Выручка' : '🧾 ' + e.cat}</div>
-          <div class="entry-desc">${e.type === 'revenue' ? (e.note || 'Выручка') + ((e.pizzasM || e.pizzasL) ? ' · M:' + (e.pizzasM||0) + ' L:' + (e.pizzasL||0) : '') : (e.desc || e.cat)}</div>
+          <div class="entry-desc">${e.type === 'revenue' ? (e.note || 'Выручка') + ((e.pizzasM || e.pizzasL || e.pasta) ? ' · M:' + (e.pizzasM||0) + ' L:' + (e.pizzasL||0) + ' 🍝:' + (e.pasta||0) : '') : (e.desc || e.cat)}</div>
           <div class="entry-date">${new Date(e.date).toLocaleDateString('ru-RU')}</div>
         </div>
         <div class="entry-amount ${e.type}">${e.type === 'revenue' ? '+' : '-'}${fmt(e.amount)}</div>
         <button class="delete-btn" onclick="deleteEntry(${e.id})">×</button>
       </div>
     `).join('');
+  }
+
+  function renderSalesBreakdown(entries) {
+    const el = document.getElementById('sales-breakdown');
+    const revenues = entries.filter(e => e.type === 'revenue');
+    if (!revenues.length) { el.innerHTML = '<div class="empty">Нет данных о продажах</div>'; return; }
+
+    const totalM = revenues.reduce((s, e) => s + (e.pizzasM || 0), 0);
+    const totalL = revenues.reduce((s, e) => s + (e.pizzasL || 0), 0);
+    const totalPasta = revenues.reduce((s, e) => s + (e.pasta || 0), 0);
+    const totalPizzas = totalM + totalL;
+    const totalItems = totalPizzas + totalPasta;
+
+    el.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">🍕 Пицца M</div>
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--accent)">${totalM}</div>
+          <div style="font-size:9px;color:var(--muted);margin-top:2px">штук</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">🍕 Пицца L</div>
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--accent)">${totalL}</div>
+          <div style="font-size:9px;color:var(--muted);margin-top:2px">штук</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">🍝 Паста</div>
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--accent2)">${totalPasta}</div>
+          <div style="font-size:9px;color:var(--muted);margin-top:2px">порций</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">📦 Итого</div>
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--green)">${totalItems}</div>
+          <div style="font-size:9px;color:var(--muted);margin-top:2px">всего блюд</div>
+        </div>
+      </div>
+      ${totalItems > 0 ? `
+      <div style="margin-top:4px">
+        <div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Доля в продажах</div>
+        ${totalPizzas > 0 ? `
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+            <span style="color:var(--text)">🍕 Пицца (M+L)</span>
+            <span style="color:var(--accent)">${totalPizzas} шт · ${Math.round(totalPizzas/totalItems*100)}%</span>
+          </div>
+          <div style="height:4px;background:var(--surface2);border-radius:2px">
+            <div style="height:100%;width:${Math.round(totalPizzas/totalItems*100)}%;background:var(--accent);border-radius:2px;transition:width 0.4s"></div>
+          </div>
+        </div>` : ''}
+        ${totalPasta > 0 ? `
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">
+            <span style="color:var(--text)">🍝 Паста</span>
+            <span style="color:var(--accent2)">${totalPasta} порц · ${Math.round(totalPasta/totalItems*100)}%</span>
+          </div>
+          <div style="height:4px;background:var(--surface2);border-radius:2px">
+            <div style="height:100%;width:${Math.round(totalPasta/totalItems*100)}%;background:var(--accent2);border-radius:2px;transition:width 0.4s"></div>
+          </div>
+        </div>` : ''}
+      </div>` : ''}
+    `;
   }
 
   function renderChart(entries) {
