@@ -1080,7 +1080,8 @@
     document.querySelectorAll('.panel').forEach((p, i) => {
       p.classList.toggle('active', ['panel-add','panel-history','panel-analytics','panel-rating'][i] === `panel-${tab}`);
     });
-    refreshAll();
+    if (tab === 'rating') renderRatingPanel();
+    else refreshAll();
   }
 
   function refreshAll() {
