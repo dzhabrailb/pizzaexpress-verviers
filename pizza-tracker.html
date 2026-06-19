@@ -588,6 +588,7 @@
   <button class="tab active" onclick="switchTab('add')">+ Добавить</button>
   <button class="tab" onclick="switchTab('history')">История</button>
   <button class="tab" onclick="switchTab('analytics')">Аналитика</button>
+  <button class="tab" onclick="switchTab('rating')">⭐ Рейтинг</button>
 </div>
 
 <!-- ADD PANEL -->
@@ -761,6 +762,34 @@
   </div>
 </div>
 
+
+<!-- RATING PANEL -->
+<div class="panel" id="panel-rating">
+  <div class="card">
+    <div class="card-title">⭐ Текущий рейтинг</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;">
+      <div style="flex:1;min-width:120px;background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Google</div>
+        <div id="rating-google-score" style="font-size:32px;font-weight:700;color:var(--accent);">—</div>
+        <div style="font-size:13px;color:var(--muted);">★★★★★</div>
+        <div id="rating-google-count" style="font-size:11px;color:var(--muted);margin-top:4px;">— отзывов</div>
+      </div>
+      <div style="flex:1;min-width:120px;background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Uber Eats</div>
+        <div id="rating-ubereats-score" style="font-size:32px;font-weight:700;color:var(--accent);">—</div>
+        <div style="font-size:13px;color:var(--muted);">★★★★★</div>
+        <div id="rating-ubereats-count" style="font-size:11px;color:var(--muted);margin-top:4px;">— отзывов</div>
+      </div>
+    </div>
+    <div id="rating-fetch-status" style="margin-top:12px;font-size:12px;color:var(--muted);text-align:center;"></div>
+    <button onclick="fetchRatingAuto()" style="margin-top:12px;width:100%;background:var(--accent);color:#000;border:none;border-radius:8px;padding:10px;font-weight:700;cursor:pointer;font-size:14px;">🔄 Обновить автоматически</button>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 История рейтинга Google</div>
+    <div id="rating-history-chart" style="margin-top:8px;"></div>
+    <div id="rating-history-list" style="margin-top:12px;"></div>
+  </div>
+</div>
 <script>
   // PIN AUTH
   const CORRECT_PIN = '2493';
@@ -833,7 +862,8 @@
     } catch(e) {
       data = JSON.parse(localStorage.getItem('pizza_tracker') || '{"entries":[]}');
     }
-    refreshAll();
+    if (tab === 'rating') renderRatingPanel();
+    else refreshAll();
   }
 
   async function cloudSave() {
@@ -1045,10 +1075,10 @@
 
   function switchTab(tab) {
     document.querySelectorAll('.tab').forEach((t, i) => {
-      t.classList.toggle('active', ['add','history','analytics'][i] === tab);
+      t.classList.toggle('active', ['add','history','analytics','rating'][i] === tab);
     });
     document.querySelectorAll('.panel').forEach((p, i) => {
-      p.classList.toggle('active', ['panel-add','panel-history','panel-analytics'][i] === `panel-${tab}`);
+      p.classList.toggle('active', ['panel-add','panel-history','panel-analytics','panel-rating'][i] === `panel-${tab}`);
     });
     refreshAll();
   }
@@ -1287,6 +1317,43 @@
     }).join('');
   }
 
+
+  // ===== RATING MODULE =====
+  const RATING_KEY = 'rating_history';
+  function getRatingHistory() { try { const r = localStorage.getItem(RATING_KEY); return r ? JSON.parse(r) : []; } catch(e) { return []; } }
+  function saveRatingEntry(entry) { const h = getRatingHistory(); const f = h.filter(r => r.date !== entry.date); f.push(entry); f.sort((a,b) => a.date.localeCompare(b.date)); localStorage.setItem(RATING_KEY, JSON.stringify(f)); }
+  async function fetchRatingAuto() {
+    const s = document.getElementById('rating-fetch-status');
+    s.textContent = '🔍 Ищу рейтинг...';
+    document.querySelector('#panel-rating button').disabled = true;
+    try {
+      const resp = await fetch('/api/scan', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:1000, tools:[{type:'web_search_20250305',name:'web_search'}], messages:[{role:'user',content:'Search for current Google rating and reviews count for "Pizza Express Verviers" at Rue de Dison 176, 4800 Verviers Belgium. Also find Uber Eats rating. Return ONLY JSON no markdown: {"google_score":4.6,"google_count":128,"ubereats_score":4.6,"ubereats_count":310}'}] }) });
+      const data = await resp.json();
+      const text = (data.content||[]).map(b=>b.text||'').join('');
+      const m = text.replace(/```json|```/g,'').trim().match(/\{[^{}]+\}/);
+      if (!m) throw new Error('Нет JSON');
+      const p = JSON.parse(m[0]);
+      const today = new Date().toISOString().slice(0,10);
+      saveRatingEntry({date:today,google:{score:p.google_score||null,count:p.google_count||null},ubereats:{score:p.ubereats_score||null,count:p.ubereats_count||null}});
+      renderRatingPanel();
+      s.textContent = '✅ Обновлено ' + today;
+    } catch(e) { s.textContent = '❌ ' + e.message; }
+    document.querySelector('#panel-rating button').disabled = false;
+  }
+  function renderRatingPanel() {
+    const h = getRatingHistory();
+    if (!h.length) { document.getElementById('rating-fetch-status').textContent = 'Нажмите "Обновить" для получения рейтинга'; return; }
+    const l = h[h.length-1];
+    if (l.google?.score) { document.getElementById('rating-google-score').textContent = parseFloat(l.google.score).toFixed(1); document.getElementById('rating-google-count').textContent = (l.google.count||'—') + ' отзывов'; }
+    if (l.ubereats?.score) { document.getElementById('rating-ubereats-score').textContent = parseFloat(l.ubereats.score).toFixed(1); document.getElementById('rating-ubereats-count').textContent = (l.ubereats?.count||'—') + ' отзывов'; }
+    const ch = document.getElementById('rating-history-chart');
+    const ws = h.filter(r=>r.google?.score);
+    if (ws.length>=2) { const sc=ws.map(r=>parseFloat(r.google.score)),mn=Math.max(0,Math.min(...sc)-0.3),mx=Math.min(5,Math.max(...sc)+0.3),W=280,H=60; const pts=ws.map((r,i)=>{const x=(i/(ws.length-1))*W,y=H-((parseFloat(r.google.score)-mn)/(mx-mn||1))*H;return x.toFixed(1)+','+y.toFixed(1);}).join(' '); const dots=ws.map((r,i)=>{const x=(i/(ws.length-1))*W,y=H-((parseFloat(r.google.score)-mn)/(mx-mn||1))*H;return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="4" fill="var(--accent)"/>';}).join(''); ch.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:70px;overflow:visible"><polyline points="'+pts+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+dots+'</svg>'; } else { ch.innerHTML='<div style="font-size:12px;color:var(--muted);padding:8px 0">График появится после 2+ обновлений</div>'; }
+    const li = document.getElementById('rating-history-list');
+    li.innerHTML=[...h].reverse().map(r=>{const idx=h.findIndex(x=>x.date===r.date);const d=idx>0&&h[idx-1].google?.score&&r.google?.score?(parseFloat(r.google.score)-parseFloat(h[idx-1].google.score)).toFixed(1):null;const delta=d>0?'<span style="color:var(--green)">▲'+d+'</span>':d<0?'<span style="color:var(--red)">▼'+Math.abs(d)+'</span>':'';return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--muted);min-width:90px">'+r.date+'</span><span>Google: <strong style="color:var(--accent)">'+(r.google?.score?parseFloat(r.google.score).toFixed(1)+'★':'—')+'</strong> '+(r.google?.count?'<span style="color:var(--muted);font-size:11px">('+r.google.count+')</span>':'')+' '+delta+'</span><span style="color:var(--muted)">Uber: <strong style="color:var(--accent)">'+(r.ubereats?.score?parseFloat(r.ubereats.score).toFixed(1)+'★':'—')+'</strong></span></div>';}).join('');
+  }
+  (function(){const h=getRatingHistory();if(!h.length)saveRatingEntry({date:'2026-06-18',google:{score:4.6,count:128},ubereats:{score:4.6,count:310}});})();
+  // ===== END RATING =====
   cloudLoad();
 </script>
 </body>
