@@ -1415,10 +1415,6 @@
   // ===== END RATING =====
 
   // ===== ODOO INTEGRATION =====
-  const ODOO_URL = 'https://pizza-express.odoo.com';
-  const ODOO_DB = 'pizza-express';
-  const ODOO_EMAIL = 'dzhabrail.b@gmail.com';
-  const ODOO_APIKEY = 'a12c75e9d46da9c27aa7aad49204ac904e2caed5';
 
   function getPeriodDates() {
     const period = document.getElementById('odoo-period').value;
@@ -1435,41 +1431,14 @@
   }
 
   async function odooRpc(model, method, args, kwargs={}) {
-    const uid = await odooAuth();
-    if (!uid) throw new Error('Auth failed');
-    const resp = await fetch(`${ODOO_URL}/jsonrpc`, {
+    const resp = await fetch('/api/odoo', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        jsonrpc: '2.0', method: 'call', id: Date.now(),
-        params: {
-          service: 'object', method: 'execute_kw',
-          args: [ODOO_DB, uid, ODOO_APIKEY, model, method, args, kwargs]
-        }
-      })
+      body: JSON.stringify({ model, method, args, kwargs })
     });
     const data = await resp.json();
-    if (data.error) throw new Error(data.error.data?.message || data.error.message);
+    if (data.error) throw new Error(data.error);
     return data.result;
-  }
-
-  let _odooUid = null;
-  async function odooAuth() {
-    if (_odooUid) return _odooUid;
-    const resp = await fetch(`${ODOO_URL}/jsonrpc`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        jsonrpc: '2.0', method: 'call', id: 1,
-        params: {
-          service: 'common', method: 'authenticate',
-          args: [ODOO_DB, ODOO_EMAIL, ODOO_APIKEY, {}]
-        }
-      })
-    });
-    const data = await resp.json();
-    _odooUid = data.result;
-    return _odooUid;
   }
 
   async function odooLoadDashboard() {
