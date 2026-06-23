@@ -13,7 +13,7 @@ module.exports = async function handler(req, res) {
   try {
     const { method, model, args, kwargs } = req.body;
 
-    // Step 1: authenticate
+    // Auth
     const authResp = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -27,9 +27,9 @@ module.exports = async function handler(req, res) {
     });
     const authData = await authResp.json();
     const uid = authData.result;
-    if (!uid) return res.status(401).json({ error: 'Odoo auth failed', detail: authData.error });
+    if (!uid) return res.status(401).json({ error: 'Odoo auth failed', detail: JSON.stringify(authData.error) });
 
-    // Step 2: call method
+    // RPC call
     const rpcResp = await fetch(`${ODOO_URL}/jsonrpc`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
