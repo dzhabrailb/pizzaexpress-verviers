@@ -1447,30 +1447,31 @@
     try {
       const [dateFrom, dateTo] = getPeriodDates();
 
-      // Загружаем записи бухгалтерии (расходы и доходы)
+      // Загружаем счета фournisseurs (vendor bills) — все статусы
       const moves = await odooRpc('account.move', 'search_read',
-        [[['move_type', 'in', ['in_invoice','in_refund','out_invoice','out_refund']],
+        [[['move_type', 'in', ['in_invoice','in_refund','out_invoice','out_refund','entry']],
           ['invoice_date', '>=', dateFrom],
-          ['invoice_date', '<=', dateTo],
-          ['state', '=', 'posted']]],
-        { fields: ['name','move_type','invoice_date','amount_total','amount_residual','payment_state','partner_id','invoice_line_ids'], limit: 100 }
+          ['invoice_date', '<=', dateTo]]],
+        { fields: ['name','move_type','invoice_date','amount_total','amount_residual','payment_state','partner_id','state'], limit: 200 }
       );
 
-      // Считаем KPI
+      // Считаем KPI — берём абсолютное значение суммы
       let expenses = 0, income = 0, unpaid = 0;
       const bills = [];
       const expenseMoves = [];
 
       moves.forEach(m => {
-        if (m.move_type === 'in_invoice') {
-          expenses += m.amount_total;
-          expenseMoves.push(m);
-          if (m.payment_state !== 'paid' && m.amount_residual > 0) {
-            unpaid += m.amount_residual;
-            bills.push(m);
+        const amt = Math.abs(m.amount_total || 0);
+        const residual = Math.abs(m.amount_residual || 0);
+        if (m.move_type === 'in_invoice' || m.move_type === 'in_refund') {
+          expenses += amt;
+          expenseMoves.push({...m, amount_total: amt, amount_residual: residual});
+          if (m.payment_state !== 'paid' && residual > 0) {
+            unpaid += residual;
+            bills.push({...m, amount_total: amt, amount_residual: residual});
           }
         } else if (m.move_type === 'out_invoice') {
-          income += m.amount_total;
+          income += amt;
         }
       });
 
