@@ -1466,7 +1466,8 @@
         if (m.move_type === 'in_invoice' || m.move_type === 'in_refund') {
           expenses += amt;
           expenseMoves.push({...m, amount_total: amt, amount_residual: residual});
-          if (m.payment_state !== 'paid' && residual > 0) {
+          // Неоплачено только для подтверждённых счетов (posted)
+          if (m.state === 'posted' && m.payment_state !== 'paid' && residual > 0) {
             unpaid += residual;
             bills.push({...m, amount_total: amt, amount_residual: residual});
           }
