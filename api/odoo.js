@@ -8,7 +8,8 @@ module.exports = async function handler(req, res) {
   const ODOO_URL = 'https://pizza-express.odoo.com';
   const ODOO_DB = 'pizza-express';
   const ODOO_EMAIL = 'dzhabrail.b@gmail.com';
-  const ODOO_APIKEY = process.env.ODOO_API_KEY || 'a12c75e9d46da9c27aa7aad49204ac904e2caed5';
+  const ODOO_APIKEY = process.env.ODOO_API_KEY;
+  if (!ODOO_APIKEY) return res.status(500).json({ error: 'ODOO_API_KEY not configured in Vercel environment variables' });
 
   try {
     const { method, model, args, kwargs } = req.body;
