@@ -1451,8 +1451,9 @@
       const moves = await odooRpc('account.move', 'search_read',
         [[['move_type', 'in', ['in_invoice','in_refund','out_invoice','out_refund','entry']],
           ['invoice_date', '>=', dateFrom],
-          ['invoice_date', '<=', dateTo]]],
-        { fields: ['name','move_type','invoice_date','amount_total','amount_residual','payment_state','partner_id','state'], limit: 200 }
+          ['invoice_date', '<=', dateTo]],
+         ['name','move_type','invoice_date','amount_total','amount_residual','payment_state','partner_id','state']],
+        { limit: 200 }
       );
 
       // Считаем KPI — берём абсолютное значение суммы
