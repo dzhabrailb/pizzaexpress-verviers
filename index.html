@@ -491,9 +491,7 @@
       .hero-subtitle { font-size: 0.95rem; margin-bottom: 10px; }
       .hero-info {
         font-size: 0.8rem; gap: 10px; margin-bottom: 28px;
-        flex-direction: column; align-items: center; gap: 8px;
-      }
-      .hero-btns { flex-direction: column; align-items: center; gap: 12px; }
+        flex-direction: column; align-items: center; gap: 8px; }
       .btn-primary, .btn-secondary { width: 100%; max-width: 320px; text-align: center; padding: 14px 20px; font-size: 0.95rem; }
       .features-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
       .feature-card { padding: 22px 16px; }
@@ -1237,6 +1235,9 @@
     const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     const fee = parseFloat(document.getElementById('delivery-zone').value) || 0;
     const currentTotal = subtotal + fee;
+    const pizzaCount = cart.filter(item =>
+      /\s\((M|L)\)$/.test(item.name) || item.name.startsWith('Pâtes ')
+    ).length;
 
     feedbackEl.style.color = "#666";
     feedbackEl.textContent = "Vérification en cours...";
@@ -1245,7 +1246,7 @@
       const res = await fetch('/api/check-promo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, code, orderTotal: currentTotal }),
+        body: JSON.stringify({ phone, code, orderTotal: currentTotal, pizzaCount }),
       });
       const data = await res.json();
 
@@ -1259,6 +1260,7 @@
           inactive_code: "Ce code n'est plus actif.",
           expired_code: "Ce code a expiré.",
           below_min_order: `Commande minimum de ${data.minOrder}€ requise.`,
+          below_min_pizzas: `Minimum ${data.minPizzas} pizzas/pâtes requises pour ce code.`,
           already_used: "Ce code a déjà été utilisé avec ce numéro.",
         };
         feedbackEl.style.color = "#c0392b";
@@ -1288,6 +1290,9 @@
     const phone = normalizePhone(document.getElementById('order-phone').value);
     const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     const fee = parseFloat(document.getElementById('delivery-zone').value) || 0;
+    const pizzaCount = cart.filter(item =>
+      /\s\((M|L)\)$/.test(item.name) || item.name.startsWith('Pâtes ')
+    ).length;
     try {
       await fetch('/api/check-promo', {
         method: 'POST',
@@ -1296,6 +1301,7 @@
           phone,
           code: window.promoState.code,
           orderTotal: subtotal + fee,
+          pizzaCount,
           confirm: true,
         }),
       });
