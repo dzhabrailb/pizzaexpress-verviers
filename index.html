@@ -341,9 +341,6 @@
       background: var(--cream); color: var(--brown-dark);
       transition: border-color .2s;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      outline: none; border-color: var(--terracotta);
-    }
     .form-group textarea { height: 90px; resize: vertical; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .submit-btn {
@@ -479,7 +476,6 @@
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-      /* Nav */
       .nav-links { display: none; }
       .hamburger { display: flex; }
       nav { padding: 0 14px; height: 58px; }
@@ -488,11 +484,7 @@
       #lang-toggle { margin-left: 10px; }
       .lang-btn { padding: 3px 8px; font-size: 0.72rem; }
       .mobile-menu { top: 58px; }
-
-      /* Sections */
       section { padding: 52px 14px; }
-
-      /* Hero */
       #hero { padding: 80px 16px 50px; min-height: 92vh; }
       .hero-content { max-width: 100%; }
       .hero-badge { font-size: 0.92rem; padding: 10px 22px; letter-spacing: 3px; margin-bottom: 18px; }
@@ -503,15 +495,11 @@
       }
       .hero-btns { flex-direction: column; align-items: center; gap: 12px; }
       .btn-primary, .btn-secondary { width: 100%; max-width: 320px; text-align: center; padding: 14px 20px; font-size: 0.95rem; }
-
-      /* About */
       .features-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
       .feature-card { padding: 22px 16px; }
       .feature-icon { font-size: 2rem; margin-bottom: 10px; }
       .feature-card h3 { font-size: 1rem; }
       .feature-card p { font-size: 0.82rem; }
-
-      /* Menu tabs */
       .menu-tabs { gap: 7px; margin-bottom: 28px; }
       .tab-btn { padding: 7px 14px; font-size: 0.78rem; }
       .menu-panel.active { grid-template-columns: 1fr; gap: 16px; }
@@ -519,8 +507,6 @@
       .menu-card-body { padding: 14px 16px; }
       .menu-card-body h3 { font-size: 1rem; }
       .menu-add-btn { padding: 7px 14px; font-size: 0.8rem; }
-
-      /* Order */
       .order-wrapper { grid-template-columns: 1fr; gap: 28px; }
       .order-form { padding: 22px 16px; border-radius: 16px; }
       .order-form h3 { font-size: 1.2rem; margin-bottom: 18px; }
@@ -528,17 +514,11 @@
       .submit-btn { padding: 15px; font-size: 1rem; border-radius: 14px; }
       .order-option { padding: 14px 16px; gap: 12px; }
       .order-option-icon { font-size: 1.5rem; }
-
-      /* Reviews */
       .reviews-grid { grid-template-columns: 1fr; gap: 16px; }
       .review-card { padding: 20px; }
-
-      /* Contact */
       .contact-grid { grid-template-columns: 1fr; gap: 24px; }
       .map-container { height: 260px; }
       .contact-item { padding: 16px; gap: 12px; }
-
-      /* Footer */
       footer { padding: 32px 16px 20px; }
       .footer-logo { font-size: 1.5rem; }
       .footer-links { gap: 14px; }
@@ -552,7 +532,6 @@
       .nav-logo span { display: none; }
     }
 
-    /* ===== LANGUAGE HIDDEN ===== */
     [data-lang="en"] { display: none; }
     body.en [data-lang="fr"] { display: none; }
     body.en [data-lang="en"] { display: block; }
@@ -562,7 +541,6 @@
 </head>
 <body>
 
-<!-- Navbar -->
 <nav>
   <div class="nav-logo">
     <img src="Photos/LOGO.png" alt="PizzaExpress Verviers Logo" />
@@ -584,7 +562,6 @@
   </div>
 </nav>
 
-<!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about" onclick="toggleMobile()" data-lang="fr">Notre Histoire</a>
   <a href="#about" onclick="toggleMobile()" data-lang="en">Our Story</a>
@@ -596,7 +573,6 @@
   <a href="#contact" onclick="toggleMobile()">Contact</a>
 </div>
 
-<!-- Hero -->
 <section id="hero">
   <div class="hero-content">
     <div class="hero-badge" data-lang="fr">🍕 Pizzas artisanales · Verviers</div>
@@ -618,7 +594,6 @@
   <div class="scroll-hint">↓ scroll</div>
 </section>
 
-<!-- Menu -->
 <section id="menu">
   <div class="container">
     <p class="section-label">
@@ -639,7 +614,6 @@
       <button class="tab-btn" onclick="showTab('boissons')">🥤 Boissons</button>
     </div>
 
-    <!-- Charcuteries -->
     <div class="menu-panel active" id="tab-charcuteries">
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Jambon (Dinde)</h3><p>Tomate, mozzarella, jambon, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,50€ / L 17,50€</span><button class="menu-add-btn" onclick="orderItem('Jambon Dinde')">+ Commander</button></div></div></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Hawaii</h3><p>Tomate, mozzarella, jambon, ananas, origan</p><div class="menu-card-footer"><span class="menu-price">M 12,00€ / L 18,00€</span><button class="menu-add-btn" onclick="orderItem('Hawaii')">+ Commander</button></div></div></div>
@@ -659,7 +633,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">⭐</div><div class="menu-card-body"><h3>Du Chef</h3><p>Suggestion du client — max. 4 ingrédients au choix</p><div class="menu-card-footer"><span class="menu-price">M 15,00€ / L 21,00€</span><button class="menu-add-btn" onclick="orderItem('Du Chef (préciser ingrédients)')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Océanes -->
     <div class="menu-panel" id="tab-oceanes">
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🦐</div><div class="menu-card-body"><h3>Scampi</h3><p>Tomate, mozzarella, scampis, origan</p><div class="menu-card-footer"><span class="menu-price">M 14,00€ / L 20,00€</span><button class="menu-add-btn" onclick="orderItem('Scampi pizza')">+ Commander</button></div></div></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🐟</div><div class="menu-card-body"><h3>Thono</h3><p>Tomate, mozzarella, thon, olives, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 16,00€</span><button class="menu-add-btn" onclick="orderItem('Thono')">+ Commander</button></div></div></div>
@@ -668,7 +641,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🦞</div><div class="menu-card-body"><h3>Fruits de Mer</h3><p>Tomate, mozzarella, cocktail fruits de mer, ail, origan</p><div class="menu-card-footer"><span class="menu-price">M 14,00€ / L 20,00€</span><button class="menu-add-btn" onclick="orderItem('Fruits de Mer pizza')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Crème Fraîche -->
     <div class="menu-panel" id="tab-creme">
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍕</div><div class="menu-card-body"><h3>Al Polo</h3><p>Crème fraîche, mozzarella, poulet, champignons frais, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,50€ / L 19,50€</span><button class="menu-add-btn" onclick="orderItem('Al Polo pizza')">+ Commander</button></div></div></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🐟</div><div class="menu-card-body"><h3>Venezia</h3><p>Crème fraîche, mozzarella, saumon fumé, origan</p><div class="menu-card-footer"><span class="menu-price">M 13,50€ / L 19,50€</span><button class="menu-add-btn" onclick="orderItem('Venezia')">+ Commander</button></div></div></div>
@@ -679,7 +651,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥓</div><div class="menu-card-body"><h3>Campagnarde</h3><p>Crème fraîche, mozzarella, lardons, pomme de terre, oignon, oeuf, origan</p><div class="menu-card-footer"><span class="menu-price">M 14,00€ / L 20,00€</span><button class="menu-add-btn" onclick="orderItem('Campagnarde')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Fromagères -->
     <div class="menu-panel" id="tab-fromageres">
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>Marguerita</h3><p>Tomate, mozzarella, origan</p><div class="menu-card-footer"><span class="menu-price">M 9,50€ / L 15,50€</span><button class="menu-add-btn" onclick="orderItem('Marguerita')">+ Commander</button></div></div></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>4 Fromages</h3><p>Tomate, mozzarella, roquefort, fromage de chèvre, parmesan, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,50€ / L 17,50€</span><button class="menu-add-btn" onclick="orderItem('4 Fromages pizza')">+ Commander</button></div></div></div>
@@ -687,7 +658,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧀</div><div class="menu-card-body"><h3>Raclette</h3><p>Tomate, mozzarella, raclette, origan</p><div class="menu-card-footer"><span class="menu-price">M 10,00€ / L 16,00€</span><button class="menu-add-btn" onclick="orderItem('Raclette pizza')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Légumes -->
     <div class="menu-panel" id="tab-legumes">
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥦</div><div class="menu-card-body"><h3>Végétarienne</h3><p>Tomate, mozzarella, champignons frais, poivrons, artichauts, olives, origan</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 17,00€</span><button class="menu-add-btn" onclick="orderItem('Végétarienne pizza')">+ Commander</button></div></div></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍆</div><div class="menu-card-body"><h3>Parmigiana</h3><p>Tomate, mozzarella, aubergines, parmesan, origan</p><div class="menu-card-footer"><span class="menu-price">M 10,50€ / L 16,50€</span><button class="menu-add-btn" onclick="orderItem('Parmigiana pizza')">+ Commander</button></div></div></div>
@@ -695,7 +665,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥦</div><div class="menu-card-body"><h3>Légumes Mix</h3><p>Tomate, mozzarella, aubergines, courgette, poivrons rouge, poivrons jeunes</p><div class="menu-card-footer"><span class="menu-price">M 11,00€ / L 17,00€</span><button class="menu-add-btn" onclick="orderItem('Légumes Mix')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Pâtes -->
     <div class="menu-panel" id="tab-pates">
       <div class="menu-nota" style="grid-column:1/-1;background:var(--terracotta);color:#fff;padding:12px 20px;border-radius:10px;text-align:center;font-weight:700;margin-bottom:8px;">🍝 Toutes nos pâtes à <strong>12,00€</strong></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍝</div><div class="menu-card-body"><h3>Bolognaise</h3><p>Sauce tomate, viande hachée, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Bolognaise')">+ Commander</button></div></div></div>
@@ -712,7 +681,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍗</div><div class="menu-card-body"><h3>Al Polo</h3><p>Crème, champignons frais, poulet, parmesan</p><div class="menu-card-footer"><span class="menu-price">12,00€</span><button class="menu-add-btn" onclick="orderItem('Pâtes Al Polo')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Desserts -->
     <div class="menu-panel" id="tab-desserts">
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🍫</div><div class="menu-card-body"><h3>Moelleux au chocolat</h3><p>Gâteau fondant au chocolat</p><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Moelleux au chocolat')">+ Commander</button></div></div></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥧</div><div class="menu-card-body"><h3>Tarte aux pommes</h3><p>Tarte maison aux pommes</p><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Tarte aux pommes')">+ Commander</button></div></div></div>
@@ -721,7 +689,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🧁</div><div class="menu-card-body"><h3>Muffin</h3><p>Muffin maison</p><div class="menu-card-footer"><span class="menu-price">3,00€</span><button class="menu-add-btn" onclick="orderItem('Muffin')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Boissons -->
     <div class="menu-panel" id="tab-boissons">
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥤</div><div class="menu-card-body"><h3>Coca Cola</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Coca Cola')">+ Commander</button></div></div></div>
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥤</div><div class="menu-card-body"><h3>Coca Cola Zero</h3><div class="menu-card-footer"><span class="menu-price">2,00€</span><button class="menu-add-btn" onclick="orderItem('Coca Cola Zero')">+ Commander</button></div></div></div>
@@ -733,7 +700,6 @@
       <div class="menu-card reveal"><div class="menu-card-img-placeholder">🥤</div><div class="menu-card-body"><h3>Maxi Cola</h3><p>Grande bouteille</p><div class="menu-card-footer"><span class="menu-price">4,00€</span><button class="menu-add-btn" onclick="orderItem('Maxi Cola')">+ Commander</button></div></div></div>
     </div>
 
-    <!-- Suppléments -->
     <div style="margin-top:32px;background:#fff;border-radius:14px;padding:20px 24px;box-shadow:0 2px 12px var(--shadow);">
       <p style="font-weight:700;color:var(--brown-dark);margin-bottom:12px;font-family:'Playfair Display',serif;font-size:1.1rem;">Suppléments pizza</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px;">
@@ -747,7 +713,6 @@
   </div>
 </section>
 
-<!-- Order -->
 <section id="order">
   <div class="container">
     <p class="section-label">
@@ -825,25 +790,24 @@
           </div>
           <div id="zone-detected" style="display:none;margin-bottom:12px;padding:10px 14px;border-radius:10px;background:#f0faf0;border:1px solid #a8d8a8;font-size:0.88rem;color:#2a5a2a;font-weight:700;"></div>
           <input type="hidden" id="delivery-zone" value="0" />
-          <!-- Panier dynamique -->
           <div id="cart-list" style="display:none;background:#fdf6ee;border-radius:10px;padding:12px 16px;margin-bottom:4px;border:1px solid #e0cdb8;"></div>
-          <!-- Frais de livraison -->
           <div id="delivery-fee-row" style="display:none;justify-content:space-between;align-items:center;background:#f5ece0;padding:10px 16px;border-radius:10px;margin-bottom:4px;font-size:0.9rem;">
             <span style="color:var(--brown-mid);font-weight:700;" data-lang="fr">🛵 Frais de livraison</span>
             <span style="color:var(--brown-mid);font-weight:700;" data-lang="en">🛵 Delivery fee</span>
             <span id="delivery-fee-amount" style="font-weight:700;color:var(--brown-mid);">0,00 €</span>
           </div>
-          <!-- Total -->
           <div id="order-total-row" style="display:none;justify-content:space-between;align-items:center;background:var(--brown-dark);color:#fff;padding:12px 16px;border-radius:10px;margin-bottom:14px;font-weight:700;">
             <span data-lang="fr">🧾 Total commande</span>
             <span data-lang="en">🧾 Order total</span>
             <span id="order-total" style="font-size:1.2rem;color:var(--gold);">0,00 €</span>
           </div>
-          <!-- Champ caché pour WhatsApp -->
           <textarea id="order-items" style="display:none"></textarea>
           <div class="form-group" id="note-group">
             <label data-lang="fr">Note / remarque (optionnel)</label>
             <label data-lang="en">Note / remark (optional)</label>
+            <label>🎟️ Code promo (optionnel)</label>
+            <input type="text" id="promo-code" placeholder="Ex : BIENVENUE5" autocomplete="off" style="width:100%;padding:8px;margin-bottom:8px;box-sizing:border-box;" />
+            <small id="promo-feedback" style="display:block;margin-bottom:8px;font-size:0.85em;"></small>
             <textarea id="order-note" placeholder="ex: sans oignon, bien cuit…" style="height:60px;"></textarea>
           </div>
           <button type="button" onclick="sendSMS()" class="submit-btn" style="background:#2563eb;margin-bottom:6px;">
@@ -859,7 +823,6 @@
   </div>
 </section>
 
-<!-- Reviews -->
 <section id="reviews">
   <div class="container">
     <p class="section-label">
@@ -946,7 +909,6 @@
   </div>
 </section>
 
-<!-- Contact -->
 <section id="contact">
   <div class="container">
     <p class="section-label">
@@ -1012,7 +974,6 @@
   </div>
 </section>
 
-<!-- About -->
 <section id="about">
   <div class="container">
     <p class="section-label">
@@ -1055,7 +1016,6 @@
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
   <div class="footer-logo"><img src="Photos/LOGO.png" alt="PizzaExpress Verviers Logo" /></div>
   <p class="footer-text">
@@ -1081,7 +1041,6 @@
   </div>
 </footer>
 
-<!-- Toast notification -->
 <div class="toast" id="toast"></div>
 <button id="floating-cart" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">
   🛒 <span id="floating-cart-label">Ma commande</span>
@@ -1089,7 +1048,6 @@
 </button>
 
 <script>
-  // ===== LANGUAGE =====
   function setLang(lang) {
     document.body.classList.toggle('en', lang === 'en');
     document.querySelectorAll('.lang-btn').forEach((b, i) => b.classList.toggle('active', (i === 0) === (lang === 'fr')));
@@ -1100,28 +1058,23 @@
     if (saved === 'en') setLang('en');
   })();
 
-  // ===== MOBILE MENU =====
   function toggleMobile() {
     document.getElementById('mobileMenu').classList.toggle('open');
   }
 
-  // ===== MENU TABS =====
   function showTab(name) {
     document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     event.currentTarget.classList.add('active');
-    // Re-trigger reveal animations
     document.querySelectorAll('#tab-' + name + ' .reveal').forEach(el => {
       el.classList.remove('visible');
       setTimeout(() => el.classList.add('visible'), 50);
     });
   }
 
-  // ===== ORDER FORM =====
   let cart = [];
 
-  // Villes et codes postaux par zone
   const zones = {
     4.50: {
       villes: ['verviers','dison','petite-rechain','rechain'],
@@ -1215,9 +1168,9 @@
     const feeAmount = document.getElementById('delivery-fee-amount');
     const zoneSelect = document.getElementById('delivery-zone');
 
-    // Delivery fee
     const fee = zoneSelect ? parseFloat(zoneSelect.value) || 0 : 0;
-    // Also check if delivery is selected
+   
+ // Also check if delivery is selected
     const orderType = document.getElementById('order-type').value;
     const isDelivery = (orderType === 'livraison' || orderType === 'delivery');
 
@@ -1229,7 +1182,6 @@
       return;
     }
 
-    // Build cart list UI
     cartList.style.display = 'block';
     cartList.innerHTML = cart.map((item, i) => `
       <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0e0cc;">
@@ -1241,10 +1193,8 @@
       </div>
     `).join('');
 
-    // Update hidden textarea for WhatsApp
     textarea.value = cart.map(item => `${item.name} — ${item.price.toFixed(2)}€`).join('\n');
 
-    // Show delivery fee if applicable
     if (isDelivery && fee > 0) {
       feeRow.style.display = 'flex';
       feeAmount.textContent = fee.toFixed(2) + ' €';
@@ -1252,11 +1202,106 @@
       feeRow.style.display = 'none';
     }
 
-    // Update total (articles + livraison)
     const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     const total = subtotal + fee;
-    totalEl.textContent = total.toFixed(2) + ' €';
+    const finalTotalDisplay = window.promoState && window.promoState.validated
+      ? Math.max(0, total - window.promoState.discount)
+      : total;
+    totalEl.textContent = finalTotalDisplay.toFixed(2) + ' €';
     totalRow.style.display = 'flex';
+  }
+
+  window.promoState = { validated: false, discount: 0, code: "" };
+
+  function normalizePhone(value) {
+    return (value || "").replace(/[\s.\-()]/g, "");
+  }
+
+  async function validatePromoCode() {
+    const promoInput = document.getElementById('promo-code');
+    const feedbackEl = document.getElementById('promo-feedback');
+    const code = (promoInput.value || "").trim().toUpperCase();
+    const phone = normalizePhone(document.getElementById('order-phone').value);
+
+    window.promoState = { validated: false, discount: 0, code: "" };
+    feedbackEl.textContent = "";
+
+    if (!code) { updateCart(); return; }
+
+    if (!phone || phone.length < 8) {
+      feedbackEl.style.color = "#c0392b";
+      feedbackEl.textContent = "Veuillez renseigner votre téléphone avant le code promo.";
+      return;
+    }
+
+    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    const fee = parseFloat(document.getElementById('delivery-zone').value) || 0;
+    const currentTotal = subtotal + fee;
+
+    feedbackEl.style.color = "#666";
+    feedbackEl.textContent = "Vérification en cours...";
+
+    try {
+      const res = await fetch('/api/check-promo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, code, orderTotal: currentTotal }),
+      });
+      const data = await res.json();
+
+      if (data.eligible) {
+        window.promoState = { validated: true, discount: data.discount, code };
+        feedbackEl.style.color = "#1a7f37";
+        feedbackEl.textContent = `Code appliqué : -${data.discount}€`;
+      } else {
+        const messages = {
+          invalid_code: "Code promo invalide.",
+          inactive_code: "Ce code n'est plus actif.",
+          expired_code: "Ce code a expiré.",
+          below_min_order: `Commande minimum de ${data.minOrder}€ requise.`,
+          already_used: "Ce code a déjà été utilisé avec ce numéro.",
+        };
+        feedbackEl.style.color = "#c0392b";
+        feedbackEl.textContent = messages[data.reason] || "Code promo invalide.";
+      }
+    } catch (err) {
+      feedbackEl.style.color = "#c0392b";
+      feedbackEl.textContent = "Erreur de vérification, réessayez.";
+    }
+
+    updateCart();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const promoInput = document.getElementById('promo-code');
+    if (promoInput) {
+      let debounceTimer;
+      promoInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(validatePromoCode, 500);
+      });
+    }
+  });
+
+  async function confirmPromoUsage() {
+    if (!window.promoState || !window.promoState.validated) return;
+    const phone = normalizePhone(document.getElementById('order-phone').value);
+    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    const fee = parseFloat(document.getElementById('delivery-zone').value) || 0;
+    try {
+      await fetch('/api/check-promo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone,
+          code: window.promoState.code,
+          orderTotal: subtotal + fee,
+          confirm: true,
+        }),
+      });
+    } catch (err) {
+      console.error('Erreur confirmation promo:', err);
+    }
   }
 
   function buildMsg() {
@@ -1268,13 +1313,20 @@
     const fee = parseFloat(document.getElementById('delivery-zone').value) || 0;
     const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     const total = subtotal + fee;
+    const finalTotal = window.promoState && window.promoState.validated
+      ? Math.max(0, total - window.promoState.discount)
+      : total;
     const itemLines = cart.map(item => `• ${item.name} — ${item.price.toFixed(2)}EUR`).join('\n');
     const feeLine = fee > 0 ? `\nLivraison : ${fee.toFixed(2)}EUR` : '';
-    return `PIZZAEXPRESS VERVIERS\n\n${itemLines}${feeLine}\n\nTOTAL : ${total.toFixed(2)}EUR\n\nNom : ${name}\nTel : ${phone}\nType : ${type === 'livraison' ? 'Livraison' : 'A emporter'}${addr ? '\nAdresse : ' + addr : ''}${note ? '\nNote : ' + note : ''}`;
+    const promoLine = window.promoState && window.promoState.validated
+      ? `\nCode promo : ${window.promoState.code} (-${window.promoState.discount}EUR)`
+      : '';
+    return `PIZZAEXPRESS VERVIERS\n\n${itemLines}${feeLine}\n\nTOTAL : ${finalTotal.toFixed(2)}EUR${promoLine}\n\nNom : ${name}\nTel : ${phone}\nType : ${type === 'livraison' ? 'Livraison' : 'A emporter'}${addr ? '\nAdresse : ' + addr : ''}${note ? '\nNote : ' + note : ''}`;
   }
 
   function sendSMS() {
     if (cart.length === 0) { showToast('⚠️ Ajoutez des articles d\'abord !'); return; }
+    confirmPromoUsage();
     const msg = buildMsg();
     window.location.href = `sms:+32470740855?body=${encodeURIComponent(msg)}`;
     showToast('📱 SMS prêt à envoyer !');
@@ -1283,6 +1335,7 @@
   function submitOrder(e) {
     e.preventDefault();
     if (cart.length === 0) { showToast('⚠️ Ajoutez des articles d\'abord !'); return; }
+    confirmPromoUsage();
     const msg = buildMsg();
     const isEn = document.body.classList.contains('en');
     const waUrl = `https://wa.me/32470740855?text=${encodeURIComponent(msg)}`;
@@ -1290,7 +1343,6 @@
     showToast(isEn ? '🎉 Order sent via WhatsApp!' : '🎉 Commande envoyée via WhatsApp !');
   }
 
-  // ===== TOAST =====
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -1298,8 +1350,6 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // ===== AUTO FOOD PHOTOS =====
-  // Photos exactes par nom de pizza (correspondance exacte)
   const exactPhotos = {
     'jambon (dinde)':   'Photos/Jambon.jpeg',
     'jambon':           'Photos/Jambon.jpeg',
@@ -1337,7 +1387,6 @@
     'funghi':           'Photos/Funghi.jpeg',
   };
 
-  // Photos Unsplash pour les pizzas sans vraie photo
   const fallbackPhotos = {
     'hawaii':     'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80',
     'regina':     'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80',
@@ -1383,13 +1432,10 @@
 
   function getPhotoUrl(name) {
     const n = name.toLowerCase().replace(/\s*🆕\s*/g, '').trim();
-    // 1. Correspondance exacte avec vraie photo
     if (exactPhotos[n]) return exactPhotos[n];
-    // 2. Correspondance partielle avec vraie photo
     for (const [key, url] of Object.entries(exactPhotos)) {
       if (n.includes(key) || key.includes(n)) return url;
     }
-    // Pas de fallback internet — on garde le placeholder emoji
     return null;
   }
 
@@ -1399,7 +1445,7 @@
       const title = card.querySelector('h3');
       if (!placeholder || !title) return;
       const photoUrl = getPhotoUrl(title.textContent);
-      const src = photoUrl || 'Photos/LOGO.png'; // Logo si pas de photo
+      const src = photoUrl || 'Photos/LOGO.png';
       const img = document.createElement('img');
       img.src = src;
       img.alt = title.textContent;
@@ -1420,14 +1466,13 @@
     });
   });
 
-  // ===== AUTO M/L BUTTONS =====
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.menu-card').forEach(card => {
       const priceEl = card.querySelector('.menu-price');
       const oldBtn = card.querySelector('.menu-add-btn');
       if (!priceEl || !oldBtn) return;
 
-      const priceText = priceEl.textContent.trim(); // e.g. "M 11,50€ / L 17,50€" or "12,00€"
+      const priceText = priceEl.textContent.trim();
       const name = card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : '';
 
       const mlMatch = priceText.match(/M\s*([\d,\.]+).*?L\s*([\d,\.]+)/);
@@ -1451,13 +1496,11 @@
     });
   });
 
-  // ===== SCROLL REVEAL =====
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // ===== ACTIVE NAV LINK =====
   const sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', () => {
     let curr = '';
@@ -1469,3 +1512,4 @@
 </script>
 </body>
 </html>
+
