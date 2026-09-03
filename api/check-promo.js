@@ -17,7 +17,7 @@
      "promos": {
        "BIENVENUE5": {
          "discount": 5,
-         "minOrder": 20,
+         "minPizzas": 2,
          "active": true,
          "expiresAt": "2026-12-31",
          "description": "Réduction nouveaux clients",
@@ -25,7 +25,7 @@
        },
        "ETE10": {
          "discount": 10,
-         "minOrder": 30,
+         "minPizzas": 2,
          "active": true,
          "expiresAt": "2026-09-30",
          "description": "Promo d'été",
@@ -39,12 +39,17 @@
    }
 
    Usages :
-   1) POST { phone, code, orderTotal }
+   1) POST { phone, code, orderTotal, pizzaCount }
       -> vérifie l'éligibilité (ne marque rien), renvoie le montant
          de la réduction si éligible.
-   2) POST { phone, code, orderTotal, confirm: true }
+   2) POST { phone, code, orderTotal, pizzaCount, confirm: true }
       -> vérifie ET marque le code comme utilisé (à appeler
          uniquement au moment où la commande est réellement envoyée).
+
+   Règles disponibles par promo :
+   - minOrder  : montant minimum de commande en euros (optionnel)
+   - minPizzas : nombre minimum de pizzas (M ou L) dans le panier (optionnel)
+   Les deux règles peuvent être combinées ou utilisées seules.
    ============================================================ */
 
 const JSONBIN_BASE_URL = "https://api.jsonbin.io/v3/b";
@@ -58,7 +63,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { phone, code, orderTotal, confirm } = req.body || {};
+    const { phone, code, orderTotal, pizzaCount, confirm } = req.body || {};
 
     if (!phone || !code) {
       res.status(400).json({ error: "Numéro de téléphone et code requis" });
@@ -68,6 +73,7 @@ module.exports = async (req, res) => {
     const normalizedPhone = String(phone).replace(/[\s.\-()]/g, "");
     const normalizedCode = String(code).trim().toUpperCase();
     const total = Number(orderTotal) || 0;
+    const pizzas = Number(pizzaCount) || 0;
 
     const record = await getPromoRecord();
     const promos = record.promos || {};
@@ -99,6 +105,16 @@ module.exports = async (req, res) => {
         eligible: false,
         reason: "below_min_order",
         minOrder: promo.minOrder,
+      });
+      return;
+    }
+
+    // Nombre minimum de pizzas non atteint
+    if (promo.minPizzas && pizzas < promo.minPizzas) {
+      res.status(200).json({
+        eligible: false,
+        reason: "below_min_pizzas",
+        minPizzas: promo.minPizzas,
       });
       return;
     }
